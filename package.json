@@ -20,6 +20,10 @@
         "vue-template-compiler": "^2.6.11"
     },
     "dependencies": {
-        "vue": "^2.6.11"
+        "material-design-icons": "^3.0.1",
+        "materialize-css": "^1.0.0-rc.2",
+        "vue": "^2.6.11",
+        "vue-router": "^3.1.6",
+        "vuex": "^3.3.0"
     }
 }
