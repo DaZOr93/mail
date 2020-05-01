@@ -1,4 +1,7 @@
 <?php
+phpinfo();
+$mbox = imap_open("{localhost:143}INBOX", "user_id", "password"); 
+dd($mbox);
 
 /**
  * Laravel - A PHP Framework For Web Artisans

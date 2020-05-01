@@ -1940,6 +1940,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -1951,7 +1952,15 @@ __webpack_require__.r(__webpack_exports__);
     mfooter: _components_footer_FooterComponent__WEBPACK_IMPORTED_MODULE_2__["default"],
     contentBar: _components_MainContent_Nav_NavBarComponent__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
-  name: "App"
+  name: "App",
+  methods: {
+    auth: function auth() {
+      this.$store.dispatch('login');
+    },
+    check: function check() {
+      this.$store.dispatch('auth');
+    }
+  }
 });
 
 /***/ }),
@@ -49956,7 +49965,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _App_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./App.vue */ "./resources/js/App.vue");
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var _routes__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./routes */ "./resources/js/routes.js");
-/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./store */ "./resources/js/store/index.js");
+/* harmony import */ var _store__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./store */ "./resources/js/store/index.js");
 /* harmony import */ var materialize_css__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! materialize-css */ "./node_modules/materialize-css/dist/js/materialize.js");
 /* harmony import */ var materialize_css__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(materialize_css__WEBPACK_IMPORTED_MODULE_5__);
 /* harmony import */ var materialize_css_dist_css_materialize_css__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! materialize-css/dist/css/materialize.css */ "./node_modules/materialize-css/dist/css/materialize.css");
@@ -49979,7 +49988,7 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vue_router__WEBPACK_IMPORTED_MODU
 var app = new vue__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: '#app',
   router: _routes__WEBPACK_IMPORTED_MODULE_3__["default"],
-  store: _store__WEBPACK_IMPORTED_MODULE_8__["default"],
+  store: _store__WEBPACK_IMPORTED_MODULE_4__["default"],
   render: function render(h) {
     return h(_App_vue__WEBPACK_IMPORTED_MODULE_1__["default"]);
   }
@@ -50861,6 +50870,40 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_1__
   mutations: {
     toggleBar: function toggleBar(state) {
       state.toggleBar = !state.toggleBar;
+    }
+  },
+  actions: {
+    login: function login() {
+      var token = "";
+      axios.post("https://team1-group-project.azurewebsites.net/api/auth/login", {
+        email: 'bogdan.lopatkin@gmail.com',
+        password: '16827209'
+      }).then(function (response) {
+        token = response.data.access_token;
+      });
+      setTimeout(function () {
+        console.log('token = ' + token);
+        axios.get('https://team1-group-project.azurewebsites.net./oauth/authorize', {
+          headers: {
+            Authorization: "Bearer " + token
+          }
+        }).then(function (response) {
+          console.log(response);
+        })["catch"](function (error) {
+          console.log(error);
+        });
+      }, 3000);
+    },
+    auth: function auth() {
+      axios.get('https://team1-group-project.azurewebsites.net./oauth/authorize', {
+        headers: {
+          Authorization: "Bearer " + '2222'
+        }
+      }).then(function (response) {
+        console.log(response);
+      })["catch"](function (error) {
+        console.log(error);
+      });
     }
   },
   getters: {
