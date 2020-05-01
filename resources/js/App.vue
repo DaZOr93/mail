@@ -4,9 +4,20 @@
         <mHeader></mHeader>
         <!--Header-->
 
-        <!--sidebar-->
-        <sidebar></sidebar>
-        <!--sidebar-->
+        <div class="main">
+            <!--sidebar-->
+            <div class="sidebar-wrap">
+                <sidebar></sidebar>
+            </div>
+            <!--sidebar-->
+
+            <div class="content-wrap">
+                <div class="content-nav">
+                    <contentBar></contentBar>
+                </div>
+               <router-view></router-view>
+            </div>
+        </div>
 
         <!--footer-->
         <mfooter></mfooter>
@@ -19,9 +30,10 @@
     import mHeader from './components/header/HeaderComponent';
     import sidebar from './components/sidebar/SideBarComponent';
     import mfooter from './components/footer/FooterComponent';
+    import contentBar from './components/MainContent/Nav/NavBarComponent'
 
     export default {
-        components: {mHeader , sidebar , mfooter},
+        components: {mHeader , sidebar , mfooter , contentBar},
         name: "App",
     }
 </script>
