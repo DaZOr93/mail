@@ -39,7 +39,7 @@ class LoginController extends Controller
     {
         $query = http_build_query([
             'client_id' => 13,
-            'redirect_uri' => 'http://mail/auth/callback',
+            'redirect_uri' => 'http://cu66460.tmweb.ru/auth/callback',
             'response_type' => 'code',
             'scope' => ''
         ]);
@@ -56,7 +56,7 @@ class LoginController extends Controller
                 'grant_type' => 'authorization_code',
                 'client_id' => 13, //данные которые выдаст Богдан. вынести в конфиг
                 'client_secret' => 'BBquIuwMsvBu2YZMAFrB0G5iDdNInrzuVeMB0AYU',//данные которые выдаст Богдан. вынести в конфиг
-                'redirect_uri' => 'http://mail/auth/callback',
+                'redirect_uri' => 'http://cu66460.tmweb.ru/auth/callback',
                 'code' => $request->code,
             ],
         ]);
