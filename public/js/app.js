@@ -51290,7 +51290,7 @@ var render = function() {
           "router-link",
           {
             staticClass: "waves-effect waves-light",
-            attrs: { tag: "a", to: "/it/newEmail" }
+            attrs: { tag: "a", to: "/newEmail" }
           },
           [_vm._v("написать письмо")]
         )
@@ -51306,11 +51306,7 @@ var render = function() {
             _c(
               "router-link",
               {
-                attrs: {
-                  tag: "a",
-                  "active-class": "active",
-                  to: "/it/incoming"
-                }
+                attrs: { tag: "a", "active-class": "active", to: "/incoming" }
               },
               [_vm._v("Входящие")]
             )
@@ -51323,9 +51319,7 @@ var render = function() {
           [
             _c(
               "router-link",
-              {
-                attrs: { tag: "a", "active-class": "active", to: "/it/draft" }
-              },
+              { attrs: { tag: "a", "active-class": "active", to: "/draft" } },
               [_vm._v("Черновик")]
             )
           ],
@@ -51337,7 +51331,7 @@ var render = function() {
           [
             _c(
               "router-link",
-              { attrs: { tag: "a", "active-class": "active", to: "/it/sent" } },
+              { attrs: { tag: "a", "active-class": "active", to: "/sent" } },
               [_vm._v("Отправленные")]
             )
           ],
@@ -51349,9 +51343,7 @@ var render = function() {
           [
             _c(
               "router-link",
-              {
-                attrs: { tag: "a", "active-class": "active", to: "/it/basket" }
-              },
+              { attrs: { tag: "a", "active-class": "active", to: "/basket" } },
               [_vm._v("Корзина")]
             )
           ],
@@ -51371,7 +51363,7 @@ var render = function() {
             "router-link",
             {
               staticClass: "waves-effect waves-light",
-              attrs: { tag: "a", to: "/it/newFile" }
+              attrs: { tag: "a", to: "/newFile" }
             },
             [_vm._v("новая папка")]
           )
@@ -68910,31 +68902,31 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = (new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   routes: [{
-    path: '/it/home',
+    path: '/home',
     component: _components_HomeComponent__WEBPACK_IMPORTED_MODULE_1__["default"],
     name: 'Home'
   }, {
-    path: '/it/incoming',
+    path: '/incoming',
     component: _components_MainContent_Incoming_IncomingComponent__WEBPACK_IMPORTED_MODULE_2__["default"],
     name: 'incoming'
   }, {
-    path: '/it/draft',
+    path: '/draft',
     component: _components_MainContent_Draft_DraftComponent__WEBPACK_IMPORTED_MODULE_3__["default"],
     name: 'draft'
   }, {
-    path: '/it/sent',
+    path: '/sent',
     component: _components_MainContent_Sent_SentComponent__WEBPACK_IMPORTED_MODULE_4__["default"],
     name: 'sent'
   }, {
-    path: '/it/basket',
+    path: '/basket',
     component: _components_MainContent_Basket_BasketComponent__WEBPACK_IMPORTED_MODULE_5__["default"],
     name: 'basket'
   }, {
-    path: '/it/newEmail',
+    path: '/newEmail',
     component: _components_MainContent_NewEmail_NewEmailComponent__WEBPACK_IMPORTED_MODULE_6__["default"],
     name: 'newEmail'
   }, {
-    path: '/it/newFile',
+    path: '/newFile',
     component: _components_MainContent_NewFile_NewFileComponent__WEBPACK_IMPORTED_MODULE_7__["default"],
     name: 'newFile'
   }],

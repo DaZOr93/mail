@@ -1,21 +1,21 @@
 <template>
     <div class="nav-wrap">
         <div class="write_letter">
-            <router-link tag="a" class="waves-effect waves-light" to="/it/newEmail">написать письмо</router-link>
+            <router-link tag="a" class="waves-effect waves-light" to="/newEmail">написать письмо</router-link>
         </div>
         <div class="nav-menu">
             <ul>
                 <li>
-                    <router-link tag="a" active-class="active" to="/it/incoming">Входящие</router-link>
+                    <router-link tag="a" active-class="active" to="/incoming">Входящие</router-link>
                 </li>
                 <li>
-                    <router-link tag="a" active-class="active" to="/it/draft">Черновик</router-link>
+                    <router-link tag="a" active-class="active" to="/draft">Черновик</router-link>
                 </li>
                 <li>
-                    <router-link tag="a" active-class="active" to="/it/sent">Отправленные</router-link>
+                    <router-link tag="a" active-class="active" to="/sent">Отправленные</router-link>
                 </li>
                 <li>
-                    <router-link tag="a" active-class="active" to="/it/basket">Корзина</router-link>
+                    <router-link tag="a" active-class="active" to="/basket">Корзина</router-link>
                 </li>
             </ul>
         </div>
@@ -29,7 +29,7 @@
         </div>
         <div class="new-file">
             <div class="write_letter">
-                <router-link tag="a" class="waves-effect waves-light" to="/it/newFile">новая папка</router-link>
+                <router-link tag="a" class="waves-effect waves-light" to="/newFile">новая папка</router-link>
             </div>
         </div>
     </div>

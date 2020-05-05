@@ -12,37 +12,37 @@ import NewFile from './components/MainContent/NewFile/NewFileComponent';
 export default new VueRouter({
     routes: [
         {
-            path: '/it/home',
+            path: '/home',
             component: Home,
             name: 'Home'
         },
         {
-            path: '/it/incoming',
+            path: '/incoming',
             component: Incoming,
             name: 'incoming'
         },
         {
-            path: '/it/draft',
+            path: '/draft',
             component: Draft,
             name: 'draft'
         },
         {
-            path: '/it/sent',
+            path: '/sent',
             component: Sent,
             name: 'sent'
         },
         {
-            path: '/it/basket',
+            path: '/basket',
             component: Basket,
             name: 'basket'
         },
         {
-            path: '/it/newEmail',
+            path: '/newEmail',
             component: NewEmail,
             name: 'newEmail'
         },
         {
-            path: '/it/newFile',
+            path: '/newFile',
             component: NewFile,
             name: 'newFile'
         },
