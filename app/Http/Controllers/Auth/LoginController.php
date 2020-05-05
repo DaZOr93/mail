@@ -38,7 +38,7 @@ class LoginController extends Controller
     public function redirect()
     {
         $query = http_build_query([
-            'client_id' => 13,
+            'client_id' => 14,
             'redirect_uri' => 'http://cu66460.tmweb.ru/auth/callback',
             'response_type' => 'code',
             'scope' => ''
@@ -54,8 +54,8 @@ class LoginController extends Controller
         $response = $http->post('http://team1-group-project.azurewebsites.net/oauth/token', [
             'form_params' => [
                 'grant_type' => 'authorization_code',
-                'client_id' => 13, //данные которые выдаст Богдан. вынести в конфиг
-                'client_secret' => 'BBquIuwMsvBu2YZMAFrB0G5iDdNInrzuVeMB0AYU',//данные которые выдаст Богдан. вынести в конфиг
+                'client_id' => 14, //данные которые выдаст Богдан. вынести в конфиг
+                'client_secret' => ' ECsqw5TAz7zf1T2STbQ7srU53iCTlkqdt3AAJnzB',//данные которые выдаст Богдан. вынести в конфиг
                 'redirect_uri' => 'http://cu66460.tmweb.ru/auth/callback',
                 'code' => $request->code,
             ],
