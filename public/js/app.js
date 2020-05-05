@@ -51496,7 +51496,7 @@ var staticRenderFns = [
         _c("div", { staticClass: "container" }, [
           _c("div", { staticClass: "row" }, [
             _c("div", { staticClass: "footer-wrap" }, [
-              _c("div", { staticClass: "col m3" }, [
+              _c("div", { staticClass: "col s6 m4 xl3" }, [
                 _c("div", { staticClass: "footer-logo" }, [
                   _c("a", { attrs: { href: "/" } }, [
                     _c("img", { attrs: { src: "/img/main_logo.png", alt: "" } })
@@ -51516,7 +51516,7 @@ var staticRenderFns = [
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "col m4" }, [
+              _c("div", { staticClass: " col s6 m4 xl4" }, [
                 _c("div", { staticClass: "services" }, [
                   _c("div", { staticClass: "col-title" }, [
                     _vm._v(
@@ -51560,7 +51560,7 @@ var staticRenderFns = [
                 ])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "col m5" }, [
+              _c("div", { staticClass: "col offset-s6 s6  m4  xl4" }, [
                 _c("div", { staticClass: "contact" }, [
                   _c("div", { staticClass: "col-title" }, [
                     _vm._v(

@@ -428,7 +428,77 @@ li {
   background: url("/img/ic_instagram.svg");
 }
 
-@media screen and (min-width: 993px) {
+@media (max-width: 1200px) {
+  .nav-wrap {
+    min-width: 228px;
+  }
+
+  .contact-wrap {
+    display: block;
+  }
+
+  .contact-email a {
+    margin-left: 0;
+  }
+
+  .l-nav {
+    margin-right: 0;
+  }
+
+  .footer-rights {
+    margin-bottom: 12px;
+  }
+}
+
+@media (max-width: 576px) {
+  .footer .container {
+    width: 100%;
+  }
+
+  .side-bar,
+  .logo-inner {
+    max-width: 160px;
+  }
+
+  .side-bar li a {
+    border-bottom: none !important;
+    padding-top: 22px;
+    height: 81px;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  .side-bar li a::before {
+    position: absolute;
+    margin: 0 !important;
+    top: 15px;
+  }
+
+  .side-bar,
+  .logo-inner {
+    width: 100px;
+    max-width: 100px;
+  }
+
+  .logo-wrap {
+    width: 100px;
+  }
+
+  .logo-wrap .arrow-left {
+    display: none;
+  }
+
+  .logo-wrap img {
+    width: 100%;
+  }
+
+  .logo-inner,
+  .logo-wrap .logo {
+    padding-right: 0;
+  }
+}
+
+@media (min-width: 992px) {
   .container {
     width: 75% !important;
   }

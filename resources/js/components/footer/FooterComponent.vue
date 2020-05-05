@@ -4,7 +4,7 @@
             <div class="container">
                 <div class="row">
                     <div class="footer-wrap">
-                        <div class="col m3">
+                        <div class="col s6 m4 xl3">
                             <div class="footer-logo">
                                 <a href="/">
                                     <img src="/img/main_logo.png" alt="">
@@ -17,7 +17,7 @@
                                 © OOO «IT 2.0»
                             </div>
                         </div>
-                        <div class="col m4">
+                        <div class=" col s6 m4 xl4">
                             <div class="services">
                                 <div class="col-title">
                                     Инструменты
@@ -39,7 +39,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col m5">
+                        <div class="col offset-s6 s6  m4  xl4">
                             <div class="contact">
                                 <div class="col-title">
                                     Контаткты

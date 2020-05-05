@@ -113,6 +113,7 @@ class LoginController extends Controller
     {
 
         $this->guard()->logout();
+        Auth::logout();
 
         return redirect()->route('auth');
     }
