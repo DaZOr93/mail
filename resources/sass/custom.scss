@@ -32,7 +32,7 @@ ul, li {
     display: flex;
     align-items: center;
     border-right: 1px solid #F5F5F5;
-    transition: all .5s;
+    transition: all .3s;
     max-width: 255px;
     padding-right: 40px;
 }
@@ -60,6 +60,7 @@ ul, li {
 
 .user-wrap {
     display: flex;
+    position: relative;
 }
 
 .user-name {
@@ -78,7 +79,33 @@ ul, li {
     display: flex;
     width: 50px;
     height: 50px;
+    overflow: hidden;
 }
+.user-photo img {
+    width: 100%;
+}
+
+
+.user_drop {
+    background: #fff;
+    padding: 15px 35px;
+    bottom: -60px;
+    right: 40px;
+    position: absolute;
+    opacity: 0;
+    transition: all .36s;
+}
+.user_show {
+    opacity: 1;
+}
+.user_drop a {
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 26px;
+    text-align: center;
+    color: #808080;
+}
+
 
 .arrow-bottom {
     margin-top: 30px;
@@ -102,7 +129,7 @@ ul, li {
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05);
     border-radius: 6px;
     max-width: 255px;
-    transition: max-width .5s;
+    transition: max-width .3s;
     height: 893px;
 }
 

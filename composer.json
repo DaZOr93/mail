@@ -15,7 +15,10 @@
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^2.0",
-        "webklex/laravel-imap": "^1.4"
+        "webklex/laravel-imap": "^1.4",
+        "ext-http": "*",
+        "ext-json": "*",
+        "ext-curl": "*"
     },
     "require-dev": {
         "facade/ignition": "^2.0",

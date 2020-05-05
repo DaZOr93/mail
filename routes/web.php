@@ -13,5 +13,19 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/{any}', 'Api\HomeController@index')
-    ->where('any', '.*');
+Route::middleware('auth')->group(function (){
+    //spa
+    Route::get('/it/{any}', 'Api\HomeController@index')
+        ->where('any', '.*')
+        ->name('spa');
+
+});
+
+
+//auth
+Route::get('/auth/redirect' , 'Auth\LoginController@redirect')->name('auth');
+Route::get('/auth/callback' , 'Auth\LoginController@callback');
+Route::get('/auth/logout' , 'Auth\LoginController@logout');
+
+
+
