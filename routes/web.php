@@ -18,10 +18,13 @@ Route::middleware('auth')->group(function (){
     Route::get('/it/{any}', 'Api\HomeController@index')
         ->where('any', '.*')
         ->name('spa');
-
 });
 
 
+//redirect
+Route::get('/', function () {
+    return redirect(\route('spa' , 'home'));
+});
 //auth
 Route::get('/auth/redirect' , 'Auth\LoginController@redirect')->name('auth');
 Route::get('/auth/callback' , 'Auth\LoginController@callback');
