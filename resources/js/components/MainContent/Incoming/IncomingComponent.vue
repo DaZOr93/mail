@@ -1,12 +1,14 @@
 <template>
     <div>
-        Входящие
+        <messages></messages>
     </div>
 </template>
 
 <script>
+    import messages from  '../Messages/MessagesComponent';
     export default {
-        name: "IncomingComponent"
+        name: "IncomingComponent",
+        components: {messages },
     }
 </script>
 

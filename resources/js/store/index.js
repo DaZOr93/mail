@@ -7,7 +7,8 @@ export default new Vuex.Store({
     state: {
         toggleBar: false,
         toggleUser: false,
-        user: []
+        user: [],
+        selectAll: false
     },
 
     actions: {
@@ -23,6 +24,9 @@ export default new Vuex.Store({
         },
         getUser(state, payload){
             state.user = payload;
+        },
+        selectAll(state , payload){
+            state.selectAll = payload
         }
     },
     getters: {
@@ -34,6 +38,9 @@ export default new Vuex.Store({
         },
         getUser(state) {
             return state.user;
+        },
+        selectAll(state) {
+            return state.selectAll;
         }
 
 

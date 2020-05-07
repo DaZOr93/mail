@@ -240,14 +240,13 @@ li {
 }
 
 .nav-wrap {
-  padding-bottom: 100px;
+  padding-bottom: 130px;
   background: #fff;
-  margin-right: 10px;
   border-right: 2px solid #F5F5F5;
 }
 
 .write_letter {
-  padding: 20px 20px 0px 20px;
+  padding: 19px 20px 0px 20px;
 }
 
 .write_letter a {
@@ -263,7 +262,7 @@ li {
 }
 
 .nav-menu {
-  margin: 25px 0px 33px 0px;
+  margin: 19px 0 33px 0;
   border-bottom: 2px solid #F5F5F5;
   border-top: 2px solid #F5F5F5;
   padding: 0px 10px;
@@ -426,6 +425,225 @@ li {
 
 .social-item:nth-child(3) {
   background: url("/img/ic_instagram.svg");
+}
+
+.massage__list tr {
+  background: #fff;
+  padding: 0 10px;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 12px;
+  color: #666666;
+}
+
+.massage__list tr:last-child {
+  border-bottom: none;
+}
+
+.massage__list {
+  background: #fff;
+  border-radius: 0 5px 5px 0;
+  padding-bottom: 5px;
+  padding-right: 5px;
+}
+
+.massage__list td {
+  padding: 10px 5px;
+}
+
+.massage__list tr:hover {
+  background: #f9f9f9;
+  cursor: pointer;
+}
+
+.massage__list i {
+  color: #D8D8D8;
+  cursor: pointer;
+}
+
+.message__select {
+  width: 20px;
+  height: 20px;
+  margin-left: 5px;
+}
+
+.message__select span {
+  height: 18px !important;
+  padding-left: 20px !important;
+}
+
+.message__select span::after {
+  border: 2px solid #E6E6E6 !important;
+  border-radius: 4px !important;
+}
+
+.message__select input:checked + span::after {
+  background: #1875F0 !important;
+  border: none !important;
+}
+
+.message__favorite {
+  display: flex;
+}
+
+.message__seen-dot {
+  width: 8px;
+  height: 8px;
+  background: #F9AD3D;
+  border-radius: 5px;
+}
+
+.email__from-td {
+  width: 22%;
+}
+
+.email__from {
+  display: flex;
+  align-items: center;
+}
+
+.email__name {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: #FFE9C5;
+  border-radius: 100px;
+  color: #D36B1E;
+  font-weight: bold;
+  font-size: 12px;
+  margin-right: 30px;
+  margin-left: 25px;
+}
+
+.messages_wrap {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-bottom: 2px solid #F5F5F5;
+  color: #D8D8D8;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.messages_wrap i {
+  width: 26px;
+  height: 26px;
+}
+
+.messages_action {
+  display: flex;
+  border-right: 2px solid #F5F5F5;
+  padding: 31px 10px;
+  align-items: center;
+}
+
+.messages_action .action__group {
+  display: flex;
+  cursor: pointer;
+}
+
+.messages_action .action__group:not(:last-child) {
+  margin-right: 25px;
+}
+
+.email__actions .action_group {
+  padding: 20px 22px;
+  text-align: center;
+}
+
+.messages_wrap .messages_action .action__group span {
+  height: 18px !important;
+  padding-left: 20px !important;
+}
+
+.messages_wrap .messages_action .action__group span::after {
+  border: 2px solid #E6E6E6 !important;
+  border-radius: 4px !important;
+}
+
+.messages_wrap .messages_action input:checked + span::after {
+  background: #1875F0 !important;
+  border: none !important;
+}
+
+.massage__list .email__search {
+  padding: 6px 30px 6px 28px;
+  border-right: 2px solid #F5F5F5;
+}
+
+.massage__list .email__search input {
+  max-width: 190px;
+}
+
+.massage__list .email__search div {
+  display: flex;
+  align-items: center;
+}
+
+.massage__list .email__search i {
+  position: relative;
+  z-index: 222;
+  cursor: pointer;
+}
+
+.email_simple-paginate {
+  padding: 32px 26px 30px 30px;
+  display: flex;
+  border-right: 2px solid #F5F5F5;
+  align-items: center;
+}
+
+.paginate-numbers {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 13px;
+  color: #999999;
+  margin-right: 25px;
+}
+
+.paginate-arrows {
+  display: flex;
+}
+
+.paginate-arrows i {
+  cursor: pointer;
+}
+
+.paginate-arrows i:first-child {
+  margin-right: 15px;
+}
+
+.email__actions .action_text {
+  color: #CCCCCC;
+}
+
+.messages_wrap input {
+  width: 240px !important;
+  border-bottom: none !important;
+  margin-bottom: 0 !important;
+}
+
+.messages_wrap label.active {
+  color: #D8D8D8 !important;
+}
+
+.messages_wrap input:focus {
+  box-shadow: none !important;
+}
+
+.email-dop {
+  display: flex;
+}
+
+.email-dop div {
+  padding: 29px 16px 29px 26px;
+}
+
+.messages_wrap .email-dop i {
+  cursor: pointer;
 }
 
 @media (max-width: 1200px) {
