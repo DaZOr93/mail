@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="new__massage__list">
         <messages></messages>
     </div>
 </template>
@@ -12,6 +12,9 @@
     }
 </script>
 
-<style scoped>
-
+<style>
+.new__massage__list tr {
+    font-weight: bold;
+    color: #666666;
+}
 </style>

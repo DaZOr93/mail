@@ -243,6 +243,7 @@ ul, li {
     padding-bottom: 130px;
     background: #fff;
     border-right: 2px solid #F5F5F5;
+    min-width: 226px;
 }
 
 .write_letter {
@@ -433,12 +434,12 @@ ul, li {
 
 .massage__list tr {
     background: #fff;
-
     padding: 0 10px;
     font-style: normal;
-    font-weight: bold;
+    font-weight: 500;
     font-size: 12px;
-    color: #666666;
+    /* identical to box height, or 500% */
+    color: #999999;
 }
 .massage__list tr:last-child{
     border-bottom: none;
@@ -608,6 +609,7 @@ ul, li {
     font-size: 13px;
     color: #999999;
     margin-right: 25px;
+    min-width: 68px;
 }
 
 .paginate-arrows {

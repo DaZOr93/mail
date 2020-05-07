@@ -1,5 +1,5 @@
 <template>
-    <div class="massage__list">
+    <div class="massage__list ">
         <div class="messages_wrap">
             <div class="messages_action">
                 <div class="action__group">
@@ -55,7 +55,7 @@
                 <td>
                     <div class="message__select">
                         <label>
-                            <input ref="selectMes" type="checkbox" class="filled-in"/>
+                            <input @click="setBg" ref="selectMes" type="checkbox" class="filled-in"/>
                             <span></span>
                         </label>
                     </div>
@@ -127,12 +127,28 @@
                     event.target.innerHTML = 'star_border';
                     event.target.style.color = '#D8D8D8';
                 }
+            },
+            setBg(event){
+                let element = event.target.parentElement.parentElement.parentElement.parentElement;
+                ( !element.classList.contains('trSelect')) ? element.classList.add("trSelect") : element.classList.remove("trSelect");
+
             }
         },
         watch: {
             selectAllMes() {
                 let ArrayMess = this.$refs.selectMes;
                 this.checked = (this.checked === false);
+                let trAll = document.getElementsByTagName('tr');
+                if(this.checked) {
+                   for (let i = 0; i < trAll.length; i++) {
+                       trAll[i].classList.add("trSelect")
+                   }
+                }else {
+                    for (let i = 0; i < trAll.length; i++) {
+                        trAll[i].classList.remove("trSelect")
+                    }
+                }
+
                 ArrayMess.map((mess) => {
                     mess.checked = this.checked;
                 });
@@ -141,6 +157,8 @@
     }
 </script>
 
-<style scoped>
-
+<style >
+.trSelect {
+    background: #f9f9f9!important;
+}
 </style>
