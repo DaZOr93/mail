@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="w100">
         <messages></messages>
     </div>
 </template>

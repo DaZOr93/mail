@@ -12,7 +12,7 @@
             </div>
             <!--sidebar-->
 
-            <div class="content-wrap">
+            <div class="content-wrap w100">
                 <div class="content-nav">
                     <contentBar></contentBar>
                 </div>

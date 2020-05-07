@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="w100">
         <div class="new__email-bar">
             <div class="email__arrows">
                 <i class="material-icons">arrow_back</i>

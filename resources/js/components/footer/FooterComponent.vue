@@ -25,7 +25,7 @@
                                 <div class="footer-nav">
                                     <div class="l-nav">
                                         <ul>
-                                            <li><a href="#">Диск</a></li>
+                                            <li><a href="https://it20tools-disk.azurewebsites.net/">Диск</a></li>
                                             <li><a href="#">Календарь</a></li>
                                             <li><a href="#">Контакты</a></li>
                                         </ul>

@@ -3,7 +3,7 @@
         <div class="side-bar" :class="{ compactBar: toggleBar }">
             <ul class="ul">
                 <li><a href="#">Главная</a></li>
-                <li><a href="#">Диск</a></li>
+                <li><a href="https://it20tools-disk.azurewebsites.net/">Диск</a></li>
                 <li><a href="#">Доступные</a></li>
                 <li><a href="#">Недавние</a></li>
                 <li><a href="#">Корзина</a></li>

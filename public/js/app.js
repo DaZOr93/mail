@@ -2230,6 +2230,17 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     setBg: function setBg(event) {
+      var toolbars = document.getElementById('ToolBars');
+
+      for (var i = 0; i < this.$refs.selectMes.length; i++) {
+        if (this.$refs.selectMes[i].checked === true) {
+          toolbars.classList.remove("disabled");
+          break;
+        } else {
+          toolbars.classList.add("disabled");
+        }
+      }
+
       var element = event.target.parentElement.parentElement.parentElement.parentElement;
       !element.classList.contains('trSelect') ? element.classList.add("trSelect") : element.classList.remove("trSelect");
     }
@@ -2238,9 +2249,11 @@ __webpack_require__.r(__webpack_exports__);
     selectAllMes: function selectAllMes() {
       var _this = this;
 
+      var toolbars = document.getElementById('ToolBars');
+      var trAll = document.getElementsByTagName('tr');
       var ArrayMess = this.$refs.selectMes;
       this.checked = this.checked === false;
-      var trAll = document.getElementsByTagName('tr');
+      this.checked ? toolbars.classList.remove("disabled") : toolbars.classList.add("disabled");
 
       if (this.checked) {
         for (var i = 0; i < trAll.length; i++) {
@@ -7223,7 +7236,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n.trSelect {\n    background: #f9f9f9!important;\n}\n", ""]);
+exports.push([module.i, "\n.action__group i:hover {\n    color: #837d7d\n}\n.disabled i:hover {\n    cursor: default!important;\n    color: #D8D8D8;\n}\n.disabled i {\n    cursor: default!important;\n}\n.trSelect {\n    background: #f9f9f9 !important;\n}\n", ""]);
 
 // exports
 
@@ -51557,7 +51570,7 @@ var render = function() {
         _vm._v(" "),
         _c(
           "div",
-          { staticClass: "content-wrap" },
+          { staticClass: "content-wrap w100" },
           [
             _c("div", { staticClass: "content-nav" }, [_c("contentBar")], 1),
             _vm._v(" "),
@@ -51642,7 +51655,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_c("messages")], 1)
+  return _c("div", { staticClass: "w100" }, [_c("messages")], 1)
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -51666,7 +51679,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [_c("messages")], 1)
+  return _c("div", { staticClass: "w100" }, [_c("messages")], 1)
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -51692,62 +51705,66 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "massage__list " }, [
     _c("div", { staticClass: "messages_wrap" }, [
-      _c("div", { staticClass: "messages_action" }, [
-        _c("div", { staticClass: "action__group" }, [
-          _c("label", [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.selectAllMes,
-                  expression: "selectAllMes"
-                }
-              ],
-              staticClass: "filled-in",
-              attrs: { type: "checkbox" },
-              domProps: {
-                checked: Array.isArray(_vm.selectAllMes)
-                  ? _vm._i(_vm.selectAllMes, null) > -1
-                  : _vm.selectAllMes
-              },
-              on: {
-                change: function($event) {
-                  var $$a = _vm.selectAllMes,
-                    $$el = $event.target,
-                    $$c = $$el.checked ? true : false
-                  if (Array.isArray($$a)) {
-                    var $$v = null,
-                      $$i = _vm._i($$a, $$v)
-                    if ($$el.checked) {
-                      $$i < 0 && (_vm.selectAllMes = $$a.concat([$$v]))
+      _c(
+        "div",
+        { staticClass: "messages_action disabled", attrs: { id: "ToolBars" } },
+        [
+          _c("div", { staticClass: "action__group" }, [
+            _c("label", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.selectAllMes,
+                    expression: "selectAllMes"
+                  }
+                ],
+                staticClass: "filled-in",
+                attrs: { type: "checkbox" },
+                domProps: {
+                  checked: Array.isArray(_vm.selectAllMes)
+                    ? _vm._i(_vm.selectAllMes, null) > -1
+                    : _vm.selectAllMes
+                },
+                on: {
+                  change: function($event) {
+                    var $$a = _vm.selectAllMes,
+                      $$el = $event.target,
+                      $$c = $$el.checked ? true : false
+                    if (Array.isArray($$a)) {
+                      var $$v = null,
+                        $$i = _vm._i($$a, $$v)
+                      if ($$el.checked) {
+                        $$i < 0 && (_vm.selectAllMes = $$a.concat([$$v]))
+                      } else {
+                        $$i > -1 &&
+                          (_vm.selectAllMes = $$a
+                            .slice(0, $$i)
+                            .concat($$a.slice($$i + 1)))
+                      }
                     } else {
-                      $$i > -1 &&
-                        (_vm.selectAllMes = $$a
-                          .slice(0, $$i)
-                          .concat($$a.slice($$i + 1)))
+                      _vm.selectAllMes = $$c
                     }
-                  } else {
-                    _vm.selectAllMes = $$c
                   }
                 }
-              }
-            }),
-            _vm._v(" "),
-            _c("span")
-          ])
-        ]),
-        _vm._v(" "),
-        _vm._m(0),
-        _vm._v(" "),
-        _vm._m(1),
-        _vm._v(" "),
-        _vm._m(2),
-        _vm._v(" "),
-        _vm._m(3),
-        _vm._v(" "),
-        _vm._m(4)
-      ]),
+              }),
+              _vm._v(" "),
+              _c("span")
+            ])
+          ]),
+          _vm._v(" "),
+          _vm._m(0),
+          _vm._v(" "),
+          _vm._m(1),
+          _vm._v(" "),
+          _vm._m(2),
+          _vm._v(" "),
+          _vm._m(3),
+          _vm._v(" "),
+          _vm._m(4)
+        ]
+      ),
       _vm._v(" "),
       _vm._m(5),
       _vm._v(" "),
@@ -52101,7 +52118,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
+  return _c("div", { staticClass: "w100" }, [
     _vm._m(0),
     _vm._v(" "),
     _c(
@@ -52295,7 +52312,16 @@ var staticRenderFns = [
                     _c("div", { staticClass: "l-nav" }, [
                       _c("ul", [
                         _c("li", [
-                          _c("a", { attrs: { href: "#" } }, [_vm._v("Диск")])
+                          _c(
+                            "a",
+                            {
+                              attrs: {
+                                href:
+                                  "https://it20tools-disk.azurewebsites.net/"
+                              }
+                            },
+                            [_vm._v("Диск")]
+                          )
                         ]),
                         _vm._v(" "),
                         _c("li", [
@@ -52507,7 +52533,13 @@ var staticRenderFns = [
     return _c("ul", { staticClass: "ul" }, [
       _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("Главная")])]),
       _vm._v(" "),
-      _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("Диск")])]),
+      _c("li", [
+        _c(
+          "a",
+          { attrs: { href: "https://it20tools-disk.azurewebsites.net/" } },
+          [_vm._v("Диск")]
+        )
+      ]),
       _vm._v(" "),
       _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("Доступные")])]),
       _vm._v(" "),

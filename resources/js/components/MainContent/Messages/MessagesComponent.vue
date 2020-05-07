@@ -1,7 +1,7 @@
 <template>
     <div class="massage__list ">
         <div class="messages_wrap">
-            <div class="messages_action">
+            <div class="messages_action disabled" id="ToolBars">
                 <div class="action__group">
                     <label>
                         <input type="checkbox" class="filled-in" v-model="selectAllMes"/>
@@ -108,7 +108,7 @@
             return {
                 selectMes: '',
                 selectAllMes: false,
-                checked: false
+                checked: false,
             }
         },
         computed: {
@@ -117,10 +117,10 @@
             },
         },
         methods: {
-            favorite(event){
+            favorite(event) {
                 let state = event.target.innerHTML;
 
-                if(state === 'star_border') {
+                if (state === 'star_border') {
                     event.target.innerHTML = 'star';
                     event.target.style.color = '#F9AD3D';
                 } else {
@@ -128,22 +128,37 @@
                     event.target.style.color = '#D8D8D8';
                 }
             },
-            setBg(event){
-                let element = event.target.parentElement.parentElement.parentElement.parentElement;
-                ( !element.classList.contains('trSelect')) ? element.classList.add("trSelect") : element.classList.remove("trSelect");
+            setBg(event) {
+                let toolbars = document.getElementById('ToolBars');
 
+                for (let i = 0; i < this.$refs.selectMes.length; i++) {
+                    if (this.$refs.selectMes[i].checked === true) {
+                        toolbars.classList.remove("disabled");
+                        break;
+                    } else {
+                        toolbars.classList.add("disabled");
+                    }
+                }
+
+                let element = event.target.parentElement.parentElement.parentElement.parentElement;
+                (!element.classList.contains('trSelect')) ? element.classList.add("trSelect") : element.classList.remove("trSelect");
             }
         },
         watch: {
             selectAllMes() {
+                let toolbars = document.getElementById('ToolBars');
+                let trAll = document.getElementsByTagName('tr');
+
                 let ArrayMess = this.$refs.selectMes;
                 this.checked = (this.checked === false);
-                let trAll = document.getElementsByTagName('tr');
-                if(this.checked) {
-                   for (let i = 0; i < trAll.length; i++) {
-                       trAll[i].classList.add("trSelect")
-                   }
-                }else {
+
+                ( this.checked ) ? toolbars.classList.remove("disabled") :  toolbars.classList.add("disabled");
+
+                if (this.checked) {
+                    for (let i = 0; i < trAll.length; i++) {
+                        trAll[i].classList.add("trSelect")
+                    }
+                } else {
                     for (let i = 0; i < trAll.length; i++) {
                         trAll[i].classList.remove("trSelect")
                     }
@@ -157,8 +172,18 @@
     }
 </script>
 
-<style >
-.trSelect {
-    background: #f9f9f9!important;
-}
+<style>
+    .action__group i:hover {
+        color: #837d7d
+    }
+    .disabled i:hover {
+        cursor: default!important;
+        color: #D8D8D8;
+    }
+    .disabled i {
+        cursor: default!important;
+    }
+    .trSelect {
+        background: #f9f9f9 !important;
+    }
 </style>

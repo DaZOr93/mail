@@ -8,6 +8,10 @@ li {
   margin: 0;
 }
 
+.w100 {
+  width: 100%;
+}
+
 .header .wrap {
   min-height: 90px;
   display: flex;
@@ -541,7 +545,6 @@ li {
 
 .messages_action .action__group {
   display: flex;
-  cursor: pointer;
 }
 
 .messages_action .action__group:not(:last-child) {
