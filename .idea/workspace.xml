@@ -5,10 +5,9 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/css/app.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/app.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/js/components/MainContent/Draft/DraftComponent.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/MainContent/Draft/DraftComponent.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/js/components/MainContent/Incoming/IncomingComponent.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/MainContent/Incoming/IncomingComponent.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/js/components/MainContent/Messages/MessagesComponent.vue" beforeDir="false" afterPath="$PROJECT_DIR$/resources/js/components/MainContent/Messages/MessagesComponent.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/sass/custom.scss" beforeDir="false" afterPath="$PROJECT_DIR$/resources/sass/custom.scss" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/sass/media.scss" beforeDir="false" afterPath="$PROJECT_DIR$/resources/sass/media.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/routes/web.php" beforeDir="false" afterPath="$PROJECT_DIR$/routes/web.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -189,7 +188,7 @@
       <workItem from="1588705503639" duration="152000" />
       <workItem from="1588706302494" duration="43000" />
       <workItem from="1588767683437" duration="8541000" />
-      <workItem from="1588841511894" duration="23242000" />
+      <workItem from="1588841511894" duration="25786000" />
     </task>
     <servers />
   </component>

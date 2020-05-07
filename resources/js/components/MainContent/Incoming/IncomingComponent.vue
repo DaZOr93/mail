@@ -1,5 +1,5 @@
 <template>
-    <div class="new__massage__list">
+    <div>
         <messages></messages>
     </div>
 </template>
