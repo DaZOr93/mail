@@ -3,8 +3,6 @@
         <!--Header-->
         <mHeader></mHeader>
         <!--Header-->
-<!--        <button @click="auth">Вход</button>-->
-<!--        <button @click="check">Проверить</button>-->
         <div class="main">
             <!--sidebar-->
             <div class="sidebar-wrap">
@@ -36,16 +34,6 @@
     export default {
         components: {mHeader , sidebar , mfooter , contentBar},
         name: "App",
-        methods: {
-          auth(){
-              this.$store.dispatch('login')
-          },
-          check() {
-              this.$store.dispatch('auth')
-          }
-
-        },
-
     }
 </script>
 

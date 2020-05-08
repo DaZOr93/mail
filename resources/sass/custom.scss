@@ -174,6 +174,7 @@ ul, li {
 
 .sidebar-wrap {
     max-width: 255px;
+    min-width: 255px;
     width: 100%;
 }
 
@@ -243,7 +244,7 @@ ul, li {
 }
 
 .nav-wrap {
-    padding-bottom: 125px;
+    padding-bottom: 86px;
     background: #fff;
     border-right: 2px solid #F5F5F5;
     min-width: 226px;
@@ -310,6 +311,7 @@ ul, li {
     background: rgba(24, 117, 240, 0.16);
 }
 .nav-wrap .work-labels li {
+    margin-bottom: 10px;
     list-style-type: disc;
     color: green;
 }
@@ -450,6 +452,9 @@ ul, li {
 
 .massage__list {
     background: #fff;
+}
+.massage__list i:hover{
+    color: #837d7d;
 }
 
 .massage__list td {
@@ -628,9 +633,10 @@ ul, li {
 }
 
 .messages_wrap input {
-    width: 240px !important;
+    max-width: 240px !important;
     border-bottom: none !important;
     margin-bottom: 0 !important;
+    min-width: 50px;
 }
 
 .messages_wrap label.active {

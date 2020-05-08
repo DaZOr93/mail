@@ -9,28 +9,34 @@
                     </label>
                 </div>
                 <div class="action__group">
-                    <i class="material-icons">refresh</i>
+                    <i title="обновить" class="material-icons">refresh</i>
                 </div>
                 <div class="action__group">
-                    <i class="material-icons">report</i>
-                </div>
-
-                <div class="action__group">
-                    <i class="material-icons">fiber_manual_record</i>
+                    <i title="В спам!" class="material-icons">report</i>
                 </div>
 
                 <div class="action__group">
-                    <i class="material-icons">folder</i>
+                    <i title="Прочитано/Не прочитано" class="material-icons">fiber_manual_record</i>
+                </div>
+
+                <div class="action__group">
+                    <i title="В папку" class="material-icons">folder</i>
                 </div>
                 <div class="action__group">
-                    <i class="material-icons">delete</i>
+                    <i
+                        title="Удалить"
+                        data-target="delMes"
+                        class="waves-effect waves-light modal-trigger material-icons"
+                    >
+                        delete
+                    </i>
                 </div>
             </div>
             <div class="email__search">
                 <div class="input-field">
                     <input id="last_name" type="text" class="validate">
                     <label for="last_name">Поиск</label>
-                    <i class="material-icons">search</i>
+                    <i title="Поиск" class="material-icons">search</i>
                 </div>
             </div>
             <div class="email_simple-paginate">
@@ -38,13 +44,13 @@
                     1-10 of 100
                 </div>
                 <div class="paginate-arrows">
-                    <i class="material-icons">arrow_back</i>
-                    <i class="material-icons">arrow_forward</i>
+                    <i title="Назад" class="material-icons">arrow_back</i>
+                    <i title="Вперед" class="material-icons">arrow_forward</i>
                 </div>
             </div>
             <div class="email-dop">
                 <div>
-                    <i class="material-icons">settings</i>
+                    <i title="настройки" class="material-icons">settings</i>
                 </div>
             </div>
         </div>
@@ -102,6 +108,7 @@
 </template>
 
 <script>
+
     export default {
         name: "MessagesComponent",
         data() {
@@ -152,7 +159,7 @@
                 let ArrayMess = this.$refs.selectMes;
                 this.checked = (this.checked === false);
 
-                ( this.checked ) ? toolbars.classList.remove("disabled") :  toolbars.classList.add("disabled");
+                (this.checked) ? toolbars.classList.remove("disabled") : toolbars.classList.add("disabled");
 
                 if (this.checked) {
                     for (let i = 0; i < trAll.length; i++) {
@@ -173,16 +180,28 @@
 </script>
 
 <style>
+
+    .email__attachments i {
+        cursor: default;
+    }
+
+    .email__attachments i:hover {
+        color: #D8D8D8;
+    }
+
     .action__group i:hover {
         color: #837d7d
     }
+
     .disabled i:hover {
-        cursor: default!important;
+        cursor: default !important;
         color: #D8D8D8;
     }
+
     .disabled i {
-        cursor: default!important;
+        cursor: default !important;
     }
+
     .trSelect {
         background: #f9f9f9 !important;
     }

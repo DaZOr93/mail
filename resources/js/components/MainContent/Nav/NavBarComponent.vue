@@ -6,16 +6,20 @@
         <div class="nav-menu">
             <ul>
                 <li>
-                    <router-link tag="a" active-class="active" to="/incoming">Входящие</router-link>
+                    <router-link tag="a"  exact active-class="active" to="/">Входящие</router-link>
+                    <span>5</span>
                 </li>
                 <li>
                     <router-link tag="a" active-class="active" to="/draft">Черновик</router-link>
+                    <span>5</span>
                 </li>
                 <li>
                     <router-link tag="a" active-class="active" to="/sent">Отправленные</router-link>
+                    <span>5</span>
                 </li>
                 <li>
                     <router-link tag="a" active-class="active" to="/basket">Корзина</router-link>
+                    <span>5</span>
                 </li>
             </ul>
         </div>
@@ -42,5 +46,27 @@
 </script>
 
 <style scoped>
+    .nav-menu li {
+        position: relative;
+    }
+    .nav-menu span {
+        font-weight: 900;
+        font-size: 9px;
+        letter-spacing: 1.125px;
+        text-transform: uppercase;
+        color: #B3B3B3;
+        position: absolute;
+        margin-top: -10px;
+        top: 50%;
+        right: 10px;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        background: #F7F7F7;
+        border-radius: 4px;
+        justify-content: center;
+        align-items: center;
+    }
+
 
 </style>

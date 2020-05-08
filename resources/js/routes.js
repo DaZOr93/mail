@@ -6,6 +6,7 @@ import Sent from './components/MainContent/Sent/SentComponent';
 import Basket from './components/MainContent/Basket/BasketComponent';
 import NewEmail from './components/MainContent/NewEmail/NewEmailComponent';
 import NewFile from './components/MainContent/NewFile/NewFileComponent';
+import PageNotFound from './components/fails/404';
 
 
 
@@ -17,7 +18,7 @@ export default new VueRouter({
             name: 'Home'
         },
         {
-            path: '/incoming',
+            path: '/',
             component: Incoming,
             name: 'incoming'
         },
@@ -46,6 +47,13 @@ export default new VueRouter({
             component: NewFile,
             name: 'newFile'
         },
+
+
+        //404
+        {
+            path: "*",
+            component: PageNotFound
+        }
 
     ],
     mode: 'history'

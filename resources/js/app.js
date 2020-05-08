@@ -12,6 +12,14 @@ Vue.use( CKEditor );
 import 'materialize-css';
 import 'materialize-css/dist/css/materialize.css';
 import 'material-design-icons/iconfont/material-icons.css'
+import 'materialize-css/dist/js/materialize.js';
+
+//Vue.config.devtools = false;
+//Vue.config.debug = false;
+//Vue.config.silent = true;
+
+
+
 
 
 window.Vue = require('vue');

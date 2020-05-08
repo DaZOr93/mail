@@ -1,4 +1,15 @@
 // Extra large devices (large desktops, 1200px and up)
+@media (max-width: 1300px) {
+    .messages_action .action__group:not(:last-child) {
+        margin-right: 15px;
+    }
+    .email__name {
+        margin-right: 10px;
+    }
+}
+
+
+// Extra large devices (large desktops, 1200px and up)
 @media (max-width: 1200px) {
     //footer
     .contact-wrap {

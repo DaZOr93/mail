@@ -29,10 +29,10 @@
             </div>
             <div class="email-dop">
                 <div>
-                    <i class="material-icons">local_printshop</i>
+                    <i  title="Печать" class="material-icons">local_printshop</i>
                 </div>
                 <div>
-                    <i class="material-icons">settings</i>
+                    <i title="Настройки" class="material-icons">settings</i>
                 </div>
             </div>
         </div>

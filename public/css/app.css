@@ -177,6 +177,7 @@ li {
 
 .sidebar-wrap {
   max-width: 255px;
+  min-width: 255px;
   width: 100%;
 }
 
@@ -244,7 +245,7 @@ li {
 }
 
 .nav-wrap {
-  padding-bottom: 125px;
+  padding-bottom: 86px;
   background: #fff;
   border-right: 2px solid #F5F5F5;
   min-width: 226px;
@@ -317,6 +318,7 @@ li {
 }
 
 .nav-wrap .work-labels li {
+  margin-bottom: 10px;
   list-style-type: disc;
   color: green;
 }
@@ -448,6 +450,10 @@ li {
 
 .massage__list {
   background: #fff;
+}
+
+.massage__list i:hover {
+  color: #837d7d;
 }
 
 .massage__list td {
@@ -624,9 +630,10 @@ li {
 }
 
 .messages_wrap input {
-  width: 240px !important;
+  max-width: 240px !important;
   border-bottom: none !important;
   margin-bottom: 0 !important;
+  min-width: 50px;
 }
 
 .messages_wrap label.active {
@@ -647,6 +654,16 @@ li {
 
 .messages_wrap .email-dop i {
   cursor: pointer;
+}
+
+@media (max-width: 1300px) {
+  .messages_action .action__group:not(:last-child) {
+    margin-right: 15px;
+  }
+
+  .email__name {
+    margin-right: 10px;
+  }
 }
 
 @media (max-width: 1200px) {

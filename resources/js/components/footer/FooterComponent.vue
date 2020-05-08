@@ -27,13 +27,13 @@
                                         <ul>
                                             <li><a href="https://it20tools-disk.azurewebsites.net/">Диск</a></li>
                                             <li><a href="#">Календарь</a></li>
-                                            <li><a href="#">Контакты</a></li>
+                                            <li><a href="https://contactmodule.azurewebsites.net">Контакты</a></li>
                                         </ul>
                                     </div>
                                     <div class="r-nav">
                                         <ul>
                                             <li><a href="#">Почта</a></li>
-                                            <li><a href="#">Фото</a></li>
+                                            <li><a href="https://it20-tools-photogallery.azurewebsites.net/">Фото</a></li>
                                         </ul>
                                     </div>
                                 </div>
