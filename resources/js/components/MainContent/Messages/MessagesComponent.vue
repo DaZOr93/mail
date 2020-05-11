@@ -54,21 +54,28 @@
                 </div>
             </div>
         </div>
-            <div class="preloader-wrapper big active " v-if="preloader">
-                <div class="spinner-layer spinner-blue-only">
-                    <div class="circle-clipper left">
-                        <div class="circle"></div>
-                    </div><div class="gap-patch">
-                    <div class="circle"></div>
-                </div><div class="circle-clipper right">
+        <div class="preloader-wrapper big active " v-if="preloader">
+            <div class="spinner-layer spinner-blue-only">
+                <div class="circle-clipper left">
                     <div class="circle"></div>
                 </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
                 </div>
             </div>
+        </div>
         <table>
             <tbody>
-            <router-link tag="tr" :to="{name: 'MessagesOpen', params: {uid: message.uid}}" v-for="(message , index) in getMessages.attr"
-                         :key="index">
+            <router-link
+                tag="tr"
+                :to="{name: 'MessagesOpen', params: {uid: message.uid}}"
+                v-for="(message , index) in getMessages.attr"
+                :key="index"
+                :class="{new__massage__list:getMessages['messages'][`${message.message_id}`].flags.seen !== 1}"
+            >
                 <td>
                     <div class="message__select">
                         <label @click.prevent="setBg">
@@ -79,21 +86,27 @@
                 </td>
                 <td>
                     <div class="message__favorite">
-                        <i @click.prevent="favorite" class="material-icons">star_border</i>
+                        <i @click.prevent="favorite" class="material-icons">
+                            star_border
+                        </i>
                     </div>
                 </td>
                 <td>
-                    <div class="message__seen-dot"></div>
+                    <div
+                        :class="{'message__seen-dot' :getMessages['messages'][`${message.message_id}`].flags.seen !== 1}"></div>
                 </td>
                 <td class="email__from-td">
                     <div class="email__from">
                         <div>
-                            <div class="email__name">
-                                G
+                            <div
+                                class="email__name"
+                                :class="'bg_' + randomBg(1 , 5)"
+                            >
+                                {{ message.sender[0].personal[0] }}
                             </div>
                         </div>
                         <div class="email__driver">
-                          {{ message.sender[0].personal}}
+                            {{ message.sender[0].personal}}
                         </div>
                     </div>
                 </td>
@@ -109,7 +122,7 @@
                 </td>
                 <td>
                     <div class="email_date">
-                        07:24 AM
+                        {{ getDate( message.date) }} AM
                     </div>
                 </td>
             </router-link>
@@ -136,9 +149,9 @@
             preloader() {
                 return this.$store.getters.preloader
             },
-            getMessages(){
+            getMessages() {
                 return this.$store.getters.getMessages
-            }
+            },
         },
         methods: {
             favorite(event) {
@@ -151,6 +164,17 @@
                     event.target.innerHTML = 'star_border';
                     event.target.style.color = '#D8D8D8';
                 }
+            },
+            randomBg(min, max) {
+                let rand = min - 0.5 + Math.random() * (max - min + 1);
+
+                return Math.round(rand);
+            },
+            getDate(time) {
+                let date = time.split('T')[1];
+                date = date.split(':');
+
+                return date[0] + ':' + date[1]
             },
             setBg(event) {
                 event.target.previousElementSibling.checked = !event.target.previousElementSibling.checked;
@@ -201,34 +225,5 @@
 </script>
 
 <style>
-    .preloader-wrapper {
-        position: absolute!important;
-        left: 50%;
-        width: 100px!important;
-        height: 100px!important;
-    }
-    .email__attachments i {
-        cursor: default;
-    }
 
-    .email__attachments i:hover {
-        color: #D8D8D8;
-    }
-
-    .action__group i:hover {
-        color: #837d7d
-    }
-
-    .disabled i:hover {
-        cursor: default !important;
-        color: #D8D8D8;
-    }
-
-    .disabled i {
-        cursor: default !important;
-    }
-
-    .trSelect {
-        background: #f9f9f9 !important;
-    }
 </style>

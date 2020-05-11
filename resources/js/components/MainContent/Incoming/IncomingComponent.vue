@@ -13,8 +13,8 @@
 </script>
 
 <style>
-.new__massage__list tr {
-    font-weight: bold;
-    color: #666666;
+.new__massage__list {
+    font-weight: bold!important;
+    color: #666666!important;
 }
 </style>

@@ -39,7 +39,7 @@
                     Re:    {{ message.attr.subject}}
                 </div>
                 <div class="open__date">
-                    05:12 AM
+                    {{ getDate(message.attr.date) }} AM
                 </div>
             </div>
             <div class="open__body" v-html="message.messages.bodies.html.content">
@@ -61,6 +61,14 @@
         computed: {
             message() {
                 return this.$store.getters.message
+            },
+        },
+        methods: {
+            getDate(time) {
+                let date = time.split('T')[1];
+                date = date.split(':');
+
+                return date[0] + ':' + date[1]
             }
         },
         watch: {

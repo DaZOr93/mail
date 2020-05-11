@@ -18,7 +18,7 @@ class MessageService implements MessageServiceInterface
         $oClient = $this->connect('default');
         $oFolder = $oClient->getFolder('inbox');
 
-        $data['messages'] = $oFolder->query()->limit(10)->get();
+        $data['messages'] = $oFolder->getMessages('ALL' , false , false , true , true , 10 , 1);
         $data['attr'] = $this->getAttribute($data['messages']);
 
         return $data;

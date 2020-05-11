@@ -526,6 +526,7 @@ ul, li {
     font-size: 12px;
     margin-right: 30px;
     margin-left: 25px;
+    text-transform: uppercase;
 }
 
 
@@ -657,6 +658,50 @@ ul, li {
 
 .messages_wrap .email-dop i {
     cursor: pointer;
+}
+
+.preloader-wrapper {
+    position: absolute !important;
+    left: 50%;
+    width: 100px !important;
+    height: 100px !important;
+}
+
+.email__attachments i {
+    cursor: default;
+}
+
+.email__attachments i:hover {
+    color: #D8D8D8;
+}
+
+.action__group i:hover {
+    color: #837d7d
+}
+
+.disabled i:hover {
+    cursor: default !important;
+    color: #D8D8D8;
+}
+
+.disabled i {
+    cursor: default !important;
+}
+
+.trSelect {
+    background: #f9f9f9 !important;
+}
+.email__name.bg_1 {
+    background: #FFE4EC;
+    color: #C92B5F;
+}
+.email__name.bg_2 {
+    background: #E0F7D7;
+    color: #008947;
+}
+.email__name.bg_3 {
+    background: #F5E3F9;
+    color: #813D85;
 }
 //общий шаблон сообщений
 
