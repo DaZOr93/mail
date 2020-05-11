@@ -7,7 +7,7 @@ import Basket from './components/MainContent/Basket/BasketComponent';
 import NewEmail from './components/MainContent/NewEmail/NewEmailComponent';
 import NewFile from './components/MainContent/NewFile/NewFileComponent';
 import PageNotFound from './components/fails/404';
-
+import MessagesOpen from './components/MainContent/Messages/MessagesOpenComponent'
 
 
 export default new VueRouter({
@@ -48,7 +48,11 @@ export default new VueRouter({
             name: 'newFile'
         },
 
-
+        {
+            path: '/messages/:uid',
+            component: MessagesOpen,
+            name: 'MessagesOpen'
+        },
         //404
         {
             path: "*",

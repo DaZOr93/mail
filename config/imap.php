@@ -120,7 +120,7 @@ return [
         'fetch_attachment' => true,
         'fetch_flags' => true,
         'message_key' => 'id',
-        'fetch_order' => 'asc',
+        'fetch_order' => 'desc',
         'open' => [
             // 'DISABLE_AUTHENTICATOR' => 'GSSAPI'
         ],

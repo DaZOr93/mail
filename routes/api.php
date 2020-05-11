@@ -16,9 +16,11 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::middleware('auth')->group(function () {
+
    Route::get('user' , 'Api\User\UserController@index');
-});
+
+   Route::get('/messages' , 'Api\MessagesController@index');
+
 
 
 

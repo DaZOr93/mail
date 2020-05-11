@@ -54,21 +54,32 @@
                 </div>
             </div>
         </div>
-
+            <div class="preloader-wrapper big active " v-if="preloader">
+                <div class="spinner-layer spinner-blue-only">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div><div class="gap-patch">
+                    <div class="circle"></div>
+                </div><div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+                </div>
+            </div>
         <table>
             <tbody>
-            <tr v-for="item in 10">
+            <router-link tag="tr" :to="{name: 'MessagesOpen', params: {uid: 2}}" v-for="(message , index) in getMessages.attr"
+                         :key="index">
                 <td>
                     <div class="message__select">
-                        <label>
-                            <input @click="setBg" ref="selectMes" type="checkbox" class="filled-in"/>
+                        <label @click.prevent="setBg">
+                            <input ref="selectMes" type="checkbox" class="filled-in"/>
                             <span></span>
                         </label>
                     </div>
                 </td>
                 <td>
                     <div class="message__favorite">
-                        <i @click="favorite" class="material-icons">star_border</i>
+                        <i @click.prevent="favorite" class="material-icons">star_border</i>
                     </div>
                 </td>
                 <td>
@@ -82,13 +93,13 @@
                             </div>
                         </div>
                         <div class="email__driver">
-                            Google Inc
+                          {{ message.sender[0].personal}}
                         </div>
                     </div>
                 </td>
                 <td>
-                    <div class="email__tiel">
-                        Adwords Keyword Research For Beginners
+                    <div class="email__title">
+                        {{ message.subject}}
                     </div>
                 </td>
                 <td>
@@ -101,7 +112,7 @@
                         07:24 AM
                     </div>
                 </td>
-            </tr>
+            </router-link>
             </tbody>
         </table>
     </div>
@@ -122,6 +133,12 @@
             selectAll() {
                 return this.$store.getters.selectAll
             },
+            preloader() {
+                return this.$store.getters.preloader
+            },
+            getMessages(){
+                return this.$store.getters.getMessages
+            }
         },
         methods: {
             favorite(event) {
@@ -136,8 +153,9 @@
                 }
             },
             setBg(event) {
-                let toolbars = document.getElementById('ToolBars');
+                event.target.previousElementSibling.checked = !event.target.previousElementSibling.checked;
 
+                let toolbars = document.getElementById('ToolBars');
                 for (let i = 0; i < this.$refs.selectMes.length; i++) {
                     if (this.$refs.selectMes[i].checked === true) {
                         toolbars.classList.remove("disabled");
@@ -176,11 +194,19 @@
                 });
             }
         },
+        created() {
+            this.$store.dispatch('getMessages');
+        }
     }
 </script>
 
 <style>
-
+    .preloader-wrapper {
+        position: absolute!important;
+        left: 50%;
+        width: 100px!important;
+        height: 100px!important;
+    }
     .email__attachments i {
         cursor: default;
     }
