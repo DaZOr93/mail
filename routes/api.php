@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Route;
 
    Route::get('/messages' , 'Api\MessagesController@index');
 
+   Route::get('/message/{uid}' , 'Api\MessagesController@show');
+
 
 
 

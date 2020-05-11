@@ -67,7 +67,7 @@
             </div>
         <table>
             <tbody>
-            <router-link tag="tr" :to="{name: 'MessagesOpen', params: {uid: 2}}" v-for="(message , index) in getMessages.attr"
+            <router-link tag="tr" :to="{name: 'MessagesOpen', params: {uid: message.uid}}" v-for="(message , index) in getMessages.attr"
                          :key="index">
                 <td>
                     <div class="message__select">

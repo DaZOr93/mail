@@ -9,6 +9,14 @@ export default new Vuex.Store({
         toggleUser: false,
         user: [],
         messages: [],
+        message: {
+            attr: {},
+            messages: {
+                bodies: {
+                    text: ''
+                },
+            }
+        },
         selectAll: false,
         preloader: false
     },
@@ -25,6 +33,10 @@ export default new Vuex.Store({
             await axios.get('/api/messages')
                 .then(r => cnt.commit('getMessages', r.data));
             cnt.commit('preloaderOff');
+        },
+        getMessage(cnt, payload) {
+            axios.get('/api/message/' + payload)
+                .then(r => cnt.commit('getMessage', r.data));
         }
     },
 
@@ -37,6 +49,9 @@ export default new Vuex.Store({
         },
         getMessages(state, payload) {
             state.messages = payload;
+        },
+        getMessage(state, payload) {
+            state.message = payload;
         },
         selectAll(state, payload) {
             state.selectAll = payload
@@ -63,6 +78,9 @@ export default new Vuex.Store({
         },
         getMessages(state) {
             return state.messages;
+        },
+        message(state) {
+            return state.message;
         },
         preloader(state) {
             return state.preloader;

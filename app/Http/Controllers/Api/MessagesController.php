@@ -21,4 +21,11 @@ class MessagesController extends Controller
         return response()->json($messages);
     }
 
+    public function show($uid)
+    {
+        $message = $this->messageService->show($uid);
+
+        return response()->json($message);
+    }
+
 }
