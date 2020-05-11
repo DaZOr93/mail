@@ -20,6 +20,7 @@ Route::middleware('auth')->group(function () {
    Route::get('user' , 'Api\User\UserController@index');
 });
 
+Route::get('/basket' , 'Api\Mails\BasketController@index');
 
 
 

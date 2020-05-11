@@ -16,12 +16,14 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/{any}', 'Api\HomeController@index')
     ->where('any', '^(?!auth).*$');
-
-
+/*
+Route::get('/basket' , 'Api\Mails\BasketController@index');
+*/
 //auth
 Route::get('/auth/redirect' , 'Auth\LoginController@redirect')->name('auth');
 Route::get('/auth/callback' , 'Auth\LoginController@callback');
 Route::get('/auth/logout' , 'Auth\LoginController@logout');
+
 
 
 

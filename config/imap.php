@@ -120,13 +120,13 @@ return [
         'fetch_attachment' => true,
         'fetch_flags' => true,
         'message_key' => 'id',
-        'fetch_order' => 'asc',
+        'fetch_order' => 'desc',
         'open' => [
             // 'DISABLE_AUTHENTICATOR' => 'GSSAPI'
         ],
         'decoder' => [
             'message' => [
-                'subject' => 'utf-8' // mimeheader
+                'subject' => 'utf-16' // mimeheader
             ],
             'attachment' => [
                 'name' => 'utf-8' // mimeheader

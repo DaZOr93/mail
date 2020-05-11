@@ -92,7 +92,7 @@
                 </td>
                 <td>
                     <div class="email_date">
-                        07:24 AM
+                        07:21 AM
                     </div>
                 </td>
             </tr>
