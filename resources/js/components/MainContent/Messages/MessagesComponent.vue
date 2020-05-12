@@ -9,7 +9,7 @@
                     </label>
                 </div>
                 <div class="action__group">
-                    <i title="обновить" class="material-icons">refresh</i>
+                    <i @click="reloadMess"  title="обновить" class="reloadMess material-icons ">refresh</i>
                 </div>
                 <div class="action__group">
                     <i title="В спам!" class="material-icons">report</i>
@@ -140,6 +140,7 @@
                 selectMes: '',
                 selectAllMes: false,
                 checked: false,
+                reload: false,
             }
         },
         computed: {
@@ -163,6 +164,12 @@
                 } else {
                     event.target.innerHTML = 'star_border';
                     event.target.style.color = '#D8D8D8';
+                }
+            },
+            reloadMess() {
+                if (!this.preloader) {
+                    this.$store.state.messages = [];
+                    this.$store.dispatch('getMessages');
                 }
             },
             randomBg(min, max) {
@@ -220,7 +227,7 @@
         },
         created() {
             this.$store.dispatch('getMessages');
-        }
+        },
     }
 </script>
 

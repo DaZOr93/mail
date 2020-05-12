@@ -679,12 +679,18 @@ ul, li {
     color: #837d7d
 }
 
-.disabled i:hover {
+.disabled .action__group:nth-child(3) i,
+.disabled .action__group:nth-child(4) i,
+.disabled .action__group:nth-child(5) i,
+.disabled .action__group:nth-child(6) i {
     cursor: default !important;
     color: #D8D8D8;
 }
 
-.disabled i {
+.disabled .action__group:nth-child(3) i,
+.disabled .action__group:nth-child(4) i,
+.disabled .action__group:nth-child(5) i,
+.disabled .action__group:nth-child(6) i {
     cursor: default !important;
 }
 
