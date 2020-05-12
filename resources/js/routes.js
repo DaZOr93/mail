@@ -7,7 +7,8 @@ import Basket from './components/MainContent/Basket/BasketComponent';
 import NewEmail from './components/MainContent/NewEmail/NewEmailComponent';
 import NewFile from './components/MainContent/NewFile/NewFileComponent';
 import PageNotFound from './components/fails/404';
-import MessagesOpen from './components/MainContent/Messages/MessagesOpenComponent'
+import MessagesOpen from './components/MainContent/Messages/MessagesOpenComponent';
+import SentMessagesOpen from './components/MainContent/Messages/SentMessagesOpenComponent'
 
 
 export default new VueRouter({
@@ -48,6 +49,12 @@ export default new VueRouter({
             name: 'newFile'
         },
 
+        {   
+            path: '/messages/:uid', // !!!!!!!!!!!--разобраться и заменить '/messages/:uid' на '/sentMessages/:uid'--!!!!!!!!!!!!!!!!!!!!
+            component: SentMessagesOpen,
+            name: 'SentMessagesOpen'
+        },
+      
         {
             path: '/messages/:uid',
             component: MessagesOpen,

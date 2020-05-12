@@ -511,6 +511,15 @@ li {
   align-items: center;
 }
 
+.email__to-td {
+  width: 22%;
+}
+
+.email__to {
+  display: flex;
+  align-items: center;
+}
+
 .email__name {
   display: flex;
   align-items: center;

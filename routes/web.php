@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-
 Route::get('/{any}', 'Api\HomeController@index')
     ->where('any', '^(?!auth|api).*$');
 
