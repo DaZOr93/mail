@@ -664,10 +664,6 @@ li {
   height: 100px !important;
 }
 
-.email__attachments i {
-  cursor: default;
-}
-
 .email__attachments i:hover {
   color: #D8D8D8;
 }

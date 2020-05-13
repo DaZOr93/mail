@@ -9,7 +9,7 @@
                     </label>
                 </div>
                 <div class="action__group">
-                    <i @click="reloadMess"  title="обновить" class="reloadMess material-icons ">refresh</i>
+                    <i @click="reloadMess" title="обновить" class="reloadMess material-icons ">refresh</i>
                 </div>
                 <div class="action__group">
                     <i title="В спам!" class="material-icons">report</i>
@@ -41,11 +41,24 @@
             </div>
             <div class="email_simple-paginate">
                 <div class="paginate-numbers">
-                    1-10 of 100
+                    1-{{pagination['current']}} of {{pagination['total']}}
                 </div>
                 <div class="paginate-arrows">
-                    <i title="Назад" class="material-icons">arrow_back</i>
-                    <i title="Вперед" class="material-icons">arrow_forward</i>
+                    <i title="Назад"
+                       @click="paginate('back')"
+                       class="material-icons"
+                       :class="{'pag_disabled': !paginatePrev}"
+                    >
+                        arrow_back
+                    </i>
+                    <i
+                        title="Вперед"
+                        @click="paginate('next')"
+                        class="material-icons"
+                        :class="{'pag_disabled': paginateNext === false}"
+                    >
+                        arrow_forward
+                    </i>
                 </div>
             </div>
             <div class="email-dop">
@@ -112,7 +125,7 @@
                 </td>
                 <td>
                     <div class="email__title">
-                        {{ message.subject}}
+                        {{ (message.subject === "") ? "( Без темы )" : message.subject}}
                     </div>
                 </td>
                 <td>
@@ -153,6 +166,19 @@
             getMessages() {
                 return this.$store.getters.getMessages
             },
+            pagination() {
+                return this.$store.getters.pagination
+            },
+            paginateNext(){
+                if(!this.preloader) {
+                    return this.getMessages['pagination']['current'] >= 10;
+                }
+            },
+            paginatePrev(){
+                if(!this.preloader) {
+                    return this.getMessages['pagination']['current'] == 1;
+                }
+            }
         },
         methods: {
             favorite(event) {
@@ -164,6 +190,16 @@
                 } else {
                     event.target.innerHTML = 'star_border';
                     event.target.style.color = '#D8D8D8';
+                }
+            },
+            paginate(way) {
+                if (!this.preloader) {
+                    if (way === 'next' && this.paginateNext) {
+                        this.$store.dispatch('getMessages', +this.getMessages['pagination']['page'] + 1);
+                    }
+                    if (way === 'back' && this.paginatePrev) {
+                        this.$store.dispatch('getMessages', +this.getMessages['pagination']['page'] - 1);
+                    }
                 }
             },
             reloadMess() {
@@ -199,7 +235,8 @@
                 let element = event.target.parentElement.parentElement.parentElement.parentElement;
                 (!element.classList.contains('trSelect')) ? element.classList.add("trSelect") : element.classList.remove("trSelect");
             }
-        },
+        }
+        ,
         watch: {
             selectAllMes() {
                 let toolbars = document.getElementById('ToolBars');
@@ -224,13 +261,20 @@
                     mess.checked = this.checked;
                 });
             }
-        },
+        }
+        ,
         created() {
-            this.$store.dispatch('getMessages');
-        },
+            this.$store.dispatch('getMessages', 1);
+        }
+        ,
     }
 </script>
 
 <style>
-
+.pag_disabled {
+    cursor: default!important;
+}
+.pag_disabled:hover {
+    color: #D8D8D8!important;
+}
 </style>

@@ -90,7 +90,7 @@ export default {
       coverTrigger: false,
       closeOnClick: false,
       inDuration: 600,
-      outDuration: 600
+      outDuration: 600,
     });
   },
   methods: {
@@ -175,7 +175,7 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
 .close_button {
   width: 26px;
   height: 26px;
-} 
+}
 .close_button i {
   font-size: 26px;
   color: #dfdfdf;

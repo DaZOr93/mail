@@ -9,33 +9,36 @@ use Webklex\IMAP\Facades\Client;
 class MessageService implements MessageServiceInterface
 {
     /**
-     * Вся почта
+     * Получить все письма
+     * @param $offset
      *
      * @return mixed
      */
-    public function index()
+    public function index($offset = 1)
     {
-        $oClient = $this->connect('default');
-        $oFolder = $oClient->getFolder('inbox');
+        $oFolder = $this->connect('default');
 
-        $data['messages'] = $oFolder->getMessages('ALL' , false , false , true , true , 10 , 1);
+        $data['messages'] = $oFolder->getMessages('ALL', false, false, true, true, 10 ,  $offset);
         $data['attr'] = $this->getAttribute($data['messages']);
+        $data['pagination'] = $this->paginate($oFolder , $data['messages']);
+        $data['pagination']['page'] = $offset;
 
         return $data;
     }
 
     /**
+     * Получить посьмо по uid
+     *
      * @param $uid
      *
      * @return mixed
      */
     public function show($uid)
     {
-        $oClient = $this->connect('default');
-        $oFolder = $oClient->getFolder('inbox');
+        $oFolder = $this->connect('default');
 
-        $data['messages'] = $oFolder->getMessage($uid , false , false , true , true);
-        $data['attr'] =  $data['messages']->getAttributes();
+        $data['messages'] = $oFolder->getMessage($uid, false, false, true, true);
+        $data['attr'] = $data['messages']->getAttributes();
 
         return $data;
     }
@@ -58,6 +61,24 @@ class MessageService implements MessageServiceInterface
     }
 
     /**
+     * Пагинация
+     *
+     * @param $folder
+     * @param $messages
+     *
+     * @return array
+     */
+    public function paginate($folder , $messages)
+    {
+        $attr = [];
+
+        $attr['current'] = $messages->count();
+        $attr['total'] = $folder->getMessages('ALL', false, false, false, false)->count();
+
+        return $attr;
+    }
+
+    /**
      * Подключение к почте
      *
      * @param $account
@@ -67,6 +88,26 @@ class MessageService implements MessageServiceInterface
     {
         $oClient = Client::account($account);
 
-        return $oClient->connect();
+        return $oClient->connect()->getFolder('inbox');
     }
+
+//    public function store()
+//    {
+//        $data = $this->connect('default')->getMessages('ALL', false, true, true, true);
+//
+//        foreach ($data as $message) {
+//            $letter = new Letter();
+//            $letter->user_id = 1;
+//            $letter->folder_id = null;
+//            $letter->date_create = $message->getDate();
+//            $letter->date_send = $message->getDate();
+//            $letter->deleted_ad = $message->getDate();
+//            $letter->to = 'мне';
+//            $letter->from = $message->getFrom()[0]->mail;
+//            $letter->subject = $message->getSubject();
+//            $letter->body = $message->getHTMLBody(true);
+//            $letter->seen = 0;
+//            $letter->save();
+//        }
+//    }
 }

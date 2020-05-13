@@ -9,6 +9,10 @@ export default new Vuex.Store({
         toggleUser: false,
         user: [],
         messages: [],
+        pagination: {
+            'current' : 0,
+            'page': 1
+        },
         message: {
             attr: {},
             messages: {
@@ -26,11 +30,10 @@ export default new Vuex.Store({
             axios.get('/api/user')
                 .then(r => cnt.commit('getUser', r.data))
         },
-        async getMessages(cnt) {
-            if (this.state.messages.length < 1) {
-                cnt.commit('preloaderOn');
-            }
-            await axios.get('/api/messages')
+        async getMessages(cnt , payload) {
+            cnt.commit('resetMess');
+            cnt.commit('preloaderOn');
+            await axios.get('/api/messages/' + payload)
                 .then(r => cnt.commit('getMessages', r.data));
             cnt.commit('preloaderOff');
         },
@@ -49,6 +52,9 @@ export default new Vuex.Store({
         },
         getMessages(state, payload) {
             state.messages = payload;
+            state.pagination['current'] = payload.pagination['current'];
+            state.pagination['total'] = payload.pagination['total']
+            state.pagination['page'] = payload.pagination['page']
         },
         getMessage(state, payload) {
             state.message = payload;
@@ -61,6 +67,9 @@ export default new Vuex.Store({
         },
         preloaderOff(state) {
             state.preloader = false;
+        },
+        resetMess(state){
+            state.messages = []
         }
     },
     getters: {
@@ -84,6 +93,9 @@ export default new Vuex.Store({
         },
         preloader(state) {
             return state.preloader;
+        },
+        pagination(state) {
+            return state.pagination;
         }
     }
 })

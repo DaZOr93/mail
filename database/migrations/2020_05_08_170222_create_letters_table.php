@@ -17,14 +17,14 @@ class CreateLettersTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->default('1');
             $table->unsignedBigInteger('folder_id')->nullable();
-            $table->date('date_create');
             $table->date('date_send');
             $table->string('to');
             $table->string('from');
             $table->string('subject');
             $table->text('body');
             $table->boolean('seen');
-            $table->date('deleted_ad');
+            $table->boolean('favorite');
+            $table->date('deleted_ad')->nullable();
             $table->timestamps();
         });
     }

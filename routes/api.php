@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 
    Route::get('user' , 'Api\User\UserController@index');
 
-   Route::get('/messages' , 'Api\MessagesController@index');
+   Route::get('/messages/{offset}' , 'Api\MessagesController@index');
 
    Route::get('/message/{uid}' , 'Api\MessagesController@show');
 

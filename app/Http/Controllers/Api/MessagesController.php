@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Services\MessageService;
+use Illuminate\Http\JsonResponse as JsonResponseAlias;
 
 class MessagesController extends Controller
 {
@@ -14,18 +15,36 @@ class MessagesController extends Controller
         $this->messageService = $messageService;
     }
 
-    public function index()
+    /**
+     * @param $offset
+     *
+     * @return JsonResponseAlias
+     */
+    public function index($offset)
     {
-        $messages = $this->messageService->index();
+        $messages = $this->messageService->index($offset);
 
         return response()->json($messages);
     }
 
+    /**
+     * @param $uid
+     *
+     * @return JsonResponseAlias
+     */
     public function show($uid)
     {
         $message = $this->messageService->show($uid);
 
         return response()->json($message);
     }
+
+//
+//    public function store()
+//    {
+//        $this->messageService->store();
+//
+//        return response()->json('2222');
+//    }
 
 }
