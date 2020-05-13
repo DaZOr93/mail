@@ -50,7 +50,7 @@ export default new VueRouter({
         },
 
         {   
-            path: '/messages/:uid', // !!!!!!!!!!!--разобраться и заменить '/messages/:uid' на '/sentMessages/:uid'--!!!!!!!!!!!!!!!!!!!!
+            path: '/sentMessages/:uid',
             component: SentMessagesOpen,
             name: 'SentMessagesOpen'
         },

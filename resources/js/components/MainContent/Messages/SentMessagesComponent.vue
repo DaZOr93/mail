@@ -14,11 +14,6 @@
                 <div class="action__group">
                     <i title="В спам!" class="material-icons">report</i>
                 </div>
-
-                <!-- <div class="action__group">
-                    <i title="Прочитано/Не прочитано" class="material-icons">fiber_manual_record</i>
-                </div> -->
-
                 <div class="action__group">
                     <i title="В папку" class="material-icons">folder</i>
                 </div>
@@ -69,13 +64,9 @@
         </div>
         <table>
             <tbody>
-
-<!-- :to="{name: 'SentMessagesOpen', params: {uid: message.uid}}" -- навыходе 404 -->
-<!-- !!!!!!!!!!!!!!!!!--разобраться--!!!!!!!!!!!!!!!! -->
-
             <router-link
                 tag="tr"
-                :to="{name: 'MessagesOpen', params: {uid: message.uid}}"
+                :to="{name: 'SentMessagesOpen', params: {uid: message.uid}}"
                 v-for="(message , index) in getMessages.attr"
                 :key="index"
                 :class="{new__massage__list:getMessages['messages'][`${message.message_id}`].flags.seen !== 1}"
@@ -95,10 +86,6 @@
                         </i>
                     </div>
                 </td>
-                <!-- <td>
-                    <div
-                        :class="{'message__seen-dot' :getMessages['messages'][`${message.message_id}`].flags.seen !== 1}"></div>
-                </td> -->
                 <td class="email__to-td">
                     <div class="email__to">
                         <div>

@@ -23,6 +23,7 @@ use Illuminate\Support\Facades\Route;
 
    Route::get('/message/{uid}' , 'Api\MessagesController@show');
 
+   Route::get('/sentMessage/{uid}' , 'Api\MessagesController@show'); //??????????????нужно создать SentMessagesController@show ?????????????
 
 
 
