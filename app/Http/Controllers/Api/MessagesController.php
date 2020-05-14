@@ -39,6 +39,12 @@ class MessagesController extends Controller
         return response()->json($message);
     }
 
+    public function filters($filter , $offset)
+    {
+       return $messages = $this->messageService->filters($filter , $offset );
+    }
+
+
 //
 //    public function store()
 //    {

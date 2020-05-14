@@ -1,8 +1,8 @@
 <template>
     <div class="w100">
         <div class="new__email-bar">
-            <div class="email__arrows">
-                <i  @click="$router.go(-1)" class="material-icons">arrow_back</i>
+            <div  @click="$router.go(-1)" class="email__arrows">
+                <i   class="material-icons">arrow_back</i>
             </div>
             <div class="email__actions">
                 <div class="action_group">

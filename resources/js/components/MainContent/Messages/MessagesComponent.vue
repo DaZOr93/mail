@@ -42,7 +42,11 @@
             </div>
             <div class="email_simple-paginate">
                 <div class="paginate-numbers">
-                    {{pagination['start']}}-{{pagination['end']}} of {{pagination['total']}}
+                    {{pagination['start']}}
+                    -
+                    {{pagination['end']}}
+                    of
+                    {{pagination['total']}}
                 </div>
                 <div class="paginate-arrows">
                     <i title="Назад"
@@ -117,11 +121,11 @@
                                 class="email__name"
                                 :class="'bg_' + randomBg(1 , 5)"
                             >
-                                {{ message.sender[0].personal[0] }}
+                                {{ ( message.sender[0].personal ) ? message.sender[0].personal[0] :  message.sender[0].mailbox[0]}}
                             </div>
                         </div>
                         <div class="email__driver">
-                            {{ message.sender[0].personal}}
+                            {{ ( message.sender[0].personal ) ? message.sender[0].personal :  message.sender[0].mailbox}}
                         </div>
                     </div>
                 </td>

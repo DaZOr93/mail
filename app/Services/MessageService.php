@@ -16,7 +16,7 @@ class MessageService
      */
     public function index($offset = 1)
     {
-        $oFolder = $this->connect('default');
+        $oFolder = $this->getFolder('inbox' , 'default');
         $data['messages'] = $oFolder->getMessages('ALL', false, true, true, true, 10, $offset);
         $data['attr'] = $this->getAttribute($data['messages']);
         $data['pagination'] = $this->paginate($oFolder, $data['messages'], $offset);
@@ -34,10 +34,31 @@ class MessageService
      */
     public function show($uid)
     {
-        $oFolder = $this->connect('default');
+        $oFolder = $this->getFolder('inbox' , 'default');
 
         $data['messages'] = $oFolder->getMessage($uid, false, false, true, true);
         $data['attr'] = $data['messages']->getAttributes();
+
+        return $data;
+    }
+
+    /**
+     * перейти в служебную папку
+     *
+     * @param $folder_name
+     * @param $offset
+     *
+     * @return mixed
+     */
+    public function filters($folder_name , $offset)
+    {
+        $oFolder = $this->connect('default')->getFolder("[Gmail]/{$folder_name}");
+
+        //dd($this->connect('default')->getFolder('[Gmail]/&BB4EQgQ,BEAEMAQyBDsENQQ9BD0ESwQ1-')->getMessages());
+        $data['messages'] = $oFolder->getMessages('ALL', false, true, true, true, 10, $offset);
+        $data['attr'] = $this->getAttribute($data['messages']);
+        $data['pagination'] = $this->paginate($oFolder, $data['messages'], $offset);
+        $data['pagination']['page'] = $offset;
 
         return $data;
     }
@@ -98,8 +119,21 @@ class MessageService
     {
         $oClient = Client::account($account);
 
-        return $oClient->connect()->getFolder('inbox');
+        return $oClient->connect();
     }
+
+    /**
+     * Открыть папку
+     * @param $name
+     * @param $account
+     *
+     * @return mixed
+     */
+    public function getFolder($name , $account)
+    {
+        return $this->connect($account)->getFolder($name);
+    }
+
 
 //    public function store()
 //    {

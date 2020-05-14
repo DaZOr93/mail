@@ -10,6 +10,7 @@ export default new Vuex.Store({
         toggleUser: false,
         user: [],
         messages: [],
+        sendMessages: [],
         errors: [],
         newMessage: {
             subject: '',
@@ -17,7 +18,7 @@ export default new Vuex.Store({
             editorData: ''
         },
         pagination: {
-            'current' : 0,
+            'current': 0,
             'page': 1,
             'start': 0,
             'end': 0
@@ -39,23 +40,36 @@ export default new Vuex.Store({
             axios.get('/api/user')
                 .then(r => cnt.commit('getUser', r.data))
         },
-        async getMessages(cnt , payload) {
+        async getMessages(cnt, payload) {
             cnt.commit('resetMess');
             cnt.commit('preloaderOn');
             await axios.get('/api/messages/' + payload)
-                .then(r => cnt.commit('getMessages', r.data));
+                .then(r => {
+                    cnt.commit('getMessages', r.data);
+                    cnt.commit('pagination', r.data.pagination);
+                })
             cnt.commit('preloaderOff');
         },
         getMessage(cnt, payload) {
             axios.get('/api/message/' + payload)
-                .then(r => cnt.commit('getMessage', r.data));
+                .then(r => {cnt.commit('getMessage', r.data)});
         },
         sendEmail(cnt, payload) {
-            axios.post('/api/send-email' , payload)
+            axios.post('/api/send-email', payload)
                 .catch(error => {
-                     this.state.errors =  error.response.data.errors;
+                    this.state.errors = error.response.data.errors;
                 });
 
+        },
+        async getMessagesFilter(cnt, payload) {
+            this.state.sendMessages = [];
+            cnt.commit('preloaderOn');
+            await axios.get('/api/messages/' + payload.filter + '/' + payload.offset)
+                .then(r => {
+                    cnt.commit('sendMessages', r.data);
+                    cnt.commit('pagination', r.data.pagination);
+                });
+            cnt.commit('preloaderOff');
         }
     },
 
@@ -66,16 +80,22 @@ export default new Vuex.Store({
         getUser(state, payload) {
             state.user = payload;
         },
+        pagination(state, payload) {
+            state.pagination = {};
+            state.pagination['current'] = payload['current'];
+            state.pagination['total'] = payload['total'];
+            state.pagination['page'] = payload['page'];
+            state.pagination['start'] = payload['start'];
+            state.pagination['end'] = payload['end'];
+        },
         getMessages(state, payload) {
             state.messages = payload;
-            state.pagination['current'] = payload.pagination['current'];
-            state.pagination['total'] = payload.pagination['total'];
-            state.pagination['page'] = payload.pagination['page'];
-            state.pagination['start'] = payload.pagination['start'];
-            state.pagination['end'] = payload.pagination['end'];
         },
         getMessage(state, payload) {
             state.message = payload;
+        },
+        sendMessages(state, payload) {
+            state.sendMessages = payload;
         },
         selectAll(state, payload) {
             state.selectAll = payload
@@ -86,7 +106,7 @@ export default new Vuex.Store({
         preloaderOff(state) {
             state.preloader = false;
         },
-        resetMess(state){
+        resetMess(state) {
             state.messages = []
         },
     },
@@ -120,6 +140,9 @@ export default new Vuex.Store({
         },
         getErrors(state) {
             return state.errors;
+        },
+        sendMessages(state) {
+            return state.sendMessages
         }
     }
 })

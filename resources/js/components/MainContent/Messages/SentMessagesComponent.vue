@@ -36,11 +36,24 @@
             </div>
             <div class="email_simple-paginate">
                 <div class="paginate-numbers">
-                    1-10 of 100
+                    {{pagination['start']}}-{{pagination['end']}} of {{pagination['total']}}
                 </div>
                 <div class="paginate-arrows">
-                    <i title="Назад" class="material-icons">arrow_back</i>
-                    <i title="Вперед" class="material-icons">arrow_forward</i>
+                    <i title="Назад"
+                       @click="paginate('back')"
+                       class="material-icons"
+                       :class="{'pag_disabled': !paginatePrev}"
+                    >
+                        arrow_back
+                    </i>
+                    <i
+                        title="Вперед"
+                        @click="paginate('next')"
+                        class="material-icons"
+                        :class="{'pag_disabled': paginateNext === false}"
+                    >
+                        arrow_forward
+                    </i>
                 </div>
             </div>
             <div class="email-dop">
@@ -67,9 +80,9 @@
             <router-link
                 tag="tr"
                 :to="{name: 'SentMessagesOpen', params: {uid: message.uid}}"
-                v-for="(message , index) in getMessages.attr"
+                v-for="(message , index) in sendMessages.attr"
                 :key="index"
-                :class="{new__massage__list:getMessages['messages'][`${message.message_id}`].flags.seen !== 1}"
+                :class="{new__massage__list:sendMessages['messages'][`${message.message_id}`].flags.seen !== 1}"
             >
                 <td>
                     <div class="message__select">
@@ -93,24 +106,30 @@
                                 class="email__name"
                                 :class="'bg_' + randomBg(1 , 5)"
                             >
-<!-- {{ message.recipient[0].personal[0] }} нужно добавить !!!!-->                            
-                                {{ message.sender[0].personal[0] }}
+<!-- {{ message.recipient[0].personal[0] }} нужно добавить !!!!-->
+                                {{ ( message.sender[0].personal ) ? message.sender[0].personal[0] :  message.sender[0].mailbox[0]}}
                             </div>
                         </div>
                         <div class="email__driver">
  <!-- {{ message.recipient[0].personal}} нужно добавить !!!!-->
-                            {{ message.sender[0].personal}}
+                            {{ ( message.sender[0].personal ) ? message.sender[0].personal :  message.sender[0].mailbox}}
                         </div>
                     </div>
                 </td>
-                <td>
+                <td class="email__to-title">
                     <div class="email__title">
                         {{ message.subject}}
                     </div>
                 </td>
                 <td>
                     <div class="email__attachments">
-                        <i class="material-icons">attachment</i>
+
+                        <i
+                            v-if="sendMessages['messages'][`${message.message_id}`].attachments.length != 0"
+                            class="material-icons"
+                        >
+                            attachment
+                        </i>
                     </div>
                 </td>
                 <td>
@@ -133,18 +152,32 @@
                 selectMes: '',
                 selectAllMes: false,
                 checked: false,
+                filter: '&BB4EQgQ,BEAEMAQyBDsENQQ9BD0ESwQ1-'
             }
         },
         computed: {
             selectAll() {
                 return this.$store.getters.selectAll
             },
+            pagination() {
+                return this.$store.getters.pagination
+            },
             preloader() {
                 return this.$store.getters.preloader
             },
-            getMessages() {
-                return this.$store.getters.getMessages
+            sendMessages() {
+                return this.$store.getters.sendMessages
             },
+            paginateNext() {
+                if (!this.preloader) {
+                    return this.sendMessages['pagination']['current'] >= 10;
+                }
+            },
+            paginatePrev() {
+                if (!this.preloader) {
+                    return this.sendMessages['pagination']['page'] != 1;
+                }
+            }
         },
         methods: {
             favorite(event) {
@@ -156,6 +189,22 @@
                 } else {
                     event.target.innerHTML = 'star_border';
                     event.target.style.color = '#D8D8D8';
+                }
+            },
+            paginate(way) {
+                if (!this.preloader) {
+                    if (way === 'next' && this.paginateNext) {
+                        this.$store.dispatch('getMessagesFilter', {
+                            'filter': this.filter ,
+                            'offset': +this.sendMessages['pagination']['page'] + 1
+                        });
+                    }
+                    if (way === 'back' && this.paginatePrev) {
+                        this.$store.dispatch('getMessagesFilter', {
+                            'filter': this.filter ,
+                            'offset': +this.sendMessages['pagination']['page'] - 1
+                        });
+                    }
                 }
             },
             randomBg(min, max) {
@@ -212,7 +261,7 @@
             }
         },
         created() {
-            this.$store.dispatch('getMessages');
+            this.$store.dispatch('getMessagesFilter', {'filter': this.filter , 'offset':1});
         }
     }
 </script>

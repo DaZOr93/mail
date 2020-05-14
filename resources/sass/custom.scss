@@ -524,11 +524,14 @@ ul, li {
     border-radius: 5px;
 }
 
-.email__from-td {
+.email__from-td, .email__to-td {
     width: 22%;
 }
+.email__to-title {
+    width: 50%;
+}
 
-.email__from {
+.email__from , .email__to {
     display: flex;
     align-items: center;
 }

@@ -15,17 +15,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+Route::get('user', 'Api\User\UserController@index');
 
+Route::get('/messages/{offset}', 'Api\MessagesController@index');
+Route::get('/message/{uid}', 'Api\MessagesController@show');
+Route::get('/messages/{filters}/{offset}', 'Api\MessagesController@filters');
 
-   Route::get('user' , 'Api\User\UserController@index');
+Route::get('/sentMessage/{uid}', 'Api\MessagesController@show'); //??????????????нужно создать SentMessagesController@show ?????????????
+Route::post('/send-email', 'Api\SendEmailController@index');
 
-   Route::get('/messages/{offset}' , 'Api\MessagesController@index');
-
-   Route::get('/message/{uid}' , 'Api\MessagesController@show');
-
-   Route::get('/sentMessage/{uid}' , 'Api\MessagesController@show'); //??????????????нужно создать SentMessagesController@show ?????????????
-
-   Route::post('/send-email' , 'Api\SendEmailController@index');
 
 
 

@@ -2256,6 +2256,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "MessagesComponent",
   data: function data() {
@@ -2608,24 +2612,57 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "SentMessagesComponent",
   data: function data() {
     return {
       selectMes: '',
       selectAllMes: false,
-      checked: false
+      checked: false,
+      filter: '&BB4EQgQ,BEAEMAQyBDsENQQ9BD0ESwQ1-'
     };
   },
   computed: {
     selectAll: function selectAll() {
       return this.$store.getters.selectAll;
     },
+    pagination: function pagination() {
+      return this.$store.getters.pagination;
+    },
     preloader: function preloader() {
       return this.$store.getters.preloader;
     },
-    getMessages: function getMessages() {
-      return this.$store.getters.getMessages;
+    sendMessages: function sendMessages() {
+      return this.$store.getters.sendMessages;
+    },
+    paginateNext: function paginateNext() {
+      if (!this.preloader) {
+        return this.sendMessages['pagination']['current'] >= 10;
+      }
+    },
+    paginatePrev: function paginatePrev() {
+      if (!this.preloader) {
+        return this.sendMessages['pagination']['page'] != 1;
+      }
     }
   },
   methods: {
@@ -2638,6 +2675,23 @@ __webpack_require__.r(__webpack_exports__);
       } else {
         event.target.innerHTML = 'star_border';
         event.target.style.color = '#D8D8D8';
+      }
+    },
+    paginate: function paginate(way) {
+      if (!this.preloader) {
+        if (way === 'next' && this.paginateNext) {
+          this.$store.dispatch('getMessagesFilter', {
+            'filter': this.filter,
+            'offset': +this.sendMessages['pagination']['page'] + 1
+          });
+        }
+
+        if (way === 'back' && this.paginatePrev) {
+          this.$store.dispatch('getMessagesFilter', {
+            'filter': this.filter,
+            'offset': +this.sendMessages['pagination']['page'] - 1
+          });
+        }
       }
     },
     randomBg: function randomBg(min, max) {
@@ -2692,7 +2746,10 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   created: function created() {
-    this.$store.dispatch('getMessages');
+    this.$store.dispatch('getMessagesFilter', {
+      'filter': this.filter,
+      'offset': 1
+    });
   }
 });
 
@@ -53597,9 +53654,9 @@ var render = function() {
           _vm._v(
             "\n                " +
               _vm._s(_vm.pagination["start"]) +
-              "-" +
+              "\n                -\n                " +
               _vm._s(_vm.pagination["end"]) +
-              " of " +
+              "\n                of\n                " +
               _vm._s(_vm.pagination["total"]) +
               "\n            "
           )
@@ -53734,7 +53791,11 @@ var render = function() {
                       [
                         _vm._v(
                           "\n                            " +
-                            _vm._s(message.sender[0].personal[0]) +
+                            _vm._s(
+                              message.sender[0].personal
+                                ? message.sender[0].personal[0]
+                                : message.sender[0].mailbox[0]
+                            ) +
                             "\n                        "
                         )
                       ]
@@ -53744,7 +53805,11 @@ var render = function() {
                   _c("div", { staticClass: "email__driver" }, [
                     _vm._v(
                       "\n                        " +
-                        _vm._s(message.sender[0].personal) +
+                        _vm._s(
+                          message.sender[0].personal
+                            ? message.sender[0].personal
+                            : message.sender[0].mailbox
+                        ) +
                         "\n                    "
                     )
                   ])
@@ -54102,26 +54167,78 @@ var render = function() {
       _vm._v(" "),
       _vm._m(4),
       _vm._v(" "),
-      _vm._m(5),
+      _c("div", { staticClass: "email_simple-paginate" }, [
+        _c("div", { staticClass: "paginate-numbers" }, [
+          _vm._v(
+            "\n                    " +
+              _vm._s(_vm.pagination["start"]) +
+              "-" +
+              _vm._s(_vm.pagination["end"]) +
+              " of " +
+              _vm._s(_vm.pagination["total"]) +
+              "\n                "
+          )
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "paginate-arrows" }, [
+          _c(
+            "i",
+            {
+              staticClass: "material-icons",
+              class: { pag_disabled: !_vm.paginatePrev },
+              attrs: { title: "Назад" },
+              on: {
+                click: function($event) {
+                  return _vm.paginate("back")
+                }
+              }
+            },
+            [
+              _vm._v(
+                "\n                        arrow_back\n                    "
+              )
+            ]
+          ),
+          _vm._v(" "),
+          _c(
+            "i",
+            {
+              staticClass: "material-icons",
+              class: { pag_disabled: _vm.paginateNext === false },
+              attrs: { title: "Вперед" },
+              on: {
+                click: function($event) {
+                  return _vm.paginate("next")
+                }
+              }
+            },
+            [
+              _vm._v(
+                "\n                        arrow_forward\n                    "
+              )
+            ]
+          )
+        ])
+      ]),
       _vm._v(" "),
-      _vm._m(6)
+      _vm._m(5)
     ]),
     _vm._v(" "),
     _vm.preloader
-      ? _c("div", { staticClass: "preloader-wrapper big active " }, [_vm._m(7)])
+      ? _c("div", { staticClass: "preloader-wrapper big active " }, [_vm._m(6)])
       : _vm._e(),
     _vm._v(" "),
     _c("table", [
       _c(
         "tbody",
-        _vm._l(_vm.getMessages.attr, function(message, index) {
+        _vm._l(_vm.sendMessages.attr, function(message, index) {
           return _c(
             "router-link",
             {
               key: index,
               class: {
                 new__massage__list:
-                  _vm.getMessages["messages"]["" + message.message_id].flags
+                  _vm.sendMessages["messages"]["" + message.message_id].flags
                     .seen !== 1
               },
               attrs: {
@@ -54189,8 +54306,12 @@ var render = function() {
                       },
                       [
                         _vm._v(
-                          "                            \n                                " +
-                            _vm._s(message.sender[0].personal[0]) +
+                          "\n                                " +
+                            _vm._s(
+                              message.sender[0].personal
+                                ? message.sender[0].personal[0]
+                                : message.sender[0].mailbox[0]
+                            ) +
                             "\n                            "
                         )
                       ]
@@ -54200,14 +54321,18 @@ var render = function() {
                   _c("div", { staticClass: "email__driver" }, [
                     _vm._v(
                       "\n                            " +
-                        _vm._s(message.sender[0].personal) +
+                        _vm._s(
+                          message.sender[0].personal
+                            ? message.sender[0].personal
+                            : message.sender[0].mailbox
+                        ) +
                         "\n                        "
                     )
                   ])
                 ])
               ]),
               _vm._v(" "),
-              _c("td", [
+              _c("td", { staticClass: "email__to-title" }, [
                 _c("div", { staticClass: "email__title" }, [
                   _vm._v(
                     "\n                        " +
@@ -54219,9 +54344,14 @@ var render = function() {
               _vm._v(" "),
               _c("td", [
                 _c("div", { staticClass: "email__attachments" }, [
-                  _c("i", { staticClass: "material-icons" }, [
-                    _vm._v("attachment")
-                  ])
+                  _vm.sendMessages["messages"]["" + message.message_id]
+                    .attachments.length != 0
+                    ? _c("i", { staticClass: "material-icons" }, [
+                        _vm._v(
+                          "\n                            attachment\n                        "
+                        )
+                      ])
+                    : _vm._e()
                 ])
               ]),
               _vm._v(" "),
@@ -54303,26 +54433,6 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("i", { staticClass: "material-icons", attrs: { title: "Поиск" } }, [
           _vm._v("search")
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "email_simple-paginate" }, [
-      _c("div", { staticClass: "paginate-numbers" }, [
-        _vm._v("\n                    1-10 of 100\n                ")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "paginate-arrows" }, [
-        _c("i", { staticClass: "material-icons", attrs: { title: "Назад" } }, [
-          _vm._v("arrow_back")
-        ]),
-        _vm._v(" "),
-        _c("i", { staticClass: "material-icons", attrs: { title: "Вперед" } }, [
-          _vm._v("arrow_forward")
         ])
       ])
     ])
@@ -54680,20 +54790,18 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "w100" }, [
     _c("div", { staticClass: "new__email-bar" }, [
-      _c("div", { staticClass: "email__arrows" }, [
-        _c(
-          "i",
-          {
-            staticClass: "material-icons",
-            on: {
-              click: function($event) {
-                return _vm.$router.go(-1)
-              }
+      _c(
+        "div",
+        {
+          staticClass: "email__arrows",
+          on: {
+            click: function($event) {
+              return _vm.$router.go(-1)
             }
-          },
-          [_vm._v("arrow_back")]
-        )
-      ]),
+          }
+        },
+        [_c("i", { staticClass: "material-icons" }, [_vm._v("arrow_back")])]
+      ),
       _vm._v(" "),
       _vm._m(0),
       _vm._v(" "),
@@ -73428,6 +73536,7 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
     toggleUser: false,
     user: [],
     messages: [],
+    sendMessages: [],
     errors: [],
     newMessage: {
       subject: '',
@@ -73467,7 +73576,8 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
                 cnt.commit('preloaderOn');
                 _context.next = 4;
                 return axios.get('/api/messages/' + payload).then(function (r) {
-                  return cnt.commit('getMessages', r.data);
+                  cnt.commit('getMessages', r.data);
+                  cnt.commit('pagination', r.data.pagination);
                 });
 
               case 4:
@@ -73483,7 +73593,7 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
     },
     getMessage: function getMessage(cnt, payload) {
       axios.get('/api/message/' + payload).then(function (r) {
-        return cnt.commit('getMessage', r.data);
+        cnt.commit('getMessage', r.data);
       });
     },
     sendEmail: function sendEmail(cnt, payload) {
@@ -73492,6 +73602,33 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
       axios.post('/api/send-email', payload)["catch"](function (error) {
         _this.state.errors = error.response.data.errors;
       });
+    },
+    getMessagesFilter: function getMessagesFilter(cnt, payload) {
+      var _this2 = this;
+
+      return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _this2.state.sendMessages = [];
+                cnt.commit('preloaderOn');
+                _context2.next = 4;
+                return axios.get('/api/messages/' + payload.filter + '/' + payload.offset).then(function (r) {
+                  cnt.commit('sendMessages', r.data);
+                  cnt.commit('pagination', r.data.pagination);
+                });
+
+              case 4:
+                cnt.commit('preloaderOff');
+
+              case 5:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2);
+      }))();
     }
   },
   mutations: {
@@ -73501,16 +73638,22 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
     getUser: function getUser(state, payload) {
       state.user = payload;
     },
+    pagination: function pagination(state, payload) {
+      state.pagination = {};
+      state.pagination['current'] = payload['current'];
+      state.pagination['total'] = payload['total'];
+      state.pagination['page'] = payload['page'];
+      state.pagination['start'] = payload['start'];
+      state.pagination['end'] = payload['end'];
+    },
     getMessages: function getMessages(state, payload) {
       state.messages = payload;
-      state.pagination['current'] = payload.pagination['current'];
-      state.pagination['total'] = payload.pagination['total'];
-      state.pagination['page'] = payload.pagination['page'];
-      state.pagination['start'] = payload.pagination['start'];
-      state.pagination['end'] = payload.pagination['end'];
     },
     getMessage: function getMessage(state, payload) {
       state.message = payload;
+    },
+    sendMessages: function sendMessages(state, payload) {
+      state.sendMessages = payload;
     },
     selectAll: function selectAll(state, payload) {
       state.selectAll = payload;
@@ -73555,6 +73698,9 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
     },
     getErrors: function getErrors(state) {
       return state.errors;
+    },
+    sendMessages: function sendMessages(state) {
+      return state.sendMessages;
     }
   }
 }));
