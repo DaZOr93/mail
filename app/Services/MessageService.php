@@ -6,7 +6,7 @@ namespace App\Services;
 use App\Models\Letter;
 use Webklex\IMAP\Facades\Client;
 
-class MessageService implements MessageServiceInterface
+class MessageService
 {
     /**
      * Получить все письма

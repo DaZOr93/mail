@@ -25,6 +25,8 @@ use Illuminate\Support\Facades\Route;
 
    Route::get('/sentMessage/{uid}' , 'Api\MessagesController@show'); //??????????????нужно создать SentMessagesController@show ?????????????
 
+   Route::post('/send-email' , 'Api\SendEmailController@index');
+
 
 
 

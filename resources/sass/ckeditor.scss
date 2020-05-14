@@ -1,0 +1,72 @@
+#editor {
+    padding-right: 17px;
+    padding-left: 31px;
+    max-height: 450px;
+    overflow: auto;
+    padding-bottom: 36px;
+    border-bottom: 2px solid #F5F5F5;
+}
+.ck-editor {
+    max-width: 900px;
+}
+#editor p {
+    margin: 0;
+}
+#editor .ck.ck-toolbar  {
+    border: none;
+    background: none;
+    padding-left: 24px;
+    border-bottom: 2px solid #F5F5F5;
+    margin-bottom: 30px;
+    padding-bottom: 15px;
+}
+.ck.ck-editor__main>.ck-editor__editable {
+    border: none!important;
+    box-shadow: none!important;
+    padding-left: 34px;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 30px;
+    color: #808080;
+}
+#editor svg {
+    filter: invert(76%) sepia(6%) saturate(21%) hue-rotate(315deg) brightness(106%) contrast(111%);
+    cursor: pointer;
+    font-width: 900;
+}
+
+
+#editor li {
+    padding-left: 35px;
+    position: relative;
+}
+#editor ul li:before {
+    content: ".";
+    width: 9px;
+    height: 9px;
+    position:absolute;
+    font-size: 46px;
+    color: #D8D8D8;
+    left: 0;
+    top: -13px;
+}
+#editor ol {
+    padding-left: 15px;
+}
+#editor ol li {
+    padding-left: 20px;
+    list-style: inherit;
+}
+#editor strong {
+    font-weight: 700;
+}
+.ck.ck-toolbar>.ck-toolbar__items>*  {
+    margin-right: 14px!important;
+}
+.ck.ck-toolbar>.ck-toolbar__items button:nth-child(7)  svg {
+    transform: rotate(-180deg);
+}
+.ck.ck-toolbar>.ck-toolbar__items button:nth-child(3)  svg {
+    transform: rotate(54deg);
+}

@@ -2,7 +2,23 @@
     <div class="nav-wrap" id="nav_wrap">
         <div class="nav__mobile-close" @click="closeNav"><i class="material-icons">dehaze</i></div>
         <div class="write_letter">
-            <router-link tag="a" class="waves-effect waves-light" to="/newEmail">написать письмо</router-link>
+            <a
+                href="#"
+                class="waves-effect waves-light"
+                v-if="$route.path === '/newEmail'"
+                @click.prevent="send"
+                >
+                Отправить
+            </a>
+            <router-link
+                tag="a"
+                class="waves-effect waves-light"
+                to="/newEmail"
+                v-else
+            >
+                Новое письмо
+            </router-link>
+
         </div>
         <div class="nav-menu">
             <ul>
@@ -50,14 +66,47 @@
 </template>
 
 <script>
+    import {eventBus} from "../../../app"
     import NewFile from "../NewFile/NewFileComponent";
     export default {
         components: {NewFile},
         name: "NavBarComponent",
+        computed: {
+            newMessage(){
+                return this.$store.getters.newMessage
+            },
+            getErrors() {
+                return this.$store.getters.getErrors
+            }
+        },
         methods: {
             closeNav() {
                 let nav = document.getElementById('nav_wrap');
                 nav.classList.toggle("nav-wrap__open");
+            },
+            send(){
+                this.$store.dispatch('sendEmail' ,this.newMessage );
+                setTimeout( () => {
+                    if(Object.keys(this.getErrors).length > 0) {
+                        for (let key in this.getErrors) {
+                            Vue.$toast.open({
+                                message: `${this.getErrors[key]}`,
+                                type: 'error',
+                                position: 'top',
+                                duration: 2000
+                            });
+                        }
+                        this.$store.state.errors = []
+                    }else {
+                        Vue.$toast.open({
+                            message: `Отправлено`,
+                            type: 'success',
+                            position: 'top',
+                            duration: 2000
+                        });
+                        eventBus.$emit('reset')
+                    }
+                },500)
             }
         },
         mounted() {

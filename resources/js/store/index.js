@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import logger from "vuex/dist/logger";
 
 Vue.use(Vuex);
 
@@ -9,6 +10,12 @@ export default new Vuex.Store({
         toggleUser: false,
         user: [],
         messages: [],
+        errors: [],
+        newMessage: {
+            subject: '',
+            to: '',
+            editorData: ''
+        },
         pagination: {
             'current' : 0,
             'page': 1,
@@ -42,6 +49,13 @@ export default new Vuex.Store({
         getMessage(cnt, payload) {
             axios.get('/api/message/' + payload)
                 .then(r => cnt.commit('getMessage', r.data));
+        },
+        sendEmail(cnt, payload) {
+            axios.post('/api/send-email' , payload)
+                .catch(error => {
+                     this.state.errors =  error.response.data.errors;
+                });
+
         }
     },
 
@@ -74,7 +88,7 @@ export default new Vuex.Store({
         },
         resetMess(state){
             state.messages = []
-        }
+        },
     },
     getters: {
         toggleBar(state) {
@@ -100,6 +114,12 @@ export default new Vuex.Store({
         },
         pagination(state) {
             return state.pagination;
+        },
+        newMessage(state) {
+            return state.newMessage;
+        },
+        getErrors(state) {
+            return state.errors;
         }
     }
 })

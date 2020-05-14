@@ -4,6 +4,7 @@ import App from './App.vue';
 import VueRouter from 'vue-router';
 import router from './routes';
 import store from './store'
+import VueToast from 'vue-toast-notification';
 import CKEditor from '@ckeditor/ckeditor5-vue';
 
 Vue.use( CKEditor );
@@ -21,8 +22,13 @@ import 'materialize-css/dist/js/materialize.js';
 //Vue.config.silent = true;
 
 
+//toaster
 
+import 'vue-toast-notification/dist/theme-sugar.css';
+Vue.use(VueToast);
 
+//
+export const eventBus = new Vue();
 
 window.Vue = require('vue');
 Vue.use(VueRouter);
