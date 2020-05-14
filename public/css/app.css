@@ -495,6 +495,20 @@ li {
   display: flex;
 }
 
+.nav__mobile-close i {
+  color: #D8D8D8;
+}
+
+.nav__mobile-close i:hover {
+  color: #837d7d;
+  cursor: pointer;
+}
+
+.nav__mobile-close,
+.nav__mobile-open {
+  display: none !important;
+}
+
 .message__seen-dot {
   width: 8px;
   height: 8px;
@@ -507,15 +521,6 @@ li {
 }
 
 .email__from {
-  display: flex;
-  align-items: center;
-}
-
-.email__to-td {
-  width: 22%;
-}
-
-.email__to {
   display: flex;
   align-items: center;
 }
@@ -705,6 +710,11 @@ li {
   color: #C92B5F;
 }
 
+.email_date,
+.email__attachments {
+  text-align: center;
+}
+
 .email__name.bg_2 {
   background: #E0F7D7;
   color: #008947;
@@ -722,6 +732,10 @@ li {
 
   .email__name {
     margin-right: 10px;
+  }
+
+  .content-wrap {
+    padding: 45px 24px 0 10px;
   }
 }
 
@@ -741,11 +755,34 @@ li {
   .footer-rights {
     margin-bottom: 12px;
   }
-}
 
-@media (max-width: 576px) {
+  .seen {
+    display: none;
+  }
+
+  .email__name {
+    margin-left: 0;
+  }
+
+  .email_simple-paginate {
+    padding: 32px 10px 30px 10px;
+  }
+
+  .massage__list .email__search {
+    padding: 6px 5px 6px 5px;
+  }
+
+  .email-dop div {
+    padding: 30px 10px 29px 10px;
+  }
+
   .footer .container {
     width: 100%;
+  }
+
+  .sidebar-wrap {
+    max-width: 75px;
+    min-width: 105px;
   }
 
   .side-bar,
@@ -788,6 +825,71 @@ li {
   .logo-inner,
   .logo-wrap .logo {
     padding-right: 0;
+  }
+}
+
+@media (max-width: 977px) {
+  .content-wrap {
+    padding: 0;
+  }
+
+  .nav-wrap {
+    position: absolute;
+    z-index: 517;
+    left: -100%;
+    transition: all 0.3s;
+  }
+
+  .nav__mobile-open,
+  .nav__mobile-close {
+    display: block !important;
+  }
+
+  .write_letter {
+    padding: 19px 27px 0px 20px;
+  }
+
+  .nav-wrap__open {
+    left: 0;
+  }
+
+  .nav__mobile-close {
+    position: absolute;
+    right: 0;
+    top: 32px;
+  }
+
+  .massage__list .email__search {
+    position: absolute;
+    top: -89px;
+    background: #fff;
+    width: 101%;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    padding: 9px 0 9px 45px;
+  }
+
+  .nav__mobile-open {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    margin-top: -11px;
+  }
+
+  .email__search input {
+    max-width: 775px !important;
+  }
+
+  .massage__list {
+    margin-top: 90px;
+    position: relative;
+  }
+
+  .nav-wrap {
+    padding-bottom: 175px;
+  }
+
+  .main-wrap {
+    overflow: hidden;
   }
 }
 

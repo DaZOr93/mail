@@ -6,6 +6,7 @@ ul, li {
     list-style: none;
     margin: 0
 }
+
 .w100 {
     width: 100%;
 }
@@ -84,6 +85,7 @@ ul, li {
     height: 50px;
     overflow: hidden;
 }
+
 .user-photo img {
     width: 100%;
 }
@@ -98,9 +100,11 @@ ul, li {
     opacity: 0;
     transition: all .36s;
 }
+
 .user_show {
     opacity: 1;
 }
+
 .user_drop a {
     font-weight: 500;
     font-size: 13px;
@@ -272,6 +276,7 @@ ul, li {
     border-top: 2px solid #F5F5F5;
     padding: 0px 10px;
 }
+
 .nav-menu ul {
     padding: 10px 0;
 }
@@ -298,26 +303,33 @@ ul, li {
     height: 30px;
     margin-right: 15px;
 }
+
 .nav-menu li:nth-child(2) a::before {
     background: url("/img/ic_drafts.svg");
 }
+
 .nav-menu li:nth-child(3) a::before {
     background: url("/img/ic_send.svg");
 }
+
 .nav-menu li:nth-child(4) a::before {
     background: url("/img/ic_delete.svg");
 }
+
 .nav-menu .active {
     background: rgba(24, 117, 240, 0.16);
 }
+
 .nav-wrap .work-labels li {
     margin-bottom: 10px;
     list-style-type: disc;
     color: green;
 }
+
 .nav-wrap .work-labels ul {
     padding-left: 45px;
 }
+
 .work-labels a {
     font-style: normal;
     font-weight: 500;
@@ -325,6 +337,7 @@ ul, li {
     line-height: 30px;
     color: #999999;
 }
+
 .new-file .write_letter a {
     padding: 0 50px;
 }
@@ -427,14 +440,6 @@ ul, li {
 }
 
 
-
-
-
-
-
-
-
-
 //общий шаблон сообщений
 
 .massage__list tr {
@@ -446,14 +451,16 @@ ul, li {
     /* identical to box height, or 500% */
     color: #999999;
 }
-.massage__list tr:last-child{
+
+.massage__list tr:last-child {
     border-bottom: none;
 }
 
 .massage__list {
     background: #fff;
 }
-.massage__list i:hover{
+
+.massage__list i:hover {
     color: #837d7d;
 }
 
@@ -496,6 +503,18 @@ ul, li {
     display: flex;
 }
 
+.nav__mobile-close i {
+    color: #D8D8D8;
+}
+
+.nav__mobile-close i:hover {
+    color: #837d7d;
+    cursor: pointer;
+}
+
+.nav__mobile-close, .nav__mobile-open {
+    display: none !important;
+}
 
 .message__seen-dot {
     width: 8px;
@@ -511,15 +530,6 @@ ul, li {
 .email__from {
     display: flex;
     align-items: center;
-}
-
-.email__to-td {
-  width: 22%;
-}
-
-.email__to {
-  display: flex;
-  align-items: center;
 }
 
 .email__name {
@@ -677,7 +687,6 @@ ul, li {
 }
 
 
-
 .email__attachments i:hover {
     color: #D8D8D8;
 }
@@ -704,20 +713,27 @@ ul, li {
 .trSelect {
     background: #f9f9f9 !important;
 }
+
 .email__name.bg_1 {
     background: #FFE4EC;
     color: #C92B5F;
 }
+
+.email_date, .email__attachments {
+    text-align: center;
+}
+
 .email__name.bg_2 {
     background: #E0F7D7;
     color: #008947;
 }
+
 .email__name.bg_3 {
     background: #F5E3F9;
     color: #813D85;
 }
-//общий шаблон сообщений
 
+//общий шаблон сообщений
 
 
 

@@ -17,10 +17,9 @@ class MessageService implements MessageServiceInterface
     public function index($offset = 1)
     {
         $oFolder = $this->connect('default');
-
-        $data['messages'] = $oFolder->getMessages('ALL', false, false, true, true, 10 ,  $offset);
+        $data['messages'] = $oFolder->getMessages('ALL', false, true, true, true, 10, $offset);
         $data['attr'] = $this->getAttribute($data['messages']);
-        $data['pagination'] = $this->paginate($oFolder , $data['messages']);
+        $data['pagination'] = $this->paginate($oFolder, $data['messages'], $offset);
         $data['pagination']['page'] = $offset;
 
         return $data;
@@ -60,20 +59,31 @@ class MessageService implements MessageServiceInterface
         return $attrMes;
     }
 
+
     /**
      * Пагинация
      *
      * @param $folder
      * @param $messages
+     * @param $offset
      *
      * @return array
      */
-    public function paginate($folder , $messages)
+    public function paginate($folder, $messages, $offset)
     {
         $attr = [];
-
-        $attr['current'] = $messages->count();
         $attr['total'] = $folder->getMessages('ALL', false, false, false, false)->count();
+        $attr['current'] = $messages->count();
+
+        $attr['start'] = $offset - 1 . '0';
+
+        if ($attr['current'] < 10) {
+            $attr['end'] = $attr['total'];
+        } else {
+            $attr['end'] = $offset . '0';
+        }
+
+        $attr['start'] = (integer)$attr['start'] + 1;
 
         return $attr;
     }

@@ -33,6 +33,7 @@
                 </div>
             </div>
             <div class="email__search">
+                <div class="nav__mobile-open" @click="openNav"><i class="material-icons">dehaze</i></div>
                 <div class="input-field">
                     <input id="last_name" type="text" class="validate">
                     <label for="last_name">Поиск</label>
@@ -41,7 +42,7 @@
             </div>
             <div class="email_simple-paginate">
                 <div class="paginate-numbers">
-                    1-{{pagination['current']}} of {{pagination['total']}}
+                    {{pagination['start']}}-{{pagination['end']}} of {{pagination['total']}}
                 </div>
                 <div class="paginate-arrows">
                     <i title="Назад"
@@ -104,9 +105,10 @@
                         </i>
                     </div>
                 </td>
-                <td>
+                <td class="seen">
                     <div
-                        :class="{'message__seen-dot' :getMessages['messages'][`${message.message_id}`].flags.seen !== 1}"></div>
+                        :class="{'message__seen-dot' :getMessages['messages'][`${message.message_id}`].flags.seen !== 1}">
+                    </div>
                 </td>
                 <td class="email__from-td">
                     <div class="email__from">
@@ -130,7 +132,13 @@
                 </td>
                 <td>
                     <div class="email__attachments">
-                        <i class="material-icons">attachment</i>
+
+                        <i
+                            v-if="getMessages['messages'][`${message.message_id}`].attachments.length != 0"
+                            class="material-icons"
+                        >
+                            attachment
+                        </i>
                     </div>
                 </td>
                 <td>
@@ -145,7 +153,6 @@
 </template>
 
 <script>
-
     export default {
         name: "MessagesComponent",
         data() {
@@ -169,21 +176,20 @@
             pagination() {
                 return this.$store.getters.pagination
             },
-            paginateNext(){
-                if(!this.preloader) {
+            paginateNext() {
+                if (!this.preloader) {
                     return this.getMessages['pagination']['current'] >= 10;
                 }
             },
-            paginatePrev(){
-                if(!this.preloader) {
-                    return this.getMessages['pagination']['current'] == 1;
+            paginatePrev() {
+                if (!this.preloader) {
+                    return this.getMessages['pagination']['page'] != 1;
                 }
             }
         },
         methods: {
             favorite(event) {
                 let state = event.target.innerHTML;
-
                 if (state === 'star_border') {
                     event.target.innerHTML = 'star';
                     event.target.style.color = '#F9AD3D';
@@ -191,6 +197,10 @@
                     event.target.innerHTML = 'star_border';
                     event.target.style.color = '#D8D8D8';
                 }
+            },
+            openNav() {
+                let nav = document.getElementById('nav_wrap');
+                nav.classList.toggle("nav-wrap__open");
             },
             paginate(way) {
                 if (!this.preloader) {
@@ -205,23 +215,20 @@
             reloadMess() {
                 if (!this.preloader) {
                     this.$store.state.messages = [];
-                    this.$store.dispatch('getMessages');
+                    this.$store.dispatch('getMessages', 1);
                 }
             },
             randomBg(min, max) {
                 let rand = min - 0.5 + Math.random() * (max - min + 1);
-
                 return Math.round(rand);
             },
             getDate(time) {
                 let date = time.split('T')[1];
                 date = date.split(':');
-
                 return date[0] + ':' + date[1]
             },
             setBg(event) {
                 event.target.previousElementSibling.checked = !event.target.previousElementSibling.checked;
-
                 let toolbars = document.getElementById('ToolBars');
                 for (let i = 0; i < this.$refs.selectMes.length; i++) {
                     if (this.$refs.selectMes[i].checked === true) {
@@ -231,7 +238,6 @@
                         toolbars.classList.add("disabled");
                     }
                 }
-
                 let element = event.target.parentElement.parentElement.parentElement.parentElement;
                 (!element.classList.contains('trSelect')) ? element.classList.add("trSelect") : element.classList.remove("trSelect");
             }
@@ -241,12 +247,9 @@
             selectAllMes() {
                 let toolbars = document.getElementById('ToolBars');
                 let trAll = document.getElementsByTagName('tr');
-
                 let ArrayMess = this.$refs.selectMes;
                 this.checked = (this.checked === false);
-
                 (this.checked) ? toolbars.classList.remove("disabled") : toolbars.classList.add("disabled");
-
                 if (this.checked) {
                     for (let i = 0; i < trAll.length; i++) {
                         trAll[i].classList.add("trSelect")
@@ -256,7 +259,6 @@
                         trAll[i].classList.remove("trSelect")
                     }
                 }
-
                 ArrayMess.map((mess) => {
                     mess.checked = this.checked;
                 });
@@ -271,10 +273,10 @@
 </script>
 
 <style>
-.pag_disabled {
-    cursor: default!important;
-}
-.pag_disabled:hover {
-    color: #D8D8D8!important;
-}
+    .pag_disabled {
+        cursor: default !important;
+    }
+    .pag_disabled:hover {
+        color: #D8D8D8 !important;
+    }
 </style>

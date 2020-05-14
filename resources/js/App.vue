@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="main-wrap">
         <!--Header-->
         <mHeader></mHeader>
         <!--Header-->
@@ -14,7 +14,7 @@
                 <div class="content-nav">
                     <contentBar></contentBar>
                 </div>
-               <router-view></router-view>
+                <router-view></router-view>
             </div>
         </div>
 
@@ -32,11 +32,10 @@
     import contentBar from './components/MainContent/Nav/NavBarComponent'
 
     export default {
-        components: {mHeader , sidebar , mfooter , contentBar},
+        components: {mHeader, sidebar, mfooter, contentBar},
         name: "App",
     }
 </script>
 
 <style scoped>
-
 </style>

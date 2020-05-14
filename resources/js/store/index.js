@@ -11,7 +11,9 @@ export default new Vuex.Store({
         messages: [],
         pagination: {
             'current' : 0,
-            'page': 1
+            'page': 1,
+            'start': 0,
+            'end': 0
         },
         message: {
             attr: {},
@@ -53,8 +55,10 @@ export default new Vuex.Store({
         getMessages(state, payload) {
             state.messages = payload;
             state.pagination['current'] = payload.pagination['current'];
-            state.pagination['total'] = payload.pagination['total']
-            state.pagination['page'] = payload.pagination['page']
+            state.pagination['total'] = payload.pagination['total'];
+            state.pagination['page'] = payload.pagination['page'];
+            state.pagination['start'] = payload.pagination['start'];
+            state.pagination['end'] = payload.pagination['end'];
         },
         getMessage(state, payload) {
             state.message = payload;
