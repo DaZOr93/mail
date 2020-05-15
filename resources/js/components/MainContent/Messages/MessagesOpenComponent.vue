@@ -7,7 +7,7 @@
             </div>
             <div class="email__actions">
                 <i class="material-icons">report</i>
-                <i class="material-icons">delete</i>
+                <i @click="deleteMess" class="material-icons">delete</i>
                 <i class="material-icons">archive</i>
                 <i class="material-icons">call_missed_outgoing</i>
                 <i class="material-icons">repeat</i>
@@ -47,15 +47,21 @@
             </div>
             <div class="footer-border"></div>
         </div>
+        <deleteModal @close="modal = !modal" :modal="modal" :uid="uid"></deleteModal>
+
     </div>
 </template>
 
 <script>
+    import deleteModal from '../../Modal/DeleteModalComponent'
+
     export default {
         name: "MessagesOpenComponent",
+        components: {deleteModal},
         data() {
             return {
                 uid: this.$route.params.uid,
+                modal: false,
             }
         },
         computed: {
@@ -69,6 +75,10 @@
                 date = date.split(':');
 
                 return date[0] + ':' + date[1]
+            },
+            deleteMess() {
+                this.modal = true;
+
             }
         },
         watch: {

@@ -42,6 +42,12 @@ class MessagesController extends Controller
         return response()->json($message);
     }
 
+    public function delete($uid)
+    {
+        $this->messageService->delete($uid);
+
+    }
+
     public function sending($uid)
     {
         $oClient = Client::account('default');

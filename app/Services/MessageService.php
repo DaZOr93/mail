@@ -42,6 +42,12 @@ class MessageService
         return $data;
     }
 
+    public function delete($uid)
+    {
+        $this->getFolder('inbox' , 'default')->
+        getMessage($uid, false, false, false, false)->delete();
+
+    }
     /**
      * перейти в служебную папку
      *
