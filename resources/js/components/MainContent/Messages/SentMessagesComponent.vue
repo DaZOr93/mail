@@ -112,7 +112,7 @@
                         </div>
                         <div class="email__driver">
  <!-- {{ message.recipient[0].personal}} нужно добавить !!!!-->
-                            {{ ( message.sender[0].personal ) ? message.sender[0].personal :  message.sender[0].mailbox}}
+                            {{  message.to[0].mailbox }}
                         </div>
                     </div>
                 </td>

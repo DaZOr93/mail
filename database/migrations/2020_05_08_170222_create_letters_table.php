@@ -17,7 +17,9 @@ class CreateLettersTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id')->default('1');
             $table->unsignedBigInteger('folder_id')->nullable();
-            $table->date('date_send');
+            $table->string('message_id');
+            $table->string('uid');
+            $table->string('date_send');
             $table->string('to');
             $table->string('from');
             $table->string('subject');

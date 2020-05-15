@@ -2,6 +2,156 @@
     font-family: 'Roboto', sans-serif;
 }
 
+
+//modal
+.m_modal_wrap{
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity .15s linear;
+    position: fixed;
+    z-index: 991;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+.m_modal_bg{
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+.m_modal {
+    position: relative;
+    width: 350px;
+    background-color: #fff;
+    transition: transform .3s ease-out;
+    transform: translate(0,-50px);
+    margin: 200px auto auto;
+    padding: 30px 30px 25px 21px;
+    border-radius: 5px;
+}
+.m_modal .sup-title {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 40px;
+    color: #666666;
+}
+.m_modal .close {
+    position: absolute;
+    top: 30px;
+    right: 28px;
+    background: transparent;
+    transform: rotate(45deg);
+    z-index: 992;
+    cursor: pointer;
+    width: 26px;
+    height: 26px;
+}
+.m_modal .close::before{
+    content: '';
+    width: 25px;
+    right: 1px;
+    top: 12px;
+    position: absolute;
+    border-bottom: 2px solid #D8D8D8;
+    transform: rotate(90deg);
+}
+.m_modal .close::after {
+    content: '';
+    width: 25px;
+    right: 0px;
+    top: 12px;
+    position: absolute;
+    border-bottom: 2px solid #D8D8D8;
+}
+.m_modal .content {
+    width: 100%;
+    margin: auto;
+}
+.m_modal .modal__buttons {
+    padding-top: 25px;
+    display: flex;
+}
+.m_modal .modal__buttons  button:first-child{
+    background: #1875F0;
+    border: 2px solid #F5F5F5;
+    border-radius: 4px;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 10px;
+    line-height: 40px;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    padding: 0 29px;
+    margin-right: 20px;
+    cursor: pointer;
+}
+.m_modal .modal__buttons  button:last-child{
+    background: #FFFFFF;
+    border: 2px solid #F5F5F5;
+    border-radius: 4px;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 10px;
+    line-height: 40px;
+    text-transform: uppercase;
+    color: #B3B3B3;
+    padding: 0 43px;
+    cursor: pointer;
+}
+
+.m_modal .hor__line {
+    position: absolute;
+    border-top: 2px solid  #F5F5F5;
+    width: 100%;
+    left: 0;
+}
+.m_modal_show {
+    visibility: visible;
+    opacity: 1;
+}
+.m_modal_show .m_modal{
+    transform: none
+}
+.m_modal input[type="radio"] + span{
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    color: #999999;
+}
+.m_modal input[type="radio"] + span:before, .m_modal input[type="radio"] + span:after {
+    width: 20px;
+    height: 20px;
+}
+.m_modal [type="radio"]:not(:checked) + span:before, .m_modal[type="radio"]:not(:checked) + span:after {
+    border: 2px solid #E6E6E6;
+}
+.m_modal [type="radio"]:checked + span:after, .m_modal [type="radio"].with-gap:checked + span:before, .m_modal [type="radio"].with-gap:checked + span:after {
+     border: 2px solid #1875F0;
+ }
+.m_modal [type="radio"]:checked + span, .m_modal [type="radio"].with-gap:checked + span {
+    color: #1875F0;
+    padding-left: 48px;
+    padding-top: 3px;
+}
+.m_modal [type="radio"]:checked + span:after, .m_modal [type="radio"].with-gap:checked + span:after {
+    background: #1875F0;
+}
+.m_modal [type="radio"]:not(:checked) + span, .m_modal[type="radio"]:checked + span {
+    padding-left: 48px;
+    padding-top: 3px;
+}
+
+
+
+
+
+
+
 ul, li {
     list-style: none;
     margin: 0
@@ -248,7 +398,7 @@ ul, li {
 }
 
 .nav-wrap {
-    padding-bottom: 86px;
+    padding-bottom: 124px;
     background: #fff;
     border-right: 2px solid #F5F5F5;
     min-width: 226px;
@@ -459,6 +609,7 @@ ul, li {
 
 .massage__list {
     background: #fff;
+    height: 698px;
 }
 
 .massage__list i:hover {

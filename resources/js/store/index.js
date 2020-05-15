@@ -11,6 +11,7 @@ export default new Vuex.Store({
         user: [],
         messages: [],
         sendMessages: [],
+        getFolderMessages: [],
         errors: [],
         newMessage: {
             subject: '',
@@ -31,6 +32,7 @@ export default new Vuex.Store({
                 },
             }
         },
+        getFolders: [],
         selectAll: false,
         preloader: false
     },
@@ -54,6 +56,10 @@ export default new Vuex.Store({
             axios.get('/api/message/' + payload)
                 .then(r => {cnt.commit('getMessage', r.data)});
         },
+        getMessageSending(cnt , payload) {
+            axios.get('/api/sentMessage/sending/' + payload)
+                .then(r => {cnt.commit('getMessage', r.data)});
+        },
         sendEmail(cnt, payload) {
             axios.post('/api/send-email', payload)
                 .catch(error => {
@@ -70,10 +76,31 @@ export default new Vuex.Store({
                     cnt.commit('pagination', r.data.pagination);
                 });
             cnt.commit('preloaderOff');
-        }
+        },
+        userFolders(cnt) {
+            axios.get('/api/user/folders')
+                .then( r =>  cnt.commit('userFolders' , r.data))
+        },
+       async getFolderMessages(cnt , payload){
+            cnt.commit('getFolderMessagesReset');
+            axios.get(`/api/user/${payload}/messages`)
+                .then( r =>  cnt.commit('getFolderMessages' , r.data))
+        },
+        store_folder(cnt, payload) {
+            axios.post('/api/user/folders/store' , {
+                body: payload
+            })
+        },
+
     },
 
     mutations: {
+        getFolderMessagesReset(state) {
+            state.getFolderMessages = []
+        },
+        getFolderMessages(state , payload){
+            state.getFolderMessages = payload
+        },
         toggleBar(state) {
             state.toggleBar = !state.toggleBar
         },
@@ -109,6 +136,9 @@ export default new Vuex.Store({
         resetMess(state) {
             state.messages = []
         },
+        userFolders(state, payload){
+            state.getFolders = payload
+        }
     },
     getters: {
         toggleBar(state) {
@@ -143,6 +173,12 @@ export default new Vuex.Store({
         },
         sendMessages(state) {
             return state.sendMessages
+        },
+        getFolders(state) {
+            return state.getFolders
+        },
+        getFolderMessages(state){
+            return state.getFolderMessages
         }
     }
 })

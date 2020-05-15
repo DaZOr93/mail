@@ -102,6 +102,20 @@ export default {
 <style scoped>
 /* переопределение переменных Materialize */
 
+.modal {
+    display: none;
+    position: fixed;
+    left: 0;
+    right: 0;
+    background-color: #fafafa;
+    padding: 0;
+    max-height: 93%;
+    width: 19%;
+    margin: auto;
+    overflow-y: hidden;
+    border-radius: 2px;
+    will-change: top, opacity;
+}
 /* Text inputs */
 input:not([type]),
 input[type="text"]:not(.browser-default),

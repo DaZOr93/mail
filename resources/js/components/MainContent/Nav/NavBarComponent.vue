@@ -42,17 +42,10 @@
         </div>
         <div class="work-labels">
             <ul>
-                <li>
-                    <a href="#">Спам</a>
-                </li>
-                <li>
-                    <a href="#">Реклама</a>
-                </li>
-                <li>
-                    <a href="#">Работа</a>
-                </li>
-                <li>
-                    <a href="#">Личное</a>
+                <li v-for="folder in getFolders" :style="{'color':folder.color}">
+                    <router-link    :to="{name: 'folder', params: {slug: folder.slug}}"  tag="a">
+                        {{folder.name }}
+                    </router-link>
                 </li>
             </ul>
         </div>
@@ -77,6 +70,9 @@
             },
             getErrors() {
                 return this.$store.getters.getErrors
+            },
+            getFolders(){
+                return this.$store.getters.getFolders
             }
         },
         methods: {
@@ -108,6 +104,9 @@
                     }
                 },500)
             }
+        },
+        created(){
+            this.$store.dispatch('userFolders');
         },
         mounted() {
             document.addEventListener("DOMContentLoaded", function () {

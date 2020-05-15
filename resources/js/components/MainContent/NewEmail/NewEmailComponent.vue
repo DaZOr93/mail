@@ -141,7 +141,7 @@
     .new__email-wrap {
         background: #fff;
         padding-top: 10px;
-        min-height: 612px;
+        height: 609px;
         position: relative
     }
     .input-field {

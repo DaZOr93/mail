@@ -79,7 +79,7 @@
             }
         },
         created() {
-            this.$store.dispatch('getMessage', this.uid);
+            this.$store.dispatch('getMessageSending', this.uid);
         }
     }
 </script>

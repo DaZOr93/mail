@@ -9,6 +9,7 @@ import NewFile from './components/MainContent/NewFile/NewFileComponent';
 import PageNotFound from './components/fails/404';
 import MessagesOpen from './components/MainContent/Messages/MessagesOpenComponent';
 import SentMessagesOpen from './components/MainContent/Messages/SentMessagesOpenComponent'
+import folder from './components/MainContent/File/FolderComponent'
 
 
 export default new VueRouter({
@@ -49,16 +50,21 @@ export default new VueRouter({
             name: 'newFile'
         },
 
-        {   
+        {
             path: '/sentMessages/:uid',
             component: SentMessagesOpen,
             name: 'SentMessagesOpen'
         },
-      
+
         {
             path: '/messages/:uid',
             component: MessagesOpen,
             name: 'MessagesOpen'
+        },
+        {
+            path: '/folder/:slug',
+            component: folder,
+            name: 'folder'
         },
         //404
         {
