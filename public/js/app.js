@@ -2558,7 +2558,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     paginateNext: function paginateNext() {
       if (!this.preloader) {
-        return this.getMessages['pagination']['current'] > 10;
+        return this.getMessages['pagination']['current'] >= 10;
       }
     },
     paginatePrev: function paginatePrev() {
