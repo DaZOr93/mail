@@ -92,7 +92,7 @@
                                 duration: 2000
                             });
                         }
-                        this.$store.state.errors = []
+                        this.$store.state.errors = {}
                     }else {
                         Vue.$toast.open({
                             message: `Отправлено`,

@@ -24,31 +24,43 @@
                 <i class="material-icons">settings</i>
             </div>
         </div>
-        <div class="mess__open-content">
+        <div class="preloader-wrapper big active " v-if="preloader">
+            <div class="spinner-layer spinner-blue-only">
+                <div class="circle-clipper left">
+                    <div class="circle"></div>
+                </div>
+                <div class="gap-patch">
+                    <div class="circle"></div>
+                </div>
+                <div class="circle-clipper right">
+                    <div class="circle"></div>
+                </div>
+            </div>
+        </div>
+        <div class="mess__open-content" v-else>
             <div class="open__header">
                 От
                 <div class="open__user-wrap">
                     <div class="open__user-photo">
-                        {{ message.attr.sender[0]["personal"][0]}}
+                        {{ (message.from_name[0]) ? message.from_name[0]:  message.from[0]}}
                     </div>
                     <div class="open__user-name">
-                        {{ message.attr.sender[0]["personal"]}}
+                        {{ (message.from_name[0]) ? message.from_name :  message.from}}
                     </div>
                 </div>
                 <div class="open__subject">
-                    Re:    {{ message.attr.subject}}
+                    Re:    {{ message.subject}}
                 </div>
                 <div class="open__date">
-                    {{ getDate(message.attr.date) }} AM
+                    {{ getDate(message.date_send) }} AM
                 </div>
             </div>
-            <div class="open__body" v-html="message.messages.bodies.html.content">
+            <div class="open__body" v-html="message.html">
 
             </div>
             <div class="footer-border"></div>
         </div>
-        <deleteModal @close="modal = !modal" :modal="modal" :uid="uid"></deleteModal>
-
+        <deleteModal @close="modal = !modal" :modal="modal" :message_id="message.message_id" :uid="message.uid"></deleteModal>
     </div>
 </template>
 
@@ -68,17 +80,19 @@
             message() {
                 return this.$store.getters.message
             },
+            preloader(){
+                return this.$store.getters.preloader
+            }
         },
         methods: {
             getDate(time) {
-                let date = time.split('T')[1];
+                let date = time.split(' ')[1];
                 date = date.split(':');
 
                 return date[0] + ':' + date[1]
             },
             deleteMess() {
                 this.modal = true;
-
             }
         },
         watch: {
@@ -186,6 +200,7 @@
         border-top: 2px solid #F5F5F5;
         position: relative;
         height: 612px;
+        overflow: auto;
     }
 
     .open__header {

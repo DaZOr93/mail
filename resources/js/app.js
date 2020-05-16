@@ -22,6 +22,9 @@ import 'materialize-css/dist/js/materialize.js';
 //Vue.config.silent = true;
 
 
+//paginate
+Vue.component('pagination', require('laravel-vue-pagination'));
+
 //toaster
 
 import 'vue-toast-notification/dist/theme-sugar.css';

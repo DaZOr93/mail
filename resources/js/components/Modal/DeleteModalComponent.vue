@@ -23,14 +23,14 @@
 
 <script>
     export default {
-        props: ['modal', 'uid'],
+        props: ['modal', 'uid' , 'message_id'],
         name: "DeleteComponent",
         methods: {
             close() {
                 this.$emit('close')
             },
             deleteMess() {
-                    axios.get('/api/delete/' + this.uid);
+                    axios.get('/api/delete/' + this.uid + '/' + this.message_id);
                     this.$router.go(-1);
             },
         }

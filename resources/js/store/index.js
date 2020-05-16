@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import logger from "vuex/dist/logger";
+
 
 Vue.use(Vuex);
 
@@ -9,9 +9,9 @@ export default new Vuex.Store({
         toggleBar: false,
         toggleUser: false,
         user: [],
-        messages: [],
-        sendMessages: [],
-        getFolderMessages: [],
+        messages: {},
+        sendMessages: {},
+        getFolderMessages: {},
         errors: [],
         newMessage: {
             subject: '',
@@ -24,14 +24,7 @@ export default new Vuex.Store({
             'start': 0,
             'end': 0
         },
-        message: {
-            attr: {},
-            messages: {
-                bodies: {
-                    text: ''
-                },
-            }
-        },
+        message: {},
         getFolders: [],
         selectAll: false,
         preloader: false
@@ -42,23 +35,47 @@ export default new Vuex.Store({
             axios.get('/api/user')
                 .then(r => cnt.commit('getUser', r.data))
         },
-        async getMessages(cnt, payload) {
+        async getServiceMessages(cnt, payload) {
             cnt.commit('resetMess');
             cnt.commit('preloaderOn');
-            await axios.get('/api/messages/' + payload)
+            await axios.get('/api/messages/' + payload.folder + '?page=' + payload.page)
                 .then(r => {
                     cnt.commit('getMessages', r.data);
-                    cnt.commit('pagination', r.data.pagination);
                 })
             cnt.commit('preloaderOff');
         },
-        getMessage(cnt, payload) {
-            axios.get('/api/message/' + payload)
-                .then(r => {cnt.commit('getMessage', r.data)});
+
+        async getMessagesRefresh(cnt) {
+            cnt.commit('resetMess');
+            cnt.commit('preloaderOn');
+            await axios.get('/api/store/messages')
+                .then(r => {
+                    cnt.commit('getMessages', r.data);
+                });
+            cnt.commit('preloaderOff');
         },
-        getMessageSending(cnt , payload) {
+        async getMessage(cnt, payload) {
+            cnt.commit('preloaderOn');
+            await axios.get('/api/message/' + payload)
+                .then(r => {
+                    cnt.commit('getMessage', r.data)
+                });
+            cnt.commit('preloaderOff');
+        },
+        async paginateMessages(cnt, payload) {
+            cnt.commit('resetMess');
+            cnt.commit('preloaderOn');
+            await axios.get(payload)
+                .then(r => {
+                    cnt.commit('getMessages', r.data);
+                });
+            cnt.commit('preloaderOff');
+        },
+        getMessageSending(cnt, payload) {
             axios.get('/api/sentMessage/sending/' + payload)
-                .then(r => {cnt.commit('getMessage', r.data)});
+                .then(r => {
+                    cnt.commit('getMessage', r.data)
+                });
         },
         sendEmail(cnt, payload) {
             axios.post('/api/send-email', payload)
@@ -79,15 +96,15 @@ export default new Vuex.Store({
         },
         userFolders(cnt) {
             axios.get('/api/user/folders')
-                .then( r =>  cnt.commit('userFolders' , r.data))
+                .then(r => cnt.commit('userFolders', r.data))
         },
-       async getFolderMessages(cnt , payload){
+        async getFolderMessages(cnt, payload) {
             cnt.commit('getFolderMessagesReset');
             axios.get(`/api/user/${payload}/messages`)
-                .then( r =>  cnt.commit('getFolderMessages' , r.data))
+                .then(r => cnt.commit('getFolderMessages', r.data))
         },
         store_folder(cnt, payload) {
-            axios.post('/api/user/folders/store' , {
+            axios.post('/api/user/folders/store', {
                 body: payload
             })
         },
@@ -98,7 +115,7 @@ export default new Vuex.Store({
         getFolderMessagesReset(state) {
             state.getFolderMessages = []
         },
-        getFolderMessages(state , payload){
+        getFolderMessages(state, payload) {
             state.getFolderMessages = payload
         },
         toggleBar(state) {
@@ -134,9 +151,9 @@ export default new Vuex.Store({
             state.preloader = false;
         },
         resetMess(state) {
-            state.messages = []
+            state.messages = {}
         },
-        userFolders(state, payload){
+        userFolders(state, payload) {
             state.getFolders = payload
         }
     },
@@ -177,7 +194,7 @@ export default new Vuex.Store({
         getFolders(state) {
             return state.getFolders
         },
-        getFolderMessages(state){
+        getFolderMessages(state) {
             return state.getFolderMessages
         }
     }

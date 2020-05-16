@@ -7,7 +7,7 @@ use App\Models\Folders;
 use App\Models\Letter;
 use App\Services\MessageService;
 use Illuminate\Http\JsonResponse as JsonResponseAlias;
-use Webklex\IMAP\Facades\Client;
+
 
 class MessagesController extends Controller
 {
@@ -19,90 +19,46 @@ class MessagesController extends Controller
     }
 
     /**
-     * @param $offset
+     * @param $servicesFolder служебная папка
      *
      * @return JsonResponseAlias
      */
-    public function index($offset)
+    public function index($servicesFolder)
     {
-        $messages = $this->messageService->index($offset);
-
-        return response()->json($messages);
+        return response()->json($this->messageService->index($servicesFolder), 200);
     }
 
     /**
+     * Показать сообщение по uid
+     *
      * @param $uid
      *
      * @return JsonResponseAlias
      */
     public function show($uid)
     {
-        $message = $this->messageService->show($uid);
-
-        return response()->json($message);
+        return $message = $this->messageService->show($uid);
     }
 
-    public function delete($uid)
+
+    /**
+     * Удалить сообщение
+     *
+     * @param $uid
+     *
+     * @param $message_id
+     */
+    public function delete($uid , $message_id)
     {
-        $this->messageService->delete($uid);
-
+        $this->messageService->delete($uid, $message_id);
     }
 
-    public function sending($uid)
-    {
-        $oClient = Client::account('default');
-
-        $oFolder = $oClient->getFolder("[Gmail]/&BB4EQgQ,BEAEMAQyBDsENQQ9BD0ESwQ1-");
-
-        $data['messages'] = $oFolder->getMessage($uid, false, false, true, true);
-
-        $data['attr'] = $data['messages']->getAttributes();
-
-
-        return response()->json($data);
-    }
-
-
-
-
-    public function filters($filter, $offset)
-    {
-        return $messages = $this->messageService->filters($filter, $offset);
-    }
-
-    public function store()
-    {
-        $messages  = request()->all();
-        $folder = Folders::where('slug',  $messages['body']['slug'])->first();
-
-
-        foreach ($messages['body']['messages'] as $message) {
-            if($letter =  Letter::where('message_id' , $message['message_id'])->first()) {
-                $letter->folder_id = $folder->id;
-            }else{
-                $letter = new Letter();
-                $letter->folder_id = $folder->id;
-                $letter->message_id = $message['message_id'];
-                $letter->uid = $message['uid'];
-                $letter->date_send = $message['date'];
-                $letter->to = $message['to'][0]['mail'];
-                $letter->from = $message['sender'][0]['mail'];
-                $letter->subject = $message['subject'] ?? '( без темы )';
-                $letter->body = '222';
-                $letter->seen = false;
-                $letter->favorite = false;
-                $letter->save();
-            }
-        }
-
-        return response()->json('ok' , 200);
-    }
 
     public function folderMess($slug)
     {
-        $folder_id = Folders::where('slug' , $slug)->first()->id;
+        $folder_id = Folders::where('slug', $slug)->first()->id;
 
-       return response()->json(Letter::where('folder_id' , $folder_id)->get());
+        return response()->json(Letter::where('folder_id', $folder_id)->get(), 200);
     }
 
 }

@@ -42,28 +42,29 @@
             </div>
             <div class="email_simple-paginate">
                 <div class="paginate-numbers">
-                    {{pagination['start']}}
+
+                    {{ getMessages.from}}
                     -
-                    {{pagination['end']}}
+                    {{ getMessages.to}}
                     of
-                    {{pagination['total']}}
+                    {{ getMessages.total}}
                 </div>
                 <div class="paginate-arrows">
-                    <i title="Назад"
-                       @click="paginate('back')"
+                   <i
+                       @click="paginate(getMessages.prev_page_url)"
+                       :class="{'pag_disabled': !getMessages.prev_page_url}"
+                       title="Назад" class="material-icons"
+                   >
+                       arrow_back
+                   </i>
+                   <i
+                       @click="paginate(getMessages.next_page_url)"
+                       :class="{'pag_disabled': !getMessages.next_page_url}"
+                       title="Вперед"
                        class="material-icons"
-                       :class="{'pag_disabled': !paginatePrev}"
-                    >
-                        arrow_back
-                    </i>
-                    <i
-                        title="Вперед"
-                        @click="paginate('next')"
-                        class="material-icons"
-                        :class="{'pag_disabled': paginateNext === false}"
-                    >
-                        arrow_forward
-                    </i>
+                   >
+                       arrow_forward
+                   </i>
                 </div>
             </div>
             <div class="email-dop">
@@ -72,6 +73,7 @@
                 </div>
             </div>
         </div>
+
         <div class="preloader-wrapper big active " v-if="preloader">
             <div class="spinner-layer spinner-blue-only">
                 <div class="circle-clipper left">
@@ -89,10 +91,10 @@
             <tbody>
             <router-link
                 tag="tr"
-                :to="{name: 'MessagesOpen', params: {uid: message.uid}}"
-                v-for="(message , index) in getMessages.attr"
+                v-for="(message , index) in getMessages.data"
+                :to="{name: 'MessagesOpen', params: {uid: message.message_id}}"
                 :key="index"
-                :class="{new__massage__list:getMessages['messages'][`${message.message_id}`].flags.seen !== 1}"
+                :class="{new__massage__list: message.seen != 0}"
             >
                 <td>
                     <div class="message__select">
@@ -109,28 +111,42 @@
                         </i>
                     </div>
                 </td>
-                <td class="seen">
+                <td class="seen" v-if="$route.path === '/' ||  $route.path === '/draft'">
                     <div
-                        :class="{'message__seen-dot' :getMessages['messages'][`${message.message_id}`].flags.seen !== 1}">
+                        :class="{'message__seen-dot' :message.seen != 0}">
                     </div>
                 </td>
-                <td class="email__from-td">
+                <td class="email__from-td" v-if="$route.path === '/'">
                     <div class="email__from">
                         <div>
                             <div
                                 class="email__name"
                                 :class="'bg_' + randomBg(1 , 5)"
                             >
-                                {{ ( message.sender[0].personal ) ? message.sender[0].personal[0] :
-                                message.sender[0].mailbox[0]}}
+                                {{ ( message.from_name === "0" ) ? message.from[0] : message.from_name[0]}}
                             </div>
                         </div>
                         <div class="email__driver">
-                            {{ ( message.sender[0].personal ) ? message.sender[0].personal : message.sender[0].mailbox}}
+                            {{ ( message.from_name === "0" ) ? message.from : message.from_name}}
                         </div>
                     </div>
                 </td>
-                <td>
+                <td v-else-if="$route.path === '/sent'" class="email__to-td">
+                    <div class="email__to">
+                        <div>
+                            <div
+                                class="email__name"
+                                :class="'bg_' + randomBg(1 , 5)"
+                            >
+                                {{ ( message.to_name === "0" ) ? message.to[0] : message.to_name[0]}}
+                            </div>
+                        </div>
+                        <div class="email__driver">
+                            {{ ( message.to_name === "0" ) ? message.to : message.to_name}}
+                        </div>
+                    </div>
+                </td>
+                <td class="td__subject">
                     <div class="email__title">
                         {{ (message.subject === "") ? "( Без темы )" : message.subject}}
                     </div>
@@ -139,7 +155,7 @@
                     <div class="email__attachments">
 
                         <i
-                            v-if="getMessages['messages'][`${message.message_id}`].attachments.length != 0"
+                            v-if="message.attach !== 0"
                             class="material-icons"
                         >
                             attachment
@@ -148,7 +164,7 @@
                 </td>
                 <td>
                     <div class="email_date">
-                        {{ getDate( message.date) }} AM
+                        {{ getDate(message.date_send)}} AM
                     </div>
                 </td>
             </router-link>
@@ -160,10 +176,12 @@
 
 <script>
     import folderModal from '../../Modal/FolderModalComponent'
+    import {eventBus} from "../../../app"
 
     export default {
         name: "MessagesComponent",
         components: {folderModal},
+        props: ['getMessages'],
         data() {
             return {
                 selectMes: '',
@@ -172,7 +190,8 @@
                 reload: false,
                 modal: false,
                 action: false,
-                messages: []
+                MessagesData: {},
+                messages: [],
             }
         },
         computed: {
@@ -182,24 +201,11 @@
             preloader() {
                 return this.$store.getters.preloader
             },
-            getMessages() {
-                return this.$store.getters.getMessages
-            },
-            pagination() {
-                return this.$store.getters.pagination
-            },
-            paginateNext() {
-                if (!this.preloader) {
-                    return this.getMessages['pagination']['current'] >= 10;
-                }
-            },
-            paginatePrev() {
-                if (!this.preloader) {
-                    return this.getMessages['pagination']['page'] != 1;
-                }
-            }
         },
         methods: {
+            paginate(page){
+                if(page) eventBus.$emit('paginate' , page)
+            },
             favorite(event) {
                 let state = event.target.innerHTML;
                 if (state === 'star_border') {
@@ -214,20 +220,10 @@
                 let nav = document.getElementById('nav_wrap');
                 nav.classList.toggle("nav-wrap__open");
             },
-            paginate(way) {
-                if (!this.preloader) {
-                    if (way === 'next' && this.paginateNext) {
-                        this.$store.dispatch('getMessages', +this.getMessages['pagination']['page'] + 1);
-                    }
-                    if (way === 'back' && this.paginatePrev) {
-                        this.$store.dispatch('getMessages', +this.getMessages['pagination']['page'] - 1);
-                    }
-                }
-            },
             reloadMess() {
                 if (!this.preloader) {
                     this.$store.state.messages = [];
-                    this.$store.dispatch('getMessages', 1);
+                    this.$store.dispatch('getMessagesRefresh');
                 }
             },
             randomBg(min, max) {
@@ -235,7 +231,7 @@
                 return Math.round(rand);
             },
             getDate(time) {
-                let date = time.split('T')[1];
+                let date = time.split(' ')[1];
                 date = date.split(':');
                 return date[0] + ':' + date[1]
             },
@@ -256,13 +252,13 @@
                 (!element.classList.contains('trSelect')) ? element.classList.add("trSelect") : element.classList.remove("trSelect");
             },
             store_folder() {
-                    this.modal = true;
-                    this.messages = [];
-                    let checked = this.$refs.selectMes.filter(mes => mes.checked === true);
+                this.modal = true;
+                this.messages = [];
+                let checked = this.$refs.selectMes.filter(mes => mes.checked === true);
 
-                    for (let key in checked) {
-                        this.messages.push(this.getMessages.attr[key])
-                    }
+                for (let key in checked) {
+                    this.messages.push(this.getMessages.attr[key])
+                }
             }
         }
         ,
@@ -288,14 +284,8 @@
                     mess.checked = this.checked;
                 });
             }
-        }
-        ,
-        created() {
-            this.$store.dispatch('getMessages', 1);
         },
-        mounted() {
-        }
-        ,
+
     }
 </script>
 
@@ -306,5 +296,9 @@
 
     .pag_disabled:hover {
         color: #D8D8D8 !important;
+    }
+
+    .td__subject {
+        width: 50%;
     }
 </style>

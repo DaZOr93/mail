@@ -611,7 +611,9 @@ ul, li {
     background: #fff;
     height: 698px;
 }
-
+.preloader-wrapper.active {
+    z-index: 222222;
+}
 .massage__list i:hover {
     color: #837d7d;
 }

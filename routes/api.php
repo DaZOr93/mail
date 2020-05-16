@@ -19,12 +19,16 @@ Route::get('user', 'Api\User\UserController@index');
 
 //messages
 Route::get('/user/{slug}/messages', 'Api\MessagesController@folderMess');
-Route::get('/messages/{offset}', 'Api\MessagesController@index');
+
+Route::get('/messages/{servicesFolder}', 'Api\MessagesController@index');
+
+
 Route::get('/message/{uid}', 'Api\MessagesController@show');
 Route::get('/messages/{filters}/{offset}', 'Api\MessagesController@filters');
 Route::post('/user/folders/store' , 'Api\MessagesController@store');
-Route::get('/delete/{uid}', 'Api\MessagesController@delete');
+Route::get('/store/messages' , 'Api\StoreMessagesController');
 
+Route::get('/delete/{uid}/{message_id}', 'Api\MessagesController@delete');
 
 //user-folders
 Route::get('/user/folders' , 'Api\FoldersController@index');
