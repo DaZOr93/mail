@@ -3438,20 +3438,30 @@ __webpack_require__.r(__webpack_exports__);
       userDrop: false
     };
   },
-  methods: {
-    toggleBar: function toggleBar() {
-      this.$store.commit('toggleBar');
-    },
-    auth: function auth() {
-      this.$store.dispatch('auth');
-    }
-  },
   computed: {
     toggleBol: function toggleBol() {
       return this.$store.getters.toggleBar;
     },
     user: function user() {
       return this.$store.getters.getUser;
+    }
+  },
+  methods: {
+    toggleBar: function toggleBar() {
+      this.$store.commit('toggleBar');
+    },
+    auth: function auth() {
+      this.$store.dispatch('auth');
+    },
+    logout: function logout() {
+      axios.get('/auth/logout');
+      axios.get('https://team1-group-project.azurewebsites.net/api/client_logout', {
+        headers: {
+          Authorization: "Bearer " + "".concat(this.user.token)
+        }
+      }).then(function (r) {
+        return location.href = r.data;
+      });
     }
   },
   created: function created() {
@@ -56041,9 +56051,19 @@ var render = function() {
               "div",
               { staticClass: "user_drop", class: { user_show: _vm.userDrop } },
               [
-                _c("a", { attrs: { href: "/auth/logout" } }, [
-                  _vm._v("Выход из системы")
-                ])
+                _c(
+                  "a",
+                  {
+                    attrs: { href: "#" },
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.logout($event)
+                      }
+                    }
+                  },
+                  [_vm._v("Выйти из системы")]
+                )
               ]
             )
           ])

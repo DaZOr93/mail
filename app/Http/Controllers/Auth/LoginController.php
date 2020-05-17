@@ -55,7 +55,7 @@ class LoginController extends Controller
             'form_params' => [
                 'grant_type' => 'authorization_code',
                 'client_id' => 14, //данные которые выдаст Богдан. вынести в конфиг
-                'client_secret' => ' ECsqw5TAz7zf1T2STbQ7srU53iCTlkqdt3AAJnzB',//данные которые выдаст Богдан. вынести в конфиг
+                'client_secret' => 'ECsqw5TAz7zf1T2STbQ7srU53iCTlkqdt3AAJnzB',//данные которые выдаст Богдан. вынести в конфиг
                 'redirect_uri' => 'http://cu66460.tmweb.ru/auth/callback',
                 'code' => $request->code,
             ],
@@ -115,7 +115,7 @@ class LoginController extends Controller
         $this->guard()->logout();
         Auth::logout();
 
-        return redirect()->route('auth');
+        return response()->json('ok' , 200);
     }
 
     /**

@@ -24,7 +24,7 @@
                     <div class="arrow-bottom">
                         <img  @click="userDrop = !userDrop" src="/img/arrow.png" alt="">
                         <div class="user_drop" :class="{user_show : userDrop}">
-                            <a href="/auth/logout">Выход из системы</a>
+                            <a href="#" @click.prevent="logout">Выйти из системы</a>
                         </div>
                     </div>
                 </div>
@@ -41,15 +41,6 @@
               userDrop: false
           }
         },
-        methods: {
-            toggleBar() {
-                this.$store.commit('toggleBar');
-            },
-            auth(){
-                this.$store.dispatch('auth')
-            }
-
-        },
         computed: {
             toggleBol() {
                 return this.$store.getters.toggleBar;
@@ -57,6 +48,20 @@
             user(){
                 return this.$store.getters.getUser;
             }
+        },
+        methods: {
+            toggleBar() {
+                this.$store.commit('toggleBar');
+            },
+            auth(){
+                this.$store.dispatch('auth')
+            },
+            logout(){
+                axios.get('/auth/logout');
+                axios.get('https://team1-group-project.azurewebsites.net/api/client_logout' , { headers: {Authorization: "Bearer " + `${this.user.token}`}})
+                    .then(r => location.href= r.data)
+            }
+
         },
         created() {
             this.$store.dispatch('getUser')
