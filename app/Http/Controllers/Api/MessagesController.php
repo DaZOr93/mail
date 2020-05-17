@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Folders;
 use App\Models\Letter;
 use App\Services\MessageService;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Http\JsonResponse as JsonResponseAlias;
 
 
@@ -53,12 +54,25 @@ class MessagesController extends Controller
         $this->messageService->delete($uid, $message_id);
     }
 
+    public function update()
+    {
+        $this->messageService->update();
+    }
 
     public function folderMess($slug)
     {
         $folder_id = Folders::where('slug', $slug)->first()->id;
 
-        return response()->json(Letter::where('folder_id', $folder_id)->get(), 200);
+        return response()->json(Letter::where('folder_id', $folder_id)->paginate(10), 200);
     }
+
+    public function messagesTollsCount()
+    {
+        return response()->json($this->messageService->messagesTollsCount() , 200);
+    }
+
+
+
+
 
 }

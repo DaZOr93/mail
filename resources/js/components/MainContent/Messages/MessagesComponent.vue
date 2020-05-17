@@ -20,7 +20,7 @@
                 </div>
 
                 <div class="action__group">
-                    <i @click="store_folder" title="В папку" class="material-icons">folder</i>
+                    <i @click="update_messages" title="В папку" class="material-icons">folder</i>
                 </div>
                 <div class="action__group">
                     <i
@@ -50,21 +50,21 @@
                     {{ getMessages.total}}
                 </div>
                 <div class="paginate-arrows">
-                   <i
-                       @click="paginate(getMessages.prev_page_url)"
-                       :class="{'pag_disabled': !getMessages.prev_page_url}"
-                       title="Назад" class="material-icons"
-                   >
-                       arrow_back
-                   </i>
-                   <i
-                       @click="paginate(getMessages.next_page_url)"
-                       :class="{'pag_disabled': !getMessages.next_page_url}"
-                       title="Вперед"
-                       class="material-icons"
-                   >
-                       arrow_forward
-                   </i>
+                    <i
+                        @click="paginate(getMessages.prev_page_url)"
+                        :class="{'pag_disabled': !getMessages.prev_page_url}"
+                        title="Назад" class="material-icons"
+                    >
+                        arrow_back
+                    </i>
+                    <i
+                        @click="paginate(getMessages.next_page_url)"
+                        :class="{'pag_disabled': !getMessages.next_page_url}"
+                        title="Вперед"
+                        class="material-icons"
+                    >
+                        arrow_forward
+                    </i>
                 </div>
             </div>
             <div class="email-dop">
@@ -111,12 +111,12 @@
                         </i>
                     </div>
                 </td>
-                <td class="seen" v-if="$route.path === '/' ||  $route.path === '/draft'">
+                <td class="seen" v-if="$route.path !== '/sent' ||  $route.path === '/draft'">
                     <div
                         :class="{'message__seen-dot' :message.seen != 0}">
                     </div>
                 </td>
-                <td class="email__from-td" v-if="$route.path === '/'">
+                <td class="email__from-td" v-if="$route.path !== '/sent'">
                     <div class="email__from">
                         <div>
                             <div
@@ -131,7 +131,7 @@
                         </div>
                     </div>
                 </td>
-                <td v-else-if="$route.path === '/sent'" class="email__to-td">
+                <td v-else class="email__to-td">
                     <div class="email__to">
                         <div>
                             <div
@@ -203,8 +203,8 @@
             },
         },
         methods: {
-            paginate(page){
-                if(page) eventBus.$emit('paginate' , page)
+            paginate(page) {
+                if (page) eventBus.$emit('paginate', page)
             },
             favorite(event) {
                 let state = event.target.innerHTML;
@@ -242,6 +242,7 @@
                 for (let i = 0; i < this.$refs.selectMes.length; i++) {
                     if (this.$refs.selectMes[i].checked === true) {
                         toolbars.classList.remove("disabled");
+                        this.action = true;
                         break;
                     } else {
                         toolbars.classList.add("disabled");
@@ -251,13 +252,15 @@
                 let element = event.target.parentElement.parentElement.parentElement.parentElement;
                 (!element.classList.contains('trSelect')) ? element.classList.add("trSelect") : element.classList.remove("trSelect");
             },
-            store_folder() {
-                this.modal = true;
-                this.messages = [];
-                let checked = this.$refs.selectMes.filter(mes => mes.checked === true);
-
-                for (let key in checked) {
-                    this.messages.push(this.getMessages.attr[key])
+            update_messages() {
+                if (this.action === true) {
+                    this.modal = true;
+                    this.messages = [];
+                    let checked = this.$refs.selectMes.filter(mes => mes.checked === true);
+                    for (let key in checked) {
+                        let message = checked[key].getAttribute('data-mess');
+                        this.messages.push(this.getMessages.data[message])
+                    }
                 }
             }
         }

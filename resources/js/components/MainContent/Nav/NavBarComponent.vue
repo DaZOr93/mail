@@ -24,19 +24,19 @@
             <ul>
                 <li>
                     <router-link tag="a" exact active-class="active" to="/">Входящие</router-link>
-                    <span>5</span>
+                    <span v-if="countMessages.inbox !== 0">{{ countMessages.inbox }}</span>
                 </li>
                 <li>
                     <router-link tag="a" active-class="active" to="/draft">Черновик</router-link>
-                    <span>5</span>
+                    <span v-if="countMessages.draft !== 0">{{ countMessages.draft }}</span>
                 </li>
                 <li>
                     <router-link tag="a" active-class="active" to="/sent">Отправленные</router-link>
-                    <span>5</span>
+                    <span v-if="countMessages.sending !== 0">{{ countMessages.sending }}</span>
                 </li>
                 <li>
                     <router-link tag="a" active-class="active" to="/basket">Корзина</router-link>
-                    <span>5</span>
+                    <span v-if="countMessages.deleted !== 0">{{ countMessages.deleted }}</span>
                 </li>
             </ul>
         </div>
@@ -73,6 +73,9 @@
             },
             getFolders(){
                 return this.$store.getters.getFolders
+            },
+            countMessages(){
+                return this.$store.getters.countMessages
             }
         },
         methods: {
@@ -103,10 +106,12 @@
                         eventBus.$emit('reset')
                     }
                 },500)
+                this.$store.dispatch('countMessages');
             }
         },
         created(){
             this.$store.dispatch('userFolders');
+            this.$store.dispatch('countMessages');
         },
         mounted() {
             document.addEventListener("DOMContentLoaded", function () {

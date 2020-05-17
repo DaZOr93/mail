@@ -20,12 +20,15 @@ Route::get('user', 'Api\User\UserController@index');
 //messages
 Route::get('/user/{slug}/messages', 'Api\MessagesController@folderMess');
 
+
+
+Route::get('/count/messages', 'Api\MessagesController@messagesTollsCount');
 Route::get('/messages/{servicesFolder}', 'Api\MessagesController@index');
-
-
 Route::get('/message/{uid}', 'Api\MessagesController@show');
 Route::get('/messages/{filters}/{offset}', 'Api\MessagesController@filters');
-Route::post('/user/folders/store' , 'Api\MessagesController@store');
+
+Route::post('/user/folders/update' , 'Api\MessagesController@update');
+
 Route::get('/store/messages' , 'Api\StoreMessagesController');
 
 Route::get('/delete/{uid}/{message_id}', 'Api\MessagesController@delete');

@@ -64,7 +64,7 @@ class ConnectServices
         $date_send = Letter::select('date_send')->orderByDesc('date_send')->first();
 
         if ($date_send) {
-            $data = explode('-', explode(' ', $date_send->$date_send)[0]);
+            $data = explode('-', explode(' ', $date_send->date_send)[0]);
             $data_format = implode(".", array_reverse($data));
 
             return $this->mainFolder()->query()->SINCE($data_format)->get();

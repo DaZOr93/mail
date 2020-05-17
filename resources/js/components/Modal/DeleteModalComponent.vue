@@ -31,6 +31,7 @@
             },
             deleteMess() {
                     axios.get('/api/delete/' + this.uid + '/' + this.message_id);
+                    this.$store.dispatch('countMessages');
                     this.$router.go(-1);
             },
         }

@@ -2076,251 +2076,34 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Messages_MessagesComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Messages/MessagesComponent */ "./resources/js/components/MainContent/Messages/MessagesComponent.vue");
 //
 //
 //
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "FolderComponent",
+  components: {
+    messages: _Messages_MessagesComponent__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
   data: function data() {
     return {
       slug: this.$route.params.slug
     };
   },
   computed: {
-    selectAll: function selectAll() {
-      return this.$store.getters.selectAll;
-    },
-    preloader: function preloader() {
-      return this.$store.getters.preloader;
-    },
     getMessages: function getMessages() {
       return this.$store.getters.getFolderMessages;
     }
   },
-  methods: {
-    favorite: function favorite(event) {
-      var state = event.target.innerHTML;
-
-      if (state === 'star_border') {
-        event.target.innerHTML = 'star';
-        event.target.style.color = '#F9AD3D';
-      } else {
-        event.target.innerHTML = 'star_border';
-        event.target.style.color = '#D8D8D8';
-      }
-    },
-    openNav: function openNav() {
-      var nav = document.getElementById('nav_wrap');
-      nav.classList.toggle("nav-wrap__open");
-    },
-    reloadMess: function reloadMess() {
-      if (!this.preloader) {
-        this.$store.state.messages = [];
-        this.$store.dispatch('getMessages', 1);
-      }
-    },
-    randomBg: function randomBg(min, max) {
-      var rand = min - 0.5 + Math.random() * (max - min + 1);
-      return Math.round(rand);
-    },
-    getDate: function getDate(time) {
-      var date = time.split('T')[1];
-      date = date.split(':');
-      return date[0] + ':' + date[1];
-    },
-    setBg: function setBg(event) {
-      event.target.previousElementSibling.checked = !event.target.previousElementSibling.checked;
-      var toolbars = document.getElementById('ToolBars');
-
-      for (var i = 0; i < this.$refs.selectMes.length; i++) {
-        if (this.$refs.selectMes[i].checked === true) {
-          toolbars.classList.remove("disabled");
-          break;
-        } else {
-          toolbars.classList.add("disabled");
-        }
-      }
-
-      var element = event.target.parentElement.parentElement.parentElement.parentElement;
-      !element.classList.contains('trSelect') ? element.classList.add("trSelect") : element.classList.remove("trSelect");
-    }
-  },
+  methods: {},
   watch: {
     $route: function $route(to) {
       this.slug = to.params['slug'];
       this.$store.dispatch('getFolderMessages', this.slug);
-    },
-    selectAllMes: function selectAllMes() {
-      var _this = this;
-
-      var toolbars = document.getElementById('ToolBars');
-      var trAll = document.getElementsByTagName('tr');
-      var ArrayMess = this.$refs.selectMes;
-      this.checked = this.checked === false;
-      this.checked ? toolbars.classList.remove("disabled") : toolbars.classList.add("disabled");
-
-      if (this.checked) {
-        for (var i = 0; i < trAll.length; i++) {
-          trAll[i].classList.add("trSelect");
-        }
-      } else {
-        for (var _i = 0; _i < trAll.length; _i++) {
-          trAll[_i].classList.remove("trSelect");
-        }
-      }
-
-      ArrayMess.map(function (mess) {
-        mess.checked = _this.checked;
-      });
     }
   },
   created: function created() {
@@ -2639,6 +2422,7 @@ __webpack_require__.r(__webpack_exports__);
       for (var i = 0; i < this.$refs.selectMes.length; i++) {
         if (this.$refs.selectMes[i].checked === true) {
           toolbars.classList.remove("disabled");
+          this.action = true;
           break;
         } else {
           toolbars.classList.add("disabled");
@@ -2649,15 +2433,18 @@ __webpack_require__.r(__webpack_exports__);
       var element = event.target.parentElement.parentElement.parentElement.parentElement;
       !element.classList.contains('trSelect') ? element.classList.add("trSelect") : element.classList.remove("trSelect");
     },
-    store_folder: function store_folder() {
-      this.modal = true;
-      this.messages = [];
-      var checked = this.$refs.selectMes.filter(function (mes) {
-        return mes.checked === true;
-      });
+    update_messages: function update_messages() {
+      if (this.action === true) {
+        this.modal = true;
+        this.messages = [];
+        var checked = this.$refs.selectMes.filter(function (mes) {
+          return mes.checked === true;
+        });
 
-      for (var key in checked) {
-        this.messages.push(this.getMessages.attr[key]);
+        for (var key in checked) {
+          var message = checked[key].getAttribute('data-mess');
+          this.messages.push(this.getMessages.data[message]);
+        }
       }
     }
   },
@@ -2992,6 +2779,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     getFolders: function getFolders() {
       return this.$store.getters.getFolders;
+    },
+    countMessages: function countMessages() {
+      return this.$store.getters.countMessages;
     }
   },
   methods: {
@@ -3025,10 +2815,12 @@ __webpack_require__.r(__webpack_exports__);
           _app__WEBPACK_IMPORTED_MODULE_0__["eventBus"].$emit('reset');
         }
       }, 500);
+      this.$store.dispatch('countMessages');
     }
   },
   created: function created() {
     this.$store.dispatch('userFolders');
+    this.$store.dispatch('countMessages');
   },
   mounted: function mounted() {
     document.addEventListener("DOMContentLoaded", function () {
@@ -3397,6 +3189,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     deleteMess: function deleteMess() {
       axios.get('/api/delete/' + this.uid + '/' + this.message_id);
+      this.$store.dispatch('countMessages');
       this.$router.go(-1);
     }
   }
@@ -3442,7 +3235,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['modal', 'messages'],
   name: "FolderComponent",
@@ -3456,8 +3248,9 @@ __webpack_require__.r(__webpack_exports__);
       });
 
       if (folder) {
+        console.log(this.messages);
         var folder_slug = folder.getAttribute('data-folder');
-        this.$store.dispatch('store_folder', {
+        this.$store.dispatch('update_messages', {
           slug: folder_slug,
           messages: this.messages
         });
@@ -54349,355 +54142,14 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "massage__list w100" }, [
-    _c("div", { staticClass: "messages_wrap" }, [
-      _c(
-        "div",
-        { staticClass: "messages_action disabled", attrs: { id: "ToolBars" } },
-        [
-          _c("div", { staticClass: "action__group" }, [
-            _c("label", [
-              _c("input", {
-                directives: [
-                  {
-                    name: "model",
-                    rawName: "v-model",
-                    value: _vm.selectAll,
-                    expression: "selectAll"
-                  }
-                ],
-                staticClass: "filled-in",
-                attrs: { type: "checkbox" },
-                domProps: {
-                  checked: Array.isArray(_vm.selectAll)
-                    ? _vm._i(_vm.selectAll, null) > -1
-                    : _vm.selectAll
-                },
-                on: {
-                  change: function($event) {
-                    var $$a = _vm.selectAll,
-                      $$el = $event.target,
-                      $$c = $$el.checked ? true : false
-                    if (Array.isArray($$a)) {
-                      var $$v = null,
-                        $$i = _vm._i($$a, $$v)
-                      if ($$el.checked) {
-                        $$i < 0 && (_vm.selectAll = $$a.concat([$$v]))
-                      } else {
-                        $$i > -1 &&
-                          (_vm.selectAll = $$a
-                            .slice(0, $$i)
-                            .concat($$a.slice($$i + 1)))
-                      }
-                    } else {
-                      _vm.selectAll = $$c
-                    }
-                  }
-                }
-              }),
-              _vm._v(" "),
-              _c("span")
-            ])
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "action__group" }, [
-            _c(
-              "i",
-              {
-                staticClass: "reloadMess material-icons",
-                attrs: { title: "обновить" },
-                on: { click: _vm.reloadMess }
-              },
-              [_vm._v("refresh")]
-            )
-          ]),
-          _vm._v(" "),
-          _vm._m(0),
-          _vm._v(" "),
-          _vm._m(1),
-          _vm._v(" "),
-          _vm._m(2),
-          _vm._v(" "),
-          _vm._m(3)
-        ]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "email__search" }, [
-        _c(
-          "div",
-          { staticClass: "nav__mobile-open", on: { click: _vm.openNav } },
-          [_c("i", { staticClass: "material-icons" }, [_vm._v("dehaze")])]
-        ),
-        _vm._v(" "),
-        _vm._m(4)
-      ]),
-      _vm._v(" "),
-      _vm._m(5),
-      _vm._v(" "),
-      _vm._m(6)
-    ]),
-    _vm._v(" "),
-    _vm.preloader
-      ? _c("div", { staticClass: "preloader-wrapper big active " }, [_vm._m(7)])
-      : _vm._e(),
-    _vm._v(" "),
-    _c("table", [
-      _c(
-        "tbody",
-        _vm._l(_vm.getMessages, function(message, index) {
-          return _c(
-            "router-link",
-            {
-              key: index,
-              attrs: {
-                tag: "tr",
-                to: { name: "MessagesOpen", params: { uid: message.uid } }
-              }
-            },
-            [
-              _c("td", [
-                _c("div", { staticClass: "message__select" }, [
-                  _c(
-                    "label",
-                    {
-                      on: {
-                        click: function($event) {
-                          $event.preventDefault()
-                          return _vm.setBg($event)
-                        }
-                      }
-                    },
-                    [
-                      _c("input", {
-                        ref: "selectMes",
-                        refInFor: true,
-                        staticClass: "filled-in",
-                        attrs: { type: "checkbox" }
-                      }),
-                      _vm._v(" "),
-                      _c("span")
-                    ]
-                  )
-                ])
-              ]),
-              _vm._v(" "),
-              _c("td", [
-                _c("div", { staticClass: "message__favorite" }, [
-                  _c(
-                    "i",
-                    {
-                      staticClass: "material-icons",
-                      on: {
-                        click: function($event) {
-                          $event.preventDefault()
-                          return _vm.favorite($event)
-                        }
-                      }
-                    },
-                    [
-                      _vm._v(
-                        "\n                        star_border\n                    "
-                      )
-                    ]
-                  )
-                ])
-              ]),
-              _vm._v(" "),
-              _c("td", { staticClass: "seen" }, [_c("div")]),
-              _vm._v(" "),
-              _c("td", { staticClass: "email__from-td" }, [
-                _c("div", { staticClass: "email__from" }, [
-                  _c("div", [
-                    _c(
-                      "div",
-                      {
-                        staticClass: "email__name",
-                        class: "bg_" + _vm.randomBg(1, 5)
-                      },
-                      [
-                        _vm._v(
-                          "\n                            " +
-                            _vm._s(message.from[0]) +
-                            "\n                        "
-                        )
-                      ]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "email__driver" }, [
-                    _vm._v(
-                      "\n                        " +
-                        _vm._s(message.from) +
-                        "\n                    "
-                    )
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("td", [
-                _c("div", { staticClass: "email__title" }, [
-                  _vm._v(
-                    "\n                    " +
-                      _vm._s(
-                        message.subject === ""
-                          ? "( Без темы )"
-                          : message.subject
-                      ) +
-                      "\n                "
-                  )
-                ])
-              ]),
-              _vm._v(" "),
-              _c("td", [
-                _c("div", { staticClass: "email__attachments" }, [
-                  _c("i", { staticClass: "material-icons" }, [
-                    _vm._v(
-                      "\n                        attachment\n                    "
-                    )
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("td", [
-                _c("div", { staticClass: "email_date" }, [
-                  _vm._v(
-                    "\n                    " +
-                      _vm._s(_vm.getDate(message.date_send)) +
-                      " AM\n                "
-                  )
-                ])
-              ])
-            ]
-          )
-        }),
-        1
-      )
-    ])
-  ])
+  return _c(
+    "div",
+    { staticClass: "massage__list w100" },
+    [_c("messages", { attrs: { getMessages: _vm.getMessages } })],
+    1
+  )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "action__group" }, [
-      _c("i", { staticClass: "material-icons", attrs: { title: "В спам!" } }, [
-        _vm._v("report")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "action__group" }, [
-      _c(
-        "i",
-        {
-          staticClass: "material-icons",
-          attrs: { title: "Прочитано/Не прочитано" }
-        },
-        [_vm._v("fiber_manual_record")]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "action__group" }, [
-      _c("i", { staticClass: "material-icons", attrs: { title: "В папку" } }, [
-        _vm._v("folder")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "action__group" }, [
-      _c(
-        "i",
-        {
-          staticClass: "waves-effect waves-light modal-trigger material-icons",
-          attrs: { title: "Удалить", "data-target": "delMes" }
-        },
-        [_vm._v("\n                    delete\n                ")]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input-field" }, [
-      _c("input", {
-        staticClass: "validate",
-        attrs: { id: "last_name", type: "text" }
-      }),
-      _vm._v(" "),
-      _c("label", { attrs: { for: "last_name" } }, [_vm._v("Поиск")]),
-      _vm._v(" "),
-      _c("i", { staticClass: "material-icons", attrs: { title: "Поиск" } }, [
-        _vm._v("search")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "email_simple-paginate" }, [
-      _c("div", { staticClass: "paginate-numbers" }, [
-        _vm._v(
-          "\n               1\n                -\n               1\n                of\n                1\n            "
-        )
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "paginate-arrows" }, [
-        _c("i", { staticClass: "material-icons", attrs: { title: "Назад" } }, [
-          _vm._v("\n                    arrow_back\n                ")
-        ]),
-        _vm._v(" "),
-        _c("i", { staticClass: "material-icons", attrs: { title: "Вперед" } }, [
-          _vm._v("\n                    arrow_forward\n                ")
-        ])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "email-dop" }, [
-      _c("div", [
-        _c(
-          "i",
-          { staticClass: "material-icons", attrs: { title: "настройки" } },
-          [_vm._v("settings")]
-        )
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "spinner-layer spinner-blue-only" }, [
-      _c("div", { staticClass: "circle-clipper left" }, [
-        _c("div", { staticClass: "circle" })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "gap-patch" }, [
-        _c("div", { staticClass: "circle" })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "circle-clipper right" }, [
-        _c("div", { staticClass: "circle" })
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -54827,7 +54279,7 @@ var render = function() {
                 {
                   staticClass: "material-icons",
                   attrs: { title: "В папку" },
-                  on: { click: _vm.store_folder }
+                  on: { click: _vm.update_messages }
                 },
                 [_vm._v("folder")]
               )
@@ -54873,7 +54325,7 @@ var render = function() {
                   }
                 }
               },
-              [_vm._v("\n                   arrow_back\n               ")]
+              [_vm._v("\n                    arrow_back\n                ")]
             ),
             _vm._v(" "),
             _c(
@@ -54888,7 +54340,7 @@ var render = function() {
                   }
                 }
               },
-              [_vm._v("\n                   arrow_forward\n               ")]
+              [_vm._v("\n                    arrow_forward\n                ")]
             )
           ])
         ]),
@@ -54968,7 +54420,7 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _vm.$route.path === "/" || _vm.$route.path === "/draft"
+                _vm.$route.path !== "/sent" || _vm.$route.path === "/draft"
                   ? _c("td", { staticClass: "seen" }, [
                       _c("div", {
                         class: { "message__seen-dot": message.seen != 0 }
@@ -54976,7 +54428,7 @@ var render = function() {
                     ])
                   : _vm._e(),
                 _vm._v(" "),
-                _vm.$route.path === "/"
+                _vm.$route.path !== "/sent"
                   ? _c("td", { staticClass: "email__from-td" }, [
                       _c("div", { staticClass: "email__from" }, [
                         _c("div", [
@@ -55013,8 +54465,7 @@ var render = function() {
                         ])
                       ])
                     ])
-                  : _vm.$route.path === "/sent"
-                  ? _c("td", { staticClass: "email__to-td" }, [
+                  : _c("td", { staticClass: "email__to-td" }, [
                       _c("div", { staticClass: "email__to" }, [
                         _c("div", [
                           _c(
@@ -55049,8 +54500,7 @@ var render = function() {
                           )
                         ])
                       ])
-                    ])
-                  : _vm._e(),
+                    ]),
                 _vm._v(" "),
                 _c("td", { staticClass: "td__subject" }, [
                   _c("div", { staticClass: "email__title" }, [
@@ -55581,7 +55031,9 @@ var render = function() {
                 [_vm._v("Входящие")]
               ),
               _vm._v(" "),
-              _c("span", [_vm._v("5")])
+              _vm.countMessages.inbox !== 0
+                ? _c("span", [_vm._v(_vm._s(_vm.countMessages.inbox))])
+                : _vm._e()
             ],
             1
           ),
@@ -55595,7 +55047,9 @@ var render = function() {
                 [_vm._v("Черновик")]
               ),
               _vm._v(" "),
-              _c("span", [_vm._v("5")])
+              _vm.countMessages.draft !== 0
+                ? _c("span", [_vm._v(_vm._s(_vm.countMessages.draft))])
+                : _vm._e()
             ],
             1
           ),
@@ -55609,7 +55063,9 @@ var render = function() {
                 [_vm._v("Отправленные")]
               ),
               _vm._v(" "),
-              _c("span", [_vm._v("5")])
+              _vm.countMessages.sending !== 0
+                ? _c("span", [_vm._v(_vm._s(_vm.countMessages.sending))])
+                : _vm._e()
             ],
             1
           ),
@@ -55625,7 +55081,9 @@ var render = function() {
                 [_vm._v("Корзина")]
               ),
               _vm._v(" "),
-              _c("span", [_vm._v("5")])
+              _vm.countMessages.deleted !== 0
+                ? _c("span", [_vm._v(_vm._s(_vm.countMessages.deleted))])
+                : _vm._e()
             ],
             1
           )
@@ -74626,6 +74084,7 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
       to: '',
       editorData: ''
     },
+    countMessages: {},
     pagination: {
       'current': 0,
       'page': 1,
@@ -74801,9 +74260,14 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
         }, _callee6);
       }))();
     },
-    store_folder: function store_folder(cnt, payload) {
-      axios.post('/api/user/folders/store', {
+    update_messages: function update_messages(cnt, payload) {
+      axios.post('/api/user/folders/update', {
         body: payload
+      });
+    },
+    countMessages: function countMessages(cnt) {
+      axios.get('/api/count/messages').then(function (r) {
+        return cnt.commit('countMessages', r.data);
       });
     }
   },
@@ -74851,6 +74315,9 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
     },
     userFolders: function userFolders(state, payload) {
       state.getFolders = payload;
+    },
+    countMessages: function countMessages(state, payload) {
+      state.countMessages = payload;
     }
   },
   getters: {
@@ -74892,6 +74359,9 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
     },
     getFolderMessages: function getFolderMessages(state) {
       return state.getFolderMessages;
+    },
+    countMessages: function countMessages(state) {
+      return state.countMessages;
     }
   }
 }));

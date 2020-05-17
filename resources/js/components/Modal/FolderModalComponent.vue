@@ -1,5 +1,4 @@
 <template>
-    <!-- telegtam-modal -->
     <div class="m_modal_wrap" :class="{'m_modal_show' : modal}" id="folder_modal">
         <div class="m_modal_bg"></div>
         <div class="m_modal">
@@ -25,7 +24,7 @@
             </div>
         </div>
     </div>
-    <!-- telegram-modal -->
+
 </template>
 
 <script>
@@ -39,9 +38,10 @@
             store() {
                 let folder = this.$refs.folders.find(folder => folder.checked === true);
                 if (folder) {
+                    console.log(this.messages)
                     let folder_slug = folder.getAttribute('data-folder');
-                    this.$store.dispatch('store_folder', {slug: folder_slug, messages: this.messages});
-                    this.$emit('close')
+                    this.$store.dispatch('update_messages', {slug: folder_slug, messages: this.messages});
+                    this.$emit('close');
                     Vue.$toast.open({
                         message: `Доавил`,
                         type: 'success',

@@ -18,6 +18,7 @@ export default new Vuex.Store({
             to: '',
             editorData: ''
         },
+        countMessages: {},
         pagination: {
             'current': 0,
             'page': 1,
@@ -103,11 +104,15 @@ export default new Vuex.Store({
             axios.get(`/api/user/${payload}/messages`)
                 .then(r => cnt.commit('getFolderMessages', r.data))
         },
-        store_folder(cnt, payload) {
-            axios.post('/api/user/folders/store', {
+        update_messages(cnt, payload) {
+            axios.post('/api/user/folders/update', {
                 body: payload
             })
         },
+        countMessages(cnt){
+            axios.get('/api/count/messages')
+                .then( r => cnt.commit('countMessages' , r.data))
+        }
 
     },
 
@@ -155,6 +160,9 @@ export default new Vuex.Store({
         },
         userFolders(state, payload) {
             state.getFolders = payload
+        },
+        countMessages(state, payload){
+            state.countMessages = payload;
         }
     },
     getters: {
@@ -196,6 +204,9 @@ export default new Vuex.Store({
         },
         getFolderMessages(state) {
             return state.getFolderMessages
+        },
+        countMessages(state) {
+            return state.countMessages
         }
     }
 })

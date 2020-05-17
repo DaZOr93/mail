@@ -3,6 +3,7 @@
 
 namespace App\Services;
 
+use App\Models\Folders;
 use App\Models\Letter;
 
 class MessageService extends ConnectServices
@@ -32,6 +33,36 @@ class MessageService extends ConnectServices
         $letter->update(['seen' => 0]);
 
         return response()->json($letter , 202);
+    }
+
+    public function update()
+    {
+        $data = request()->only('body.slug' , 'body.messages');
+        $folder_id = Folders::where('slug' , $data['body']['slug'])->first()->id;
+
+        foreach ($data['body']['messages'] as $message){
+            $letter = Letter::where('message_id' , $message['message_id'])->first();
+            $letter->folder_id = $folder_id;
+            $letter->save();
+        }
+
+    }
+
+
+    /**
+     * Кол-во писем в служебных папок
+     *
+     * @return array $data
+     */
+    public function messagesTollsCount()
+    {
+        $data = [];
+        $data['inbox'] = Letter::where('inbox' , 1)->count();
+        $data['draft'] = Letter::where('draft' , 1)->count();
+        $data['sending'] = Letter::where('sending' , 1)->count();
+        $data['deleted'] = Letter::where('deleted' , 1)->count();
+
+        return $data;
     }
 
     /**
