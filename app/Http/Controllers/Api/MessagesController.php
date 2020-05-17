@@ -71,8 +71,10 @@ class MessagesController extends Controller
         return response()->json($this->messageService->messagesTollsCount() , 200);
     }
 
-
-
+    public function favorite($method, $message_id, $uid)
+    {
+        $this->messageService->favorite($method, $message_id, $uid);
+    }
 
 
 }

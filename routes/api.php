@@ -32,6 +32,7 @@ Route::post('/user/folders/update' , 'Api\MessagesController@update');
 Route::get('/store/messages' , 'Api\StoreMessagesController');
 
 Route::get('/delete/{uid}/{message_id}', 'Api\MessagesController@delete');
+Route::get('/favorite/{method}/{message_id}/{uid}', 'Api\MessagesController@favorite');
 
 //user-folders
 Route::get('/user/folders' , 'Api\FoldersController@index');

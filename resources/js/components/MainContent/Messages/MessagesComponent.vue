@@ -106,7 +106,10 @@
                 </td>
                 <td>
                     <div class="message__favorite">
-                        <i @click.prevent="favorite" class="material-icons">
+                        <i @click.prevent="favorite(message.message_id, message.uid, $event)" v-if="message.favorite === 1" style="color: rgb(249, 173, 61)" class="material-icons">
+                            star
+                        </i>
+                        <i @click.prevent="favorite(message.message_id, message.uid, $event)" v-else style="color: rgb(216, 216, 216);" class="material-icons">
                             star_border
                         </i>
                     </div>
@@ -206,14 +209,16 @@
             paginate(page) {
                 if (page) eventBus.$emit('paginate', page)
             },
-            favorite(event) {
+            favorite(message, uid, event) {
                 let state = event.target.innerHTML;
                 if (state === 'star_border') {
                     event.target.innerHTML = 'star';
                     event.target.style.color = '#F9AD3D';
+                    axios.get('/api/favorite/add/' + message + '/' + uid);
                 } else {
                     event.target.innerHTML = 'star_border';
                     event.target.style.color = '#D8D8D8';
+                    axios.get('/api/favorite/remove/' + message + '/' + uid);
                 }
             },
             openNav() {

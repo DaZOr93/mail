@@ -77,4 +77,31 @@ class MessageService extends ConnectServices
         Letter::where('message_id', $message_id)->first()->delete();
         $this->mainFolder()->getMessage($uid, false, false, false, false)->delete();
     }
+
+    /**
+     * Избранное
+     *
+     * @param $method
+     *
+     * @param $message_id
+     *
+     * @param $uid
+     */
+    public function favorite($method, $message_id, $uid)
+    {
+
+        $letter = Letter::where('message_id', $message_id)->first();
+
+        if($method == 'add'){
+            $letter->favorite = 1;
+            $this->mainFolder()->getMessage($uid, false, false, false, false)->setFlag('flagged');
+        }
+        if($method == 'remove'){
+            $letter->favorite = 0;
+            $this->mainFolder()->getMessage($uid, false, false, false, false)->unsetFlag('flagged');
+        }
+
+        $letter->save();
+
+    }
 }

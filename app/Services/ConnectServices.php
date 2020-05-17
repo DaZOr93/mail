@@ -40,6 +40,7 @@ class ConnectServices
                 $letter->from_name = $message->from[0]->personal;
                 $letter->subject = $message->getSubject();
                 $letter->attach = $message->hasAttachments();
+                $letter->favorite = $message->getFlags()['flagged'];
                 $letter->save();
                // if($message->hasAttachments())$this->attach($message->getAttachments(), $letter->id);
             }
