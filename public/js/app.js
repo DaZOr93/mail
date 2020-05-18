@@ -2160,6 +2160,15 @@ __webpack_require__.r(__webpack_exports__);
     _app__WEBPACK_IMPORTED_MODULE_1__["eventBus"].$on('paginate', function (page) {
       _this.$store.dispatch('paginateMessages', page);
     });
+    _app__WEBPACK_IMPORTED_MODULE_1__["eventBus"].$on('searchMessages', function (search) {
+      _this.$store.dispatch('searchMessages', search);
+    });
+    _app__WEBPACK_IMPORTED_MODULE_1__["eventBus"].$on('getMessages', function () {
+      _this.$store.dispatch('getServiceMessages', {
+        folder: 'inbox',
+        page: 1
+      });
+    });
   }
 });
 
@@ -2176,6 +2185,8 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Modal_FolderModalComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../Modal/FolderModalComponent */ "./resources/js/components/Modal/FolderModalComponent.vue");
 /* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../app */ "./resources/js/app.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_2__);
 //
 //
 //
@@ -2355,6 +2366,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2372,7 +2394,9 @@ __webpack_require__.r(__webpack_exports__);
       modal: false,
       action: false,
       MessagesData: {},
-      messages: []
+      search: "",
+      messages: [],
+      messagesSearch: []
     };
   },
   computed: {
@@ -2387,6 +2411,30 @@ __webpack_require__.r(__webpack_exports__);
     paginate: function paginate(page) {
       if (page) _app__WEBPACK_IMPORTED_MODULE_1__["eventBus"].$emit('paginate', page);
     },
+    getQueryMess: function getQueryMess(text) {
+      this.search = text.slice(0, text.lastIndexOf('...'));
+      this.messagesSearch = [];
+      _app__WEBPACK_IMPORTED_MODULE_1__["eventBus"].$emit('searchMessages', this.search);
+    },
+    queryFilter: function queryFilter(subject, text) {
+      if (subject.indexOf(this.search) + 1) {
+        return subject.slice(0, 30);
+      }
+
+      return text.slice(0, 30) + ' ... ' + this.search;
+    },
+    searchMessages: lodash__WEBPACK_IMPORTED_MODULE_2___default.a.debounce(function (event) {
+      var _this = this;
+
+      if (!event.target.value) {
+        this.messagesSearch = [];
+        _app__WEBPACK_IMPORTED_MODULE_1__["eventBus"].$emit('getMessages');
+      } else {
+        axios.get('/api/search/messages/' + event.target.value).then(function (r) {
+          _this.messagesSearch = r.data;
+        });
+      }
+    }, 200),
     favorite: function favorite(message, uid, event) {
       var state = event.target.innerHTML;
 
@@ -2409,10 +2457,6 @@ __webpack_require__.r(__webpack_exports__);
         this.$store.state.messages = [];
         this.$store.dispatch('getMessagesRefresh');
       }
-    },
-    randomBg: function randomBg(min, max) {
-      var rand = min - 0.5 + Math.random() * (max - min + 1);
-      return Math.round(rand);
     },
     getDate: function getDate(time) {
       var date = time.split(' ')[1];
@@ -2455,7 +2499,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   watch: {
     selectAllMes: function selectAllMes() {
-      var _this = this;
+      var _this2 = this;
 
       this.action = true;
       var toolbars = document.getElementById('ToolBars');
@@ -2477,7 +2521,7 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       ArrayMess.map(function (mess) {
-        mess.checked = _this.checked;
+        mess.checked = _this2.checked;
       });
     }
   }
@@ -8189,7 +8233,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n.pag_disabled {\n    cursor: default !important;\n}\n.pag_disabled:hover {\n    color: #D8D8D8 !important;\n}\n.td__subject {\n    width: 50%;\n}\n", ""]);
+exports.push([module.i, "\n.search-items {\n    position: absolute;\n    background: #ffffff;\n    left: 0;\n    width: 100%;\n}\n.massage__list .email__search {\n    position: relative;\n}\n.massage__list .email__search .search-items {\n    display: block;\n    color: #666666\n}\n.email__search .search-item {\n    padding: 30px;\n    cursor: pointer;\n    border-bottom: 1px solid rgba(0, 0, 0, 0.12);\n    border-top: 1px solid rgba(0, 0, 0, 0.12);\n    font-weight: 700;\n    justify-content: space-between;\n}\n.email__search .search-item:hover {\n    background: #f6f6f6;\n}\n.email__search .search-item {\n    display: inline-block;\n}\n.email__search .search-item .title {\n    width: 55%;\n}\n.valid {\n    box-shadow: none !important\n}\n.pag_disabled {\n    cursor: default !important;\n}\n.pag_disabled:hover {\n    color: #D8D8D8 !important;\n}\n.td__subject {\n    width: 50%;\n}\n", ""]);
 
 // exports
 
@@ -8208,7 +8252,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n.messages__attachments {\n    position: absolute;\n    max-width: 240px;\n    right: 13px;\n    top: 115px;\n    z-index: 2;\n    display: flex;\n}\n.messages__attachments i {\n    margin-right: 37px;\n    color: #D8D8D8\n}\n.attachments-tile {\n    font-style: normal;\n    font-weight: bold;\n    font-size: 14px;\n    line-height: 30px;\n    color: #808080;\n}\n.messages__attachments li {\n    margin-right: 10px;\n    width: 79px;\n}\n.attach-name {\n    font-style: normal;\n    font-weight: bold;\n    font-size: 14px;\n    line-height: 30px;\n    color: #999999;\n}\n.messages__attachments img {\n    width: 70px!important;\n    height: 60px;\n    cursor: pointer\n}\n.lightbox__image {\n    text-align: center;\n}\n.lightbox img {\n    width: 40%!important;\n    height: auto;\n}\n.messages__attachments .attach_icon {\n    width: 50px!important;\n    height: 50px;\n}\n.messages__attachments ul {\n    display: flex;\n    max-width: 180px;\n    flex-wrap: wrap\n}\n.open__email-bar {\n    display: flex;\n    height: 88px;\n    background: #fff;\n    align-items: center;\n}\n.open__email-bar .input-field {\n    display: flex;\n    margin: 0 !important;\n}\n.open__email-bar i {\n    color: #D8D8D8;\n    width: 26px;\n    height: 26px;\n    cursor: pointer;\n    position: relative;\n    border-radius: 25px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n}\n.open__email-bar i:hover {\n    color: #837d7d;\n    background: #eee;\n}\n.open__email-bar .email__arrows {\n    padding: 0px 7px;\n    border-right: 2px solid #F5F5F5;\n    height: 88px;\n    display: flex;\n    align-items: center;\n    margin-right: 5px;\n}\n.open__email-bar .next {\n    margin-left: 15px;\n}\n.open__email-bar .email__actions {\n    display: flex;\n    border-right: 2px solid #F5F5F5;\n    height: 88px;\n    align-items: center;\n    padding-right: 23px;\n    margin-right: 30px;\n}\n.open__email-bar .email__actions i:not(:last-child) {\n    margin-right: 25px;\n}\n.open__email-bar .input-field {\n    align-items: center;\n    padding-right: 25px;\n}\n.open__email-bar .email__search input {\n    border: none !important;\n    margin: 0 !important;\n    width: 240px !important;\n}\n.open__email-bar .email__search input:focus {\n    border: none !important;\n    box-shadow: none !important;\n}\n.open__email-bar .email-dop {\n    padding: 31px 32px 31px 23px;\n    border-left: 2px solid #F5F5F5;\n}\n.open__email-bar .email-dop i:first-child {\n    margin-right: 30px;\n}\n.mess__open-content {\n    padding-left: 30px;\n    padding-top: 10px;\n    background: #fff;\n    font-weight: bold;\n    font-size: 18px;\n    color: #999999;\n    border-top: 2px solid #F5F5F5;\n    position: relative;\n    height: 612px;\n    overflow: auto;\n}\n.open__header {\n    display: flex;\n    align-items: center;\n    padding-left: 10px;\n    padding-bottom: 15px;\n    border-bottom: 2px solid #F5F5F5;\n    width: -webkit-max-content;\n    width: -moz-max-content;\n    width: max-content;\n}\n.open__user-wrap {\n    display: flex;\n    align-items: center;\n    margin-left: 36px;\n    margin-right: 85px;\n    font-weight: 500;\n    font-size: 12px;\n}\n.open__user-photo {\n    width: 40px;\n    height: 40px;\n    border-radius: 100px;\n    background: orange;\n    margin-right: 30px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    text-transform: uppercase;\n}\n.open__subject {\n    font-weight: 500;\n    font-size: 12px;\n    padding-right: 45px;\n}\n.open__date {\n    font-weight: 500;\n    font-size: 12px;\n}\n.open__body {\n    padding-top: 30px;\n    padding-bottom: 36px;\n    font-style: normal;\n    font-weight: 500;\n    font-size: 13px;\n    line-height: 30px;\n    color: #808080;\n    max-width: 900px\n}\n.footer-border {\n    position: absolute;\n    height: 2px;\n    width: 100%;\n    background: #F5F5F5;\n    left: 0;\n}\n.open__body li {\n    padding-left: 35px;\n    position: relative;\n}\n.open__body ul li:before {\n    content: \".\";\n    width: 9px;\n    height: 9px;\n    position: absolute;\n    font-size: 46px;\n    color: #D8D8D8;\n    left: 0;\n    top: -13px;\n}\n.open__body ol {\n    padding-left: 15px;\n}\n.open__body ol li {\n    padding-left: 20px;\n    list-style: inherit;\n}\n", ""]);
+exports.push([module.i, "\n.messages__attachments {\n    position: absolute;\n    max-width: 240px;\n    right: 13px;\n    top: 115px;\n    z-index: 2;\n    display: flex;\n    background: #fff\n}\n.messages__attachments i {\n    margin-right: 37px;\n    color: #D8D8D8\n}\n.attachments-tile {\n    font-style: normal;\n    font-weight: bold;\n    font-size: 14px;\n    line-height: 30px;\n    color: #808080;\n}\n.messages__attachments li {\n    margin-right: 10px;\n    width: 79px;\n}\n.attach-name {\n    font-style: normal;\n    font-weight: bold;\n    font-size: 14px;\n    line-height: 30px;\n    color: #999999;\n}\n.messages__attachments img {\n    width: 70px!important;\n    height: 60px;\n    cursor: pointer\n}\n.lightbox__image {\n    text-align: center;\n}\n.lightbox img {\n    width: 40%!important;\n    height: auto;\n}\n.messages__attachments ul {\n    display: flex;\n    max-width: 180px;\n    flex-wrap: wrap;\n}\n.open__email-bar {\n    display: flex;\n    height: 88px;\n    background: #fff;\n    align-items: center;\n}\n.open__email-bar .input-field {\n    display: flex;\n    margin: 0 !important;\n}\n.open__email-bar i {\n    color: #D8D8D8;\n    width: 26px;\n    height: 26px;\n    cursor: pointer;\n    position: relative;\n    border-radius: 25px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n}\n.open__email-bar i:hover {\n    color: #837d7d;\n    background: #eee;\n}\n.open__email-bar .email__arrows {\n    padding: 0px 7px;\n    border-right: 2px solid #F5F5F5;\n    height: 88px;\n    display: flex;\n    align-items: center;\n    margin-right: 5px;\n}\n.open__email-bar .next {\n    margin-left: 15px;\n}\n.open__email-bar .email__actions {\n    display: flex;\n    border-right: 2px solid #F5F5F5;\n    height: 88px;\n    align-items: center;\n    padding-right: 23px;\n    margin-right: 30px;\n}\n.open__email-bar .email__actions i:not(:last-child) {\n    margin-right: 25px;\n}\n.open__email-bar .input-field {\n    align-items: center;\n    padding-right: 25px;\n}\n.open__email-bar .email__search input {\n    border: none !important;\n    margin: 0 !important;\n    width: 240px !important;\n}\n.open__email-bar .email__search input:focus {\n    border: none !important;\n    box-shadow: none !important;\n}\n.open__email-bar .email-dop {\n    padding: 31px 32px 31px 23px;\n    border-left: 2px solid #F5F5F5;\n}\n.open__email-bar .email-dop i:first-child {\n    margin-right: 30px;\n}\n.mess__open-content {\n    padding-left: 30px;\n    padding-top: 10px;\n    background: #fff;\n    font-weight: bold;\n    font-size: 18px;\n    color: #999999;\n    border-top: 2px solid #F5F5F5;\n    position: relative;\n    height: 612px;\n    overflow: auto;\n}\n.open__header {\n    display: flex;\n    align-items: center;\n    padding-left: 10px;\n    padding-bottom: 15px;\n    border-bottom: 2px solid #F5F5F5;\n    width: -webkit-max-content;\n    width: -moz-max-content;\n    width: max-content;\n}\n.open__user-wrap {\n    display: flex;\n    align-items: center;\n    margin-left: 36px;\n    margin-right: 85px;\n    font-weight: 500;\n    font-size: 12px;\n}\n.open__user-photo {\n    width: 40px;\n    height: 40px;\n    border-radius: 100px;\n    background: orange;\n    margin-right: 30px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    text-transform: uppercase;\n}\n.open__subject {\n    font-weight: 500;\n    font-size: 12px;\n    padding-right: 45px;\n}\n.open__date {\n    font-weight: 500;\n    font-size: 12px;\n}\n.open__body {\n    padding-top: 30px;\n    padding-bottom: 36px;\n    font-style: normal;\n    font-weight: 500;\n    font-size: 13px;\n    line-height: 30px;\n    color: #808080;\n    max-width: 900px\n}\n.footer-border {\n    position: absolute;\n    height: 2px;\n    width: 100%;\n    background: #F5F5F5;\n    left: 0;\n}\n.open__body li {\n    padding-left: 35px;\n    position: relative;\n}\n.open__body ul li:before {\n    content: \".\";\n    width: 9px;\n    height: 9px;\n    position: absolute;\n    font-size: 46px;\n    color: #D8D8D8;\n    left: 0;\n    top: -13px;\n}\n.open__body ol {\n    padding-left: 15px;\n}\n.open__body ol li {\n    padding-left: 20px;\n    list-style: inherit;\n}\n", ""]);
 
 // exports
 
@@ -54271,7 +54315,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "massage__list " },
+    { staticClass: "massage__list" },
     [
       _c("div", { staticClass: "messages_wrap" }, [
         _c(
@@ -54358,14 +54402,85 @@ var render = function() {
           ]
         ),
         _vm._v(" "),
-        _c("div", { staticClass: "email__search" }, [
+        _c("div", { staticClass: "email__search w100" }, [
           _c(
             "div",
             { staticClass: "nav__mobile-open", on: { click: _vm.openNav } },
             [_c("i", { staticClass: "material-icons" }, [_vm._v("dehaze")])]
           ),
           _vm._v(" "),
-          _vm._m(3)
+          _c("div", { staticClass: "input-field" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.search,
+                  expression: "search"
+                }
+              ],
+              staticClass: "validate",
+              attrs: { id: "last_name", type: "text" },
+              domProps: { value: _vm.search },
+              on: {
+                keyup: _vm.searchMessages,
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.search = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("label", { attrs: { for: "last_name" } }, [_vm._v("Поиск")]),
+            _vm._v(" "),
+            _c(
+              "i",
+              { staticClass: "material-icons", attrs: { title: "Поиск" } },
+              [_vm._v("search")]
+            )
+          ]),
+          _vm._v(" "),
+          _vm.messagesSearch.length > 0
+            ? _c(
+                "div",
+                { staticClass: "search-items", attrs: { id: "search_range" } },
+                _vm._l(_vm.messagesSearch, function(message) {
+                  return _c(
+                    "div",
+                    {
+                      staticClass: "search-item",
+                      on: {
+                        click: function($event) {
+                          _vm.getQueryMess(
+                            _vm.queryFilter(message.subject, message.text)
+                          )
+                        }
+                      }
+                    },
+                    [
+                      _vm._v(
+                        "\n                    " +
+                          _vm._s(
+                            _vm.queryFilter(message.subject, message.text)
+                          ) +
+                          "\n                    "
+                      ),
+                      _c(
+                        "i",
+                        {
+                          staticClass: "material-icons",
+                          attrs: { title: "Поиск" }
+                        },
+                        [_vm._v("search")]
+                      )
+                    ]
+                  )
+                }),
+                0
+              )
+            : _vm._e()
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "email_simple-paginate" }, [
@@ -54414,12 +54529,12 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _vm._m(4)
+        _vm._m(3)
       ]),
       _vm._v(" "),
       _vm.preloader
         ? _c("div", { staticClass: "preloader-wrapper big active " }, [
-            _vm._m(5)
+            _vm._m(4)
           ])
         : _vm._e(),
       _vm._v(" "),
@@ -54533,7 +54648,7 @@ var render = function() {
                             "div",
                             {
                               staticClass: "email__name",
-                              class: "bg_" + _vm.randomBg(1, 5)
+                              class: "bg_" + index
                             },
                             [
                               _vm._v(
@@ -54692,23 +54807,6 @@ var staticRenderFns = [
         },
         [_vm._v("\n                    delete\n                ")]
       )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "input-field" }, [
-      _c("input", {
-        staticClass: "validate",
-        attrs: { id: "last_name", type: "text" }
-      }),
-      _vm._v(" "),
-      _c("label", { attrs: { for: "last_name" } }, [_vm._v("Поиск")]),
-      _vm._v(" "),
-      _c("i", { staticClass: "material-icons", attrs: { title: "Поиск" } }, [
-        _vm._v("search")
-      ])
     ])
   },
   function() {
@@ -75807,6 +75905,11 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
           }
         }, _callee5);
       }))();
+    },
+    searchMessages: function searchMessages(cnt, payload) {
+      axios.get('/api//getSearch/messages/' + payload).then(function (r) {
+        cnt.commit('getMessages', r.data);
+      });
     },
     userFolders: function userFolders(cnt) {
       axios.get('/api/user/folders').then(function (r) {

@@ -1,5 +1,5 @@
 <template>
-    <div class="massage__list ">
+    <div class="massage__list">
         <div class="messages_wrap">
             <div class="messages_action disabled" id="ToolBars">
                 <div class="action__group">
@@ -32,12 +32,20 @@
                     </i>
                 </div>
             </div>
-            <div class="email__search">
+            <div class="email__search w100">
                 <div class="nav__mobile-open" @click="openNav"><i class="material-icons">dehaze</i></div>
                 <div class="input-field">
-                    <input id="last_name" type="text" class="validate">
+                    <input id="last_name" @keyup="searchMessages" v-model="search" type="text" class="validate">
                     <label for="last_name">Поиск</label>
                     <i title="Поиск" class="material-icons">search</i>
+                </div>
+                <div id="search_range" class="search-items" v-if="messagesSearch.length > 0">
+                    <div class="search-item"
+                         v-for="message in messagesSearch"
+                         @click="getQueryMess(queryFilter(message.subject, message.text))">
+                        {{queryFilter(message.subject, message.text) }}
+                        <i title="Поиск" class="material-icons">search</i>
+                    </div>
                 </div>
             </div>
             <div class="email_simple-paginate">
@@ -106,10 +114,12 @@
                 </td>
                 <td>
                     <div class="message__favorite">
-                        <i @click.prevent="favorite(message.message_id, message.uid, $event)" v-if="message.favorite === 1" style="color: rgb(249, 173, 61)" class="material-icons">
+                        <i @click.prevent="favorite(message.message_id, message.uid, $event)"
+                           v-if="message.favorite === 1" style="color: rgb(249, 173, 61)" class="material-icons">
                             star
                         </i>
-                        <i @click.prevent="favorite(message.message_id, message.uid, $event)" v-else style="color: rgb(216, 216, 216);" class="material-icons">
+                        <i @click.prevent="favorite(message.message_id, message.uid, $event)" v-else
+                           style="color: rgb(216, 216, 216);" class="material-icons">
                             star_border
                         </i>
                     </div>
@@ -124,7 +134,7 @@
                         <div>
                             <div
                                 class="email__name"
-                                :class="'bg_' + randomBg(1 , 5)"
+                                :class="'bg_' + index"
                             >
                                 {{ ( message.from_name === "0" ) ? message.from[0] : message.from_name[0]}}
                             </div>
@@ -180,6 +190,7 @@
 <script>
     import folderModal from '../../Modal/FolderModalComponent'
     import {eventBus} from "../../../app"
+    import _ from 'lodash'
 
     export default {
         name: "MessagesComponent",
@@ -194,7 +205,9 @@
                 modal: false,
                 action: false,
                 MessagesData: {},
+                search: "",
                 messages: [],
+                messagesSearch: []
             }
         },
         computed: {
@@ -209,6 +222,29 @@
             paginate(page) {
                 if (page) eventBus.$emit('paginate', page)
             },
+            getQueryMess(text) {
+                this.search = text.slice(0 , text.lastIndexOf('...'));
+                this.messagesSearch = [];
+                eventBus.$emit('searchMessages',this.search)
+            },
+            queryFilter(subject, text) {
+
+                if (subject.indexOf(this.search) + 1) {
+                    return subject.slice(0, 30)
+                }
+
+                return text.slice(0, 30) + ' ... ' + this.search;
+            },
+            searchMessages: _.debounce(function (event) {
+                if (!event.target.value) {
+                    this.messagesSearch = []
+                    eventBus.$emit('getMessages')
+                } else {
+                    axios.get('/api/search/messages/' + event.target.value).then(r => {
+                        this.messagesSearch = r.data;
+                    })
+                }
+            }, 200),
             favorite(message, uid, event) {
                 let state = event.target.innerHTML;
                 if (state === 'star_border') {
@@ -230,10 +266,6 @@
                     this.$store.state.messages = [];
                     this.$store.dispatch('getMessagesRefresh');
                 }
-            },
-            randomBg(min, max) {
-                let rand = min - 0.5 + Math.random() * (max - min + 1);
-                return Math.round(rand);
             },
             getDate(time) {
                 let date = time.split(' ')[1];
@@ -268,8 +300,7 @@
                     }
                 }
             }
-        }
-        ,
+        },
         watch: {
             selectAllMes() {
                 this.action = true;
@@ -291,13 +322,54 @@
                 ArrayMess.map((mess) => {
                     mess.checked = this.checked;
                 });
-            }
+            },
         },
 
     }
 </script>
 
 <style>
+    .search-items {
+        position: absolute;
+        background: #ffffff;
+        left: 0;
+        width: 100%;
+    }
+
+    .massage__list .email__search {
+        position: relative;
+    }
+
+    .massage__list .email__search .search-items {
+        display: block;
+        color: #666666
+    }
+
+    .email__search .search-item {
+        padding: 30px;
+        cursor: pointer;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+        border-top: 1px solid rgba(0, 0, 0, 0.12);
+        font-weight: 700;
+        justify-content: space-between;
+    }
+
+    .email__search .search-item:hover {
+        background: #f6f6f6;
+    }
+
+    .email__search .search-item {
+        display: inline-block;
+    }
+
+    .email__search .search-item .title {
+        width: 55%;
+    }
+
+    .valid {
+        box-shadow: none !important
+    }
+
     .pag_disabled {
         cursor: default !important;
     }

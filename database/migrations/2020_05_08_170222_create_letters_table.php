@@ -26,6 +26,7 @@ class CreateLettersTable extends Migration
             $table->string('from_name');
             $table->string('subject');
             $table->text('html');
+            $table->text('text');
             $table->boolean('sending')->default(0);
             $table->boolean('inbox')->default(1);
             $table->boolean('seen')->default(1);

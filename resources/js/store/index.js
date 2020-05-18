@@ -72,6 +72,7 @@ export default new Vuex.Store({
                 });
             cnt.commit('preloaderOff');
         },
+
         getMessageSending(cnt, payload) {
             axios.get('/api/sentMessage/sending/' + payload)
                 .then(r => {
@@ -94,6 +95,11 @@ export default new Vuex.Store({
                     cnt.commit('pagination', r.data.pagination);
                 });
             cnt.commit('preloaderOff');
+        },
+        searchMessages(cnt, payload) {
+            axios.get('/api//getSearch/messages/' + payload).then(r => {
+                cnt.commit('getMessages', r.data);
+            })
         },
         userFolders(cnt) {
             axios.get('/api/user/folders')

@@ -97,25 +97,6 @@ class MessageService extends ConnectServices
     }
 
 
-    public function paginate($folder, $messages, $offset)
-    {
-        $attr = [];
-        $attr['total'] = $folder->getMessages('ALL', false, false, false, false)->count();
-        $attr['current'] = $messages->count();
-
-        $attr['start'] = $offset - 1 . '0';
-
-        if ($attr['current'] < 10) {
-            $attr['end'] = $attr['total'];
-        } else {
-            $attr['end'] = $offset . '0';
-        }
-
-        $attr['start'] = (integer)$attr['start'] + 1;
-
-
-    }
-
     public function download($path)
     {
         return response()->download($path);
@@ -151,12 +132,24 @@ class MessageService extends ConnectServices
 
     }
 
+    public function search($value)
+    {
+        return Letter::where("subject" , "like" , "%{$value}%")->orWhere("text" , "like" ,   "%{$value}%")
+            ->select('subject' , 'text')
+            ->groupBy('subject' , 'text')
+            ->get();
+    }
+    public function getSearch($value)
+    {
+        return Letter::where("subject" , "like" , "%{$value}%")->orWhere("text" , "like" ,   "%{$value}%")->paginate(10);
+    }
+
+
     /*
      * Удаления вложеностей
      * */
 
-    public
-    function deleteAttach($attachments, $letter_id)
+    public function deleteAttach($attachments, $letter_id)
     {
         Attachments::where('letter_id', $letter_id)->delete();
 

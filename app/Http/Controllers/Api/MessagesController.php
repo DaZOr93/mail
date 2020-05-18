@@ -78,5 +78,16 @@ class MessagesController extends Controller
         $this->messageService->favorite($method, $message_id, $uid);
     }
 
+    public function search($value)
+    {
+       return response()->json($this->messageService->search($value) , 200);
+    }
+    public function getSearch($value)
+    {
+        return response()->json($this->messageService->getSearch($value) , 200);
+    }
+
+
+
 
 }

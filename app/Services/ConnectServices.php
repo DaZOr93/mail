@@ -38,6 +38,7 @@ class ConnectServices
                 $letter->to = $message->to[0]->mail;
                 $letter->from = $message->from[0]->mail;
                 $letter->html = $message->getHTMLBody(true);
+                $letter->text = $message->getTextBody(true);
                 $letter->to_name = $message->to[0]->personal;
                 $letter->from_name = $message->from[0]->personal;
                 $letter->subject = $message->getSubject();

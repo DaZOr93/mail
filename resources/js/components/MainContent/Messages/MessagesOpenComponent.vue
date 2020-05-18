@@ -148,6 +148,7 @@
         top: 115px;
         z-index: 2;
         display: flex;
+        background: #fff
     }
 
     .messages__attachments i {
@@ -190,15 +191,12 @@
     }
 
 
-    .messages__attachments .attach_icon {
-        width: 50px!important;
-        height: 50px;
-    }
+
 
     .messages__attachments ul {
         display: flex;
         max-width: 180px;
-        flex-wrap: wrap
+        flex-wrap: wrap;
     }
 
 

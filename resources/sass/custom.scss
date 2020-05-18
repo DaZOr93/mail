@@ -760,6 +760,7 @@ ul, li {
 .massage__list .email__search {
     padding: 6px 30px 6px 28px;
     border-right: 2px solid #F5F5F5;
+    max-width: 730px;
 }
 
 .massage__list .email__search input {
@@ -810,7 +811,7 @@ ul, li {
 }
 
 .messages_wrap input {
-    max-width: 240px !important;
+    max-width: 690px !important;
     border-bottom: none !important;
     margin-bottom: 0 !important;
     min-width: 50px;

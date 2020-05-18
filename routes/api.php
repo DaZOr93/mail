@@ -29,7 +29,8 @@ Route::get('/messages/{filters}/{offset}', 'Api\MessagesController@filters');
 
 
 Route::post('/user/folders/update' , 'Api\MessagesController@update');
-
+Route::get('/search/messages/{value}' , 'Api\MessagesController@search');
+Route::get('/getSearch/messages/{value}' , 'Api\MessagesController@getSearch');
 Route::get('/store/messages' , 'Api\StoreMessagesController');
 
 Route::get('/delete/{uid}/{message_id}', 'Api\MessagesController@delete');
