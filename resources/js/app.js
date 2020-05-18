@@ -25,8 +25,9 @@ import 'materialize-css/dist/js/materialize.js';
 //paginate
 Vue.component('pagination', require('laravel-vue-pagination'));
 
-//toaster
+import styles from 'vue-pure-lightbox/dist/VuePureLightbox.css'
 
+//toaster
 import 'vue-toast-notification/dist/theme-sugar.css';
 Vue.use(VueToast);
 

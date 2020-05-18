@@ -14,14 +14,15 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/{any}', 'Api\HomeController@index')
-    ->middleware('auth')
-    ->where('any', '^(?!auth|api).*$');
+    ->where('any', '^(?!auth|api|download).*$');
 
 
 //auth
 Route::get('/auth/redirect' , 'Auth\LoginController@redirect')->name('auth');
 Route::get('/auth/callback' , 'Auth\LoginController@callback');
 Route::get('/auth/logout' , 'Auth\LoginController@logout');
+
+Route::get('/download' , 'Api\MessagesController@download');
 
 
 

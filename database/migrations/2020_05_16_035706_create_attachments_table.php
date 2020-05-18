@@ -17,6 +17,9 @@ class CreateAttachmentsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('letter_id');
             $table->string('path');
+            $table->string('mime_type');
+            $table->longText('imageSrc')->nullable();
+            $table->string('name');
             $table->timestamps();
         });
     }

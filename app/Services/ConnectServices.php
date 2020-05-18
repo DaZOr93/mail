@@ -4,6 +4,7 @@
 namespace App\Services;
 
 
+use App\Models\Attachments;
 use App\Models\Letter;
 use Carbon\Carbon;
 use Webklex\IMAP\Facades\Client;
@@ -24,7 +25,8 @@ class ConnectServices
 
     public function store()
     {
-        $aMessage = $this->firstOrUpdate();
+        $aMessage = $this->mainFolder()->query()->whereAll()->setFetchFlags(true)->setFetchBody(true)->setFetchAttachment(true)->get();
+
         foreach ($aMessage as $message) {
             if (Letter::where('message_id', $message->message_id)->first()) {
                 continue;
@@ -42,7 +44,7 @@ class ConnectServices
                 $letter->attach = $message->hasAttachments();
                 $letter->favorite = $message->getFlags()['flagged'];
                 $letter->save();
-               // if($message->hasAttachments())$this->attach($message->getAttachments(), $letter->id);
+                if ($message->hasAttachments()) $this->attach($message, $letter->id);
             }
         }
 
@@ -50,12 +52,29 @@ class ConnectServices
     }
 
 
-//    public function attach($attachments , $letter_id)
-//    {
-//        foreach ($attachments as $attach){
-//            $attach->save();
-//        }
-//    }
+    /**
+     * Сохронить вложения сообщения
+     *
+     * @param $data
+     * @param $letter_id
+     */
+    public function attach($data, $letter_id)
+    {
+        $dataAttachments = $data->getAttachments();
+
+        foreach ($dataAttachments as $attach) {
+            $BdAttachments = new Attachments();
+            $BdAttachments->letter_id = $letter_id;
+            $BdAttachments->path = $attach->getName();
+            $BdAttachments->mime_type = substr($attach->getName(), strrpos($attach->getName(), '.') + 1);
+            $BdAttachments->imageSrc = $attach->getImgSrc();
+            $BdAttachments->name = $attach->getName();
+            $BdAttachments->save();
+            $attach->save();
+        }
+
+    }
+
     /*
      * фильтр сообщений
     *

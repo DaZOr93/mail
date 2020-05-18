@@ -42,34 +42,57 @@
                 От
                 <div class="open__user-wrap">
                     <div class="open__user-photo">
-                        {{ (message.from_name[0]) ? message.from_name[0]:  message.from[0]}}
+                        {{ (message.from_name[0]) ? message.from_name[0]: message.from[0]}}
                     </div>
                     <div class="open__user-name">
-                        {{ (message.from_name[0]) ? message.from_name :  message.from}}
+                        {{ (message.from_name[0]) ? message.from_name : message.from}}
                     </div>
                 </div>
                 <div class="open__subject">
-                    Re:    {{ message.subject}}
+                    Re: {{ message.subject}}
                 </div>
                 <div class="open__date">
                     {{ getDate(message.date_send) }} AM
                 </div>
             </div>
-            <div class="open__body" v-html="message.html">
-
+            <div class="open__body" v-html="message.html"></div>
+            <div class="messages__attachments" v-if="message.attachments.length > 0">
+                <i class="material-icons">attachment</i>
+                <div>
+                    <div class="attachments-tile">Вложения</div>
+                    <ul>
+                        <li v-for="attach in message.attachments">
+                            <span class="attach-name">{{ attach.name | shortName}}</span>
+                            <VuePureLightbox
+                                v-if="attach.imageSrc !== null"
+                                :thumbnail="`/storage/${attach.name}`"
+                                :images="[`/storage/${attach.name}`]"
+                            >
+                            </VuePureLightbox>
+                            <img
+                                v-else
+                                class="attach_icon"
+                                @click="download(attach.path)"
+                                :src="'/img/attach' + '-' + attach.mime_type + '.png'"
+                                alt="attach">
+                        </li>
+                    </ul>
+                </div>
             </div>
             <div class="footer-border"></div>
         </div>
-        <deleteModal @close="modal = !modal" :modal="modal" :message_id="message.message_id" :uid="message.uid"></deleteModal>
+        <deleteModal @close="modal = !modal" :modal="modal" :message_id="message.message_id"
+                     :uid="message.uid"></deleteModal>
     </div>
 </template>
 
 <script>
+    import VuePureLightbox from 'vue-pure-lightbox'
     import deleteModal from '../../Modal/DeleteModalComponent'
 
     export default {
         name: "MessagesOpenComponent",
-        components: {deleteModal},
+        components: {deleteModal, VuePureLightbox},
         data() {
             return {
                 uid: this.$route.params.uid,
@@ -80,9 +103,9 @@
             message() {
                 return this.$store.getters.message
             },
-            preloader(){
+            preloader() {
                 return this.$store.getters.preloader
-            }
+            },
         },
         methods: {
             getDate(time) {
@@ -93,6 +116,16 @@
             },
             deleteMess() {
                 this.modal = true;
+            },
+            download(path) {
+                window.location = '/download?path=' + path
+            }
+        },
+        filters: {
+            shortName: function (value) {
+                let mime_type = value.slice(value.lastIndexOf('.'));
+
+                return value.slice(0, 4) + '...' + mime_type;
             }
         },
         watch: {
@@ -107,8 +140,68 @@
 </script>
 
 
-
 <style>
+    .messages__attachments {
+        position: absolute;
+        max-width: 240px;
+        right: 13px;
+        top: 115px;
+        z-index: 2;
+        display: flex;
+    }
+
+    .messages__attachments i {
+        margin-right: 37px;
+        color: #D8D8D8
+    }
+
+    .attachments-tile {
+        font-style: normal;
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 30px;
+        color: #808080;
+    }
+
+    .messages__attachments li {
+        margin-right: 10px;
+        width: 79px;
+    }
+
+    .attach-name {
+        font-style: normal;
+        font-weight: bold;
+        font-size: 14px;
+        line-height: 30px;
+        color: #999999;
+    }
+
+    .messages__attachments img {
+        width: 70px!important;
+        height: 60px;
+        cursor: pointer
+    }
+    .lightbox__image {
+        text-align: center;
+    }
+    .lightbox img {
+        width: 40%!important;
+        height: auto;
+    }
+
+
+    .messages__attachments .attach_icon {
+        width: 50px!important;
+        height: 50px;
+    }
+
+    .messages__attachments ul {
+        display: flex;
+        max-width: 180px;
+        flex-wrap: wrap
+    }
+
+
     .open__email-bar {
         display: flex;
         height: 88px;
@@ -211,6 +304,7 @@
         border-bottom: 2px solid #F5F5F5;
         width: max-content;
     }
+
     .open__user-wrap {
         display: flex;
         align-items: center;
@@ -219,26 +313,30 @@
         font-weight: 500;
         font-size: 12px;
     }
+
     .open__user-photo {
         width: 40px;
         height: 40px;
         border-radius: 100px;
         background: orange;
         margin-right: 30px;
-        display:flex;
+        display: flex;
         align-items: center;
         justify-content: center;
         text-transform: uppercase;
     }
+
     .open__subject {
         font-weight: 500;
         font-size: 12px;
         padding-right: 45px;
     }
+
     .open__date {
         font-weight: 500;
         font-size: 12px;
     }
+
     .open__body {
         padding-top: 30px;
         padding-bottom: 36px;
@@ -249,6 +347,7 @@
         color: #808080;
         max-width: 900px
     }
+
     .footer-border {
         position: absolute;
         height: 2px;
@@ -256,23 +355,27 @@
         background: #F5F5F5;
         left: 0;
     }
+
     .open__body li {
         padding-left: 35px;
         position: relative;
     }
+
     .open__body ul li:before {
         content: ".";
         width: 9px;
         height: 9px;
-        position:absolute;
+        position: absolute;
         font-size: 46px;
         color: #D8D8D8;
         left: 0;
         top: -13px;
     }
+
     .open__body ol {
         padding-left: 15px;
     }
+
     .open__body ol li {
         padding-left: 20px;
         list-style: inherit;

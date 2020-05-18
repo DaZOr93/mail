@@ -8,4 +8,9 @@ class Letter extends Model
 {
     protected $fillable = ['seen'];
 
+    public function attachments()
+    {
+        return $this->hasMany(Attachments::class);
+    }
+
 }

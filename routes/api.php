@@ -27,6 +27,7 @@ Route::get('/messages/{servicesFolder}', 'Api\MessagesController@index');
 Route::get('/message/{uid}', 'Api\MessagesController@show');
 Route::get('/messages/{filters}/{offset}', 'Api\MessagesController@filters');
 
+
 Route::post('/user/folders/update' , 'Api\MessagesController@update');
 
 Route::get('/store/messages' , 'Api\StoreMessagesController');

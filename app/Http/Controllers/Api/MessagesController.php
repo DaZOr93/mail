@@ -28,7 +28,6 @@ class MessagesController extends Controller
     {
         return response()->json($this->messageService->index($servicesFolder), 200);
     }
-
     /**
      * Показать сообщение по uid
      *
@@ -40,8 +39,6 @@ class MessagesController extends Controller
     {
         return $message = $this->messageService->show($uid);
     }
-
-
     /**
      * Удалить сообщение
      *
@@ -69,6 +66,11 @@ class MessagesController extends Controller
     public function messagesTollsCount()
     {
         return response()->json($this->messageService->messagesTollsCount() , 200);
+    }
+
+    public function download()
+    {
+        return response()->download('storage/' . \request()->path);
     }
 
     public function favorite($method, $message_id, $uid)
