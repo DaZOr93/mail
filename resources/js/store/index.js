@@ -97,7 +97,7 @@ export default new Vuex.Store({
             cnt.commit('preloaderOff');
         },
         searchMessages(cnt, payload) {
-            axios.get('/api//getSearch/messages/' + payload).then(r => {
+            axios.get('/api/getSearch/messages/' + payload).then(r => {
                 cnt.commit('getMessages', r.data);
             })
         },

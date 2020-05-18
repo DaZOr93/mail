@@ -75907,7 +75907,7 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
       }))();
     },
     searchMessages: function searchMessages(cnt, payload) {
-      axios.get('/api//getSearch/messages/' + payload).then(function (r) {
+      axios.get('/api/getSearch/messages/' + payload).then(function (r) {
         cnt.commit('getMessages', r.data);
       });
     },
