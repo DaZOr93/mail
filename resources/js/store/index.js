@@ -16,7 +16,8 @@ export default new Vuex.Store({
         newMessage: {
             subject: '',
             to: '',
-            editorData: ''
+            editorData: '',
+            deliveryRequest: false,
         },
         countMessages: {},
         pagination: {

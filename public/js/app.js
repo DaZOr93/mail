@@ -3071,6 +3071,15 @@ __webpack_require__.r(__webpack_exports__);
     _app__WEBPACK_IMPORTED_MODULE_1__["eventBus"].$on('reset', function (notify) {
       _this.message = {};
     });
+
+    if (this.$route.params.replayMessage) {
+      this.message = {
+        'editorData': '<blockquote>' + this.$route.params.replayMessage.html + '/<blockquote>',
+        'to': this.$route.params.replayMessage.from,
+        'subject': 'Re:' + ' ' + this.$route.params.replayMessage.subject,
+        'deliveryRequest': true
+      };
+    }
   }
 });
 
@@ -40373,9 +40382,9 @@ $jscomp.polyfill = function (e, r, p, m) {
           this.options.onOpenStart.call(this, this.el, this._openingTrigger);
         }
 
-        // if (this.options.preventScrolling) {
-        //   document.body.style.overflow = 'hidden';
-        // }
+        if (this.options.preventScrolling) {
+          document.body.style.overflow = 'hidden';
+        }
 
         this.el.classList.add('open');
         this.el.insertAdjacentElement('afterend', this.$overlay[0]);
@@ -54886,23 +54895,39 @@ var render = function() {
       _c("div", { staticClass: "open__email-bar" }, [
         _vm._m(0),
         _vm._v(" "),
-        _c("div", { staticClass: "email__actions" }, [
-          _c("i", { staticClass: "material-icons" }, [_vm._v("report")]),
-          _vm._v(" "),
-          _c(
-            "i",
-            { staticClass: "material-icons", on: { click: _vm.deleteMess } },
-            [_vm._v("delete")]
-          ),
-          _vm._v(" "),
-          _c("i", { staticClass: "material-icons" }, [_vm._v("archive")]),
-          _vm._v(" "),
-          _c("i", { staticClass: "material-icons" }, [
-            _vm._v("call_missed_outgoing")
-          ]),
-          _vm._v(" "),
-          _c("i", { staticClass: "material-icons" }, [_vm._v("repeat")])
-        ]),
+        _c(
+          "div",
+          { staticClass: "email__actions" },
+          [
+            _c("i", { staticClass: "material-icons" }, [_vm._v("report")]),
+            _vm._v(" "),
+            _c(
+              "i",
+              { staticClass: "material-icons", on: { click: _vm.deleteMess } },
+              [_vm._v("delete")]
+            ),
+            _vm._v(" "),
+            _c("i", { staticClass: "material-icons" }, [_vm._v("archive")]),
+            _vm._v(" "),
+            _c(
+              "router-link",
+              {
+                staticClass: "material-icons",
+                attrs: {
+                  tag: "i",
+                  to: {
+                    name: "newEmail",
+                    params: { replayMessage: _vm.message }
+                  }
+                }
+              },
+              [_vm._v("call_missed_outgoing")]
+            ),
+            _vm._v(" "),
+            _c("i", { staticClass: "material-icons" }, [_vm._v("repeat")])
+          ],
+          1
+        ),
         _vm._v(" "),
         _c("div", { staticClass: "email__search w100" }, [
           _c("div", { staticClass: "input-field" }, [
@@ -55540,7 +55565,59 @@ var render = function() {
             ])
           ]),
           _vm._v(" "),
-          _vm._m(4)
+          _c("div", { staticClass: "switch new__email-switch" }, [
+            _c("label", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.message.deliveryRequest,
+                    expression: "message.deliveryRequest"
+                  }
+                ],
+                attrs: { type: "checkbox" },
+                domProps: {
+                  checked: Array.isArray(_vm.message.deliveryRequest)
+                    ? _vm._i(_vm.message.deliveryRequest, null) > -1
+                    : _vm.message.deliveryRequest
+                },
+                on: {
+                  change: function($event) {
+                    var $$a = _vm.message.deliveryRequest,
+                      $$el = $event.target,
+                      $$c = $$el.checked ? true : false
+                    if (Array.isArray($$a)) {
+                      var $$v = null,
+                        $$i = _vm._i($$a, $$v)
+                      if ($$el.checked) {
+                        $$i < 0 &&
+                          _vm.$set(
+                            _vm.message,
+                            "deliveryRequest",
+                            $$a.concat([$$v])
+                          )
+                      } else {
+                        $$i > -1 &&
+                          _vm.$set(
+                            _vm.message,
+                            "deliveryRequest",
+                            $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                          )
+                      }
+                    } else {
+                      _vm.$set(_vm.message, "deliveryRequest", $$c)
+                    }
+                  }
+                }
+              }),
+              _vm._v(" "),
+              _c("span", { staticClass: "lever" }),
+              _vm._v(
+                "\n                        Уведомить о доставке\n                    "
+              )
+            ])
+          ])
         ])
       ]),
       _vm._v(" "),
@@ -55638,21 +55715,6 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("span", { staticClass: "lever" }),
         _vm._v("\n                        Запрос ответа\n                    ")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "switch new__email-switch" }, [
-      _c("label", [
-        _c("input", { attrs: { type: "checkbox" } }),
-        _vm._v(" "),
-        _c("span", { staticClass: "lever" }),
-        _vm._v(
-          "\n                        Уведомить о доставке\n                    "
-        )
       ])
     ])
   }
@@ -75783,7 +75845,8 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
     newMessage: {
       subject: '',
       to: '',
-      editorData: ''
+      editorData: '',
+      deliveryRequest: false
     },
     countMessages: {},
     pagination: {
@@ -76092,8 +76155,8 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! F:\openServ\OpenServer\domains\mail\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! F:\openServ\OpenServer\domains\mail\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\It20\OpenServer\domains\mail\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\It20\OpenServer\domains\mail\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

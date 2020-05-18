@@ -9,7 +9,7 @@
                 <i class="material-icons">report</i>
                 <i @click="deleteMess" class="material-icons">delete</i>
                 <i class="material-icons">archive</i>
-                <i class="material-icons">call_missed_outgoing</i>
+               <router-link tag="i" :to="{name: 'newEmail', params: {replayMessage: message}}" class="material-icons">call_missed_outgoing</router-link>
                 <i class="material-icons">repeat</i>
             </div>
             <div class="email__search w100">

@@ -78,7 +78,7 @@
                     </div>
                     <div class="switch new__email-switch">
                         <label>
-                            <input type="checkbox">
+                            <input type="checkbox"  v-model="message.deliveryRequest">
                             <span class="lever"></span>
                             Уведомить о доставке
                         </label>
@@ -129,6 +129,17 @@
             eventBus.$on('reset', (notify) => {
                 this.message = {}
             })
+            if(this.$route.params.replayMessage){
+                this.message = {
+                    'editorData': '<blockquote>' + this.$route.params.replayMessage.html + '/<blockquote>',
+                    'to': this.$route.params.replayMessage.from,
+                    'subject' : 'Re:'+' ' + this.$route.params.replayMessage.subject,
+                    'deliveryRequest' : true,
+
+                };
+
+
+            }
         }
     }
 </script>
