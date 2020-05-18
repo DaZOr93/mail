@@ -246,7 +246,7 @@
                 }
             }, 200),
             favorite(message, uid, event) {
-                let state = event.target.innerHTML;
+                let state = event.target.innerHTML.trim();
                 if (state === 'star_border') {
                     event.target.innerHTML = 'star';
                     event.target.style.color = '#F9AD3D';

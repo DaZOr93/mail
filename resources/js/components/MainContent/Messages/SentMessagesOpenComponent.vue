@@ -151,7 +151,6 @@
     .open__email-bar .email__search input {
         border: none !important;
         margin: 0 !important;
-        width: 240px !important;
     }
 
     .open__email-bar .email__search input:focus {

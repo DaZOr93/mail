@@ -12,9 +12,9 @@
                 <i class="material-icons">call_missed_outgoing</i>
                 <i class="material-icons">repeat</i>
             </div>
-            <div class="email__search">
+            <div class="email__search w100">
                 <div class="input-field">
-                    <input id="last_name" type="text" class="validate">
+                    <input  v-model="search" @keyup="mySearch(message.html)" id="last_name" type="text" class="validate">
                     <label for="last_name">Поиск</label>
                     <i class="material-icons">search</i>
                 </div>
@@ -55,7 +55,7 @@
                     {{ getDate(message.date_send) }} AM
                 </div>
             </div>
-            <div class="open__body" v-html="message.html"></div>
+            <div id="rangeBody" class="open__body" v-html="message.html"></div>
             <div class="messages__attachments" v-if="message.attachments.length > 0">
                 <i class="material-icons">attachment</i>
                 <div>
@@ -97,6 +97,7 @@
             return {
                 uid: this.$route.params.uid,
                 modal: false,
+                search: ""
             }
         },
         computed: {
@@ -116,9 +117,24 @@
             },
             deleteMess() {
                 this.modal = true;
-            },
+            }
+            ,
             download(path) {
                 window.location = '/download?path=' + path
+            },
+            mySearch(html){
+                let pattern = '(<[^>]*>)|' + this.search.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+                document.querySelectorAll('.open__body').forEach(function(n) {
+                    if (!n.dataset.textOriginal) {
+                        n.dataset.textOriginal = html;
+                        console.log( n.dataset.textOriginal)
+                    }
+
+                    n.innerHTML = n.dataset.textOriginal.replace(new RegExp(pattern, 'gi'), function (m0, m1) {
+                        if (m1) return m0;
+                        return '<span class="highlight">' + m0 + '</span>';
+                    });
+                });
             }
         },
         filters: {
@@ -131,6 +147,9 @@
         watch: {
             $route(to) {
                 this.uid = to.params['uid']
+            },
+            search() {
+
             }
         },
         created() {
@@ -150,10 +169,16 @@
         display: flex;
         background: #fff
     }
+    .highlight {
+        background-color: yellow;
+    }
 
     .messages__attachments i {
         margin-right: 37px;
         color: #D8D8D8
+    }
+    span {
+        font-weight: 500;
     }
 
     .attachments-tile {
@@ -178,19 +203,19 @@
     }
 
     .messages__attachments img {
-        width: 70px!important;
+        width: 70px !important;
         height: 60px;
         cursor: pointer
     }
+
     .lightbox__image {
         text-align: center;
     }
+
     .lightbox img {
-        width: 40%!important;
+        width: 40% !important;
         height: auto;
     }
-
-
 
 
     .messages__attachments ul {
@@ -229,7 +254,9 @@
         background: #eee;
     }
 
-
+    .open__email-bar input[type=text]:not(.browser-default):focus:not([readonly]) + label {
+        color: #9e9e9e!important
+    }
     .open__email-bar .email__arrows {
         padding: 0px 7px;
         border-right: 2px solid #F5F5F5;
@@ -264,7 +291,7 @@
     .open__email-bar .email__search input {
         border: none !important;
         margin: 0 !important;
-        width: 240px !important;
+        max-width: 837px !important;
     }
 
     .open__email-bar .email__search input:focus {

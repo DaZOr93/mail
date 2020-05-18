@@ -2436,7 +2436,7 @@ __webpack_require__.r(__webpack_exports__);
       }
     }, 200),
     favorite: function favorite(message, uid, event) {
-      var state = event.target.innerHTML;
+      var state = event.target.innerHTML.trim();
 
       if (state === 'star_border') {
         event.target.innerHTML = 'star';
@@ -2640,7 +2640,8 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       uid: this.$route.params.uid,
-      modal: false
+      modal: false,
+      search: ""
     };
   },
   computed: {
@@ -2662,6 +2663,20 @@ __webpack_require__.r(__webpack_exports__);
     },
     download: function download(path) {
       window.location = '/download?path=' + path;
+    },
+    mySearch: function mySearch(html) {
+      var pattern = '(<[^>]*>)|' + this.search.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+      document.querySelectorAll('.open__body').forEach(function (n) {
+        if (!n.dataset.textOriginal) {
+          n.dataset.textOriginal = html;
+          console.log(n.dataset.textOriginal);
+        }
+
+        n.innerHTML = n.dataset.textOriginal.replace(new RegExp(pattern, 'gi'), function (m0, m1) {
+          if (m1) return m0;
+          return '<span class="highlight">' + m0 + '</span>';
+        });
+      });
     }
   },
   filters: {
@@ -2673,7 +2688,8 @@ __webpack_require__.r(__webpack_exports__);
   watch: {
     $route: function $route(to) {
       this.uid = to.params['uid'];
-    }
+    },
+    search: function search() {}
   },
   created: function created() {
     this.$store.dispatch('getMessage', this.uid);
@@ -8252,7 +8268,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n.messages__attachments {\n    position: absolute;\n    max-width: 240px;\n    right: 13px;\n    top: 115px;\n    z-index: 2;\n    display: flex;\n    background: #fff\n}\n.messages__attachments i {\n    margin-right: 37px;\n    color: #D8D8D8\n}\n.attachments-tile {\n    font-style: normal;\n    font-weight: bold;\n    font-size: 14px;\n    line-height: 30px;\n    color: #808080;\n}\n.messages__attachments li {\n    margin-right: 10px;\n    width: 79px;\n}\n.attach-name {\n    font-style: normal;\n    font-weight: bold;\n    font-size: 14px;\n    line-height: 30px;\n    color: #999999;\n}\n.messages__attachments img {\n    width: 70px!important;\n    height: 60px;\n    cursor: pointer\n}\n.lightbox__image {\n    text-align: center;\n}\n.lightbox img {\n    width: 40%!important;\n    height: auto;\n}\n.messages__attachments ul {\n    display: flex;\n    max-width: 180px;\n    flex-wrap: wrap;\n}\n.open__email-bar {\n    display: flex;\n    height: 88px;\n    background: #fff;\n    align-items: center;\n}\n.open__email-bar .input-field {\n    display: flex;\n    margin: 0 !important;\n}\n.open__email-bar i {\n    color: #D8D8D8;\n    width: 26px;\n    height: 26px;\n    cursor: pointer;\n    position: relative;\n    border-radius: 25px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n}\n.open__email-bar i:hover {\n    color: #837d7d;\n    background: #eee;\n}\n.open__email-bar .email__arrows {\n    padding: 0px 7px;\n    border-right: 2px solid #F5F5F5;\n    height: 88px;\n    display: flex;\n    align-items: center;\n    margin-right: 5px;\n}\n.open__email-bar .next {\n    margin-left: 15px;\n}\n.open__email-bar .email__actions {\n    display: flex;\n    border-right: 2px solid #F5F5F5;\n    height: 88px;\n    align-items: center;\n    padding-right: 23px;\n    margin-right: 30px;\n}\n.open__email-bar .email__actions i:not(:last-child) {\n    margin-right: 25px;\n}\n.open__email-bar .input-field {\n    align-items: center;\n    padding-right: 25px;\n}\n.open__email-bar .email__search input {\n    border: none !important;\n    margin: 0 !important;\n    width: 240px !important;\n}\n.open__email-bar .email__search input:focus {\n    border: none !important;\n    box-shadow: none !important;\n}\n.open__email-bar .email-dop {\n    padding: 31px 32px 31px 23px;\n    border-left: 2px solid #F5F5F5;\n}\n.open__email-bar .email-dop i:first-child {\n    margin-right: 30px;\n}\n.mess__open-content {\n    padding-left: 30px;\n    padding-top: 10px;\n    background: #fff;\n    font-weight: bold;\n    font-size: 18px;\n    color: #999999;\n    border-top: 2px solid #F5F5F5;\n    position: relative;\n    height: 612px;\n    overflow: auto;\n}\n.open__header {\n    display: flex;\n    align-items: center;\n    padding-left: 10px;\n    padding-bottom: 15px;\n    border-bottom: 2px solid #F5F5F5;\n    width: -webkit-max-content;\n    width: -moz-max-content;\n    width: max-content;\n}\n.open__user-wrap {\n    display: flex;\n    align-items: center;\n    margin-left: 36px;\n    margin-right: 85px;\n    font-weight: 500;\n    font-size: 12px;\n}\n.open__user-photo {\n    width: 40px;\n    height: 40px;\n    border-radius: 100px;\n    background: orange;\n    margin-right: 30px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    text-transform: uppercase;\n}\n.open__subject {\n    font-weight: 500;\n    font-size: 12px;\n    padding-right: 45px;\n}\n.open__date {\n    font-weight: 500;\n    font-size: 12px;\n}\n.open__body {\n    padding-top: 30px;\n    padding-bottom: 36px;\n    font-style: normal;\n    font-weight: 500;\n    font-size: 13px;\n    line-height: 30px;\n    color: #808080;\n    max-width: 900px\n}\n.footer-border {\n    position: absolute;\n    height: 2px;\n    width: 100%;\n    background: #F5F5F5;\n    left: 0;\n}\n.open__body li {\n    padding-left: 35px;\n    position: relative;\n}\n.open__body ul li:before {\n    content: \".\";\n    width: 9px;\n    height: 9px;\n    position: absolute;\n    font-size: 46px;\n    color: #D8D8D8;\n    left: 0;\n    top: -13px;\n}\n.open__body ol {\n    padding-left: 15px;\n}\n.open__body ol li {\n    padding-left: 20px;\n    list-style: inherit;\n}\n", ""]);
+exports.push([module.i, "\n.messages__attachments {\n    position: absolute;\n    max-width: 240px;\n    right: 13px;\n    top: 115px;\n    z-index: 2;\n    display: flex;\n    background: #fff\n}\n.highlight {\n    background-color: yellow;\n}\n.messages__attachments i {\n    margin-right: 37px;\n    color: #D8D8D8\n}\nspan {\n    font-weight: 500;\n}\n.attachments-tile {\n    font-style: normal;\n    font-weight: bold;\n    font-size: 14px;\n    line-height: 30px;\n    color: #808080;\n}\n.messages__attachments li {\n    margin-right: 10px;\n    width: 79px;\n}\n.attach-name {\n    font-style: normal;\n    font-weight: bold;\n    font-size: 14px;\n    line-height: 30px;\n    color: #999999;\n}\n.messages__attachments img {\n    width: 70px !important;\n    height: 60px;\n    cursor: pointer\n}\n.lightbox__image {\n    text-align: center;\n}\n.lightbox img {\n    width: 40% !important;\n    height: auto;\n}\n.messages__attachments ul {\n    display: flex;\n    max-width: 180px;\n    flex-wrap: wrap;\n}\n.open__email-bar {\n    display: flex;\n    height: 88px;\n    background: #fff;\n    align-items: center;\n}\n.open__email-bar .input-field {\n    display: flex;\n    margin: 0 !important;\n}\n.open__email-bar i {\n    color: #D8D8D8;\n    width: 26px;\n    height: 26px;\n    cursor: pointer;\n    position: relative;\n    border-radius: 25px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n}\n.open__email-bar i:hover {\n    color: #837d7d;\n    background: #eee;\n}\n.open__email-bar input[type=text]:not(.browser-default):focus:not([readonly]) + label {\n    color: #9e9e9e!important\n}\n.open__email-bar .email__arrows {\n    padding: 0px 7px;\n    border-right: 2px solid #F5F5F5;\n    height: 88px;\n    display: flex;\n    align-items: center;\n    margin-right: 5px;\n}\n.open__email-bar .next {\n    margin-left: 15px;\n}\n.open__email-bar .email__actions {\n    display: flex;\n    border-right: 2px solid #F5F5F5;\n    height: 88px;\n    align-items: center;\n    padding-right: 23px;\n    margin-right: 30px;\n}\n.open__email-bar .email__actions i:not(:last-child) {\n    margin-right: 25px;\n}\n.open__email-bar .input-field {\n    align-items: center;\n    padding-right: 25px;\n}\n.open__email-bar .email__search input {\n    border: none !important;\n    margin: 0 !important;\n    max-width: 837px !important;\n}\n.open__email-bar .email__search input:focus {\n    border: none !important;\n    box-shadow: none !important;\n}\n.open__email-bar .email-dop {\n    padding: 31px 32px 31px 23px;\n    border-left: 2px solid #F5F5F5;\n}\n.open__email-bar .email-dop i:first-child {\n    margin-right: 30px;\n}\n.mess__open-content {\n    padding-left: 30px;\n    padding-top: 10px;\n    background: #fff;\n    font-weight: bold;\n    font-size: 18px;\n    color: #999999;\n    border-top: 2px solid #F5F5F5;\n    position: relative;\n    height: 612px;\n    overflow: auto;\n}\n.open__header {\n    display: flex;\n    align-items: center;\n    padding-left: 10px;\n    padding-bottom: 15px;\n    border-bottom: 2px solid #F5F5F5;\n    width: -webkit-max-content;\n    width: -moz-max-content;\n    width: max-content;\n}\n.open__user-wrap {\n    display: flex;\n    align-items: center;\n    margin-left: 36px;\n    margin-right: 85px;\n    font-weight: 500;\n    font-size: 12px;\n}\n.open__user-photo {\n    width: 40px;\n    height: 40px;\n    border-radius: 100px;\n    background: orange;\n    margin-right: 30px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    text-transform: uppercase;\n}\n.open__subject {\n    font-weight: 500;\n    font-size: 12px;\n    padding-right: 45px;\n}\n.open__date {\n    font-weight: 500;\n    font-size: 12px;\n}\n.open__body {\n    padding-top: 30px;\n    padding-bottom: 36px;\n    font-style: normal;\n    font-weight: 500;\n    font-size: 13px;\n    line-height: 30px;\n    color: #808080;\n    max-width: 900px\n}\n.footer-border {\n    position: absolute;\n    height: 2px;\n    width: 100%;\n    background: #F5F5F5;\n    left: 0;\n}\n.open__body li {\n    padding-left: 35px;\n    position: relative;\n}\n.open__body ul li:before {\n    content: \".\";\n    width: 9px;\n    height: 9px;\n    position: absolute;\n    font-size: 46px;\n    color: #D8D8D8;\n    left: 0;\n    top: -13px;\n}\n.open__body ol {\n    padding-left: 15px;\n}\n.open__body ol li {\n    padding-left: 20px;\n    list-style: inherit;\n}\n", ""]);
 
 // exports
 
@@ -8271,7 +8287,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n.open__email-bar {\n    display: flex;\n    height: 88px;\n    background: #fff;\n    align-items: center;\n}\n.open__email-bar .input-field {\n    display: flex;\n    margin: 0 !important;\n}\n.open__email-bar i {\n    color: #D8D8D8;\n    width: 26px;\n    height: 26px;\n    cursor: pointer;\n    position: relative;\n    border-radius: 25px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n}\n.open__email-bar i:hover {\n    color: #837d7d;\n    background: #eee;\n}\n.open__email-bar .email__arrows {\n    padding: 0px 7px;\n    border-right: 2px solid #F5F5F5;\n    height: 88px;\n    display: flex;\n    align-items: center;\n    margin-right: 5px;\n}\n.open__email-bar .next {\n    margin-left: 15px;\n}\n.open__email-bar .email__actions {\n    display: flex;\n    border-right: 2px solid #F5F5F5;\n    height: 88px;\n    align-items: center;\n    padding-right: 23px;\n    margin-right: 30px;\n}\n.open__email-bar .email__actions i:not(:last-child) {\n    margin-right: 25px;\n}\n.open__email-bar .input-field {\n    align-items: center;\n    padding-right: 25px;\n}\n.open__email-bar .email__search input {\n    border: none !important;\n    margin: 0 !important;\n    width: 240px !important;\n}\n.open__email-bar .email__search input:focus {\n    border: none !important;\n    box-shadow: none !important;\n}\n.open__email-bar .email-dop {\n    padding: 31px 32px 31px 23px;\n    border-left: 2px solid #F5F5F5;\n}\n.open__email-bar .email-dop i:first-child {\n    margin-right: 30px;\n}\n.mess__open-content {\n    padding-left: 30px;\n    padding-top: 10px;\n    background: #fff;\n    font-weight: bold;\n    font-size: 18px;\n    color: #999999;\n    border-top: 2px solid #F5F5F5;\n    position: relative;\n    height: 612px;\n}\n.open__header {\n    display: flex;\n    align-items: center;\n    padding-left: 10px;\n    padding-bottom: 15px;\n    border-bottom: 2px solid #F5F5F5;\n    width: -webkit-max-content;\n    width: -moz-max-content;\n    width: max-content;\n}\n.open__user-wrap {\n    display: flex;\n    align-items: center;\n    margin-left: 36px;\n    margin-right: 85px;\n    font-weight: 500;\n    font-size: 12px;\n}\n.open__user-photo {\n    width: 40px;\n    height: 40px;\n    border-radius: 100px;\n    background: orange;\n    margin-right: 30px;\n    display:flex;\n    align-items: center;\n    justify-content: center;\n    text-transform: uppercase;\n}\n.open__subject {\n    font-weight: 500;\n    font-size: 12px;\n    padding-right: 45px;\n}\n.open__date {\n    font-weight: 500;\n    font-size: 12px;\n}\n.open__body {\n    padding-top: 30px;\n    padding-bottom: 36px;\n    font-style: normal;\n    font-weight: 500;\n    font-size: 13px;\n    line-height: 30px;\n    color: #808080;\n    max-width: 900px\n}\n.footer-border {\n    position: absolute;\n    height: 2px;\n    width: 100%;\n    background: #F5F5F5;\n    left: 0;\n}\n.open__body li {\n    padding-left: 35px;\n    position: relative;\n}\n.open__body ul li:before {\n    content: \".\";\n    width: 9px;\n    height: 9px;\n    position:absolute;\n    font-size: 46px;\n    color: #D8D8D8;\n    left: 0;\n    top: -13px;\n}\n.open__body ol {\n    padding-left: 15px;\n}\n.open__body ol li {\n    padding-left: 20px;\n    list-style: inherit;\n}\n", ""]);
+exports.push([module.i, "\n.open__email-bar {\n    display: flex;\n    height: 88px;\n    background: #fff;\n    align-items: center;\n}\n.open__email-bar .input-field {\n    display: flex;\n    margin: 0 !important;\n}\n.open__email-bar i {\n    color: #D8D8D8;\n    width: 26px;\n    height: 26px;\n    cursor: pointer;\n    position: relative;\n    border-radius: 25px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n}\n.open__email-bar i:hover {\n    color: #837d7d;\n    background: #eee;\n}\n.open__email-bar .email__arrows {\n    padding: 0px 7px;\n    border-right: 2px solid #F5F5F5;\n    height: 88px;\n    display: flex;\n    align-items: center;\n    margin-right: 5px;\n}\n.open__email-bar .next {\n    margin-left: 15px;\n}\n.open__email-bar .email__actions {\n    display: flex;\n    border-right: 2px solid #F5F5F5;\n    height: 88px;\n    align-items: center;\n    padding-right: 23px;\n    margin-right: 30px;\n}\n.open__email-bar .email__actions i:not(:last-child) {\n    margin-right: 25px;\n}\n.open__email-bar .input-field {\n    align-items: center;\n    padding-right: 25px;\n}\n.open__email-bar .email__search input {\n    border: none !important;\n    margin: 0 !important;\n}\n.open__email-bar .email__search input:focus {\n    border: none !important;\n    box-shadow: none !important;\n}\n.open__email-bar .email-dop {\n    padding: 31px 32px 31px 23px;\n    border-left: 2px solid #F5F5F5;\n}\n.open__email-bar .email-dop i:first-child {\n    margin-right: 30px;\n}\n.mess__open-content {\n    padding-left: 30px;\n    padding-top: 10px;\n    background: #fff;\n    font-weight: bold;\n    font-size: 18px;\n    color: #999999;\n    border-top: 2px solid #F5F5F5;\n    position: relative;\n    height: 612px;\n}\n.open__header {\n    display: flex;\n    align-items: center;\n    padding-left: 10px;\n    padding-bottom: 15px;\n    border-bottom: 2px solid #F5F5F5;\n    width: -webkit-max-content;\n    width: -moz-max-content;\n    width: max-content;\n}\n.open__user-wrap {\n    display: flex;\n    align-items: center;\n    margin-left: 36px;\n    margin-right: 85px;\n    font-weight: 500;\n    font-size: 12px;\n}\n.open__user-photo {\n    width: 40px;\n    height: 40px;\n    border-radius: 100px;\n    background: orange;\n    margin-right: 30px;\n    display:flex;\n    align-items: center;\n    justify-content: center;\n    text-transform: uppercase;\n}\n.open__subject {\n    font-weight: 500;\n    font-size: 12px;\n    padding-right: 45px;\n}\n.open__date {\n    font-weight: 500;\n    font-size: 12px;\n}\n.open__body {\n    padding-top: 30px;\n    padding-bottom: 36px;\n    font-style: normal;\n    font-weight: 500;\n    font-size: 13px;\n    line-height: 30px;\n    color: #808080;\n    max-width: 900px\n}\n.footer-border {\n    position: absolute;\n    height: 2px;\n    width: 100%;\n    background: #F5F5F5;\n    left: 0;\n}\n.open__body li {\n    padding-left: 35px;\n    position: relative;\n}\n.open__body ul li:before {\n    content: \".\";\n    width: 9px;\n    height: 9px;\n    position:absolute;\n    font-size: 46px;\n    color: #D8D8D8;\n    left: 0;\n    top: -13px;\n}\n.open__body ol {\n    padding-left: 15px;\n}\n.open__body ol li {\n    padding-left: 20px;\n    list-style: inherit;\n}\n", ""]);
 
 // exports
 
@@ -54888,14 +54904,45 @@ var render = function() {
           _c("i", { staticClass: "material-icons" }, [_vm._v("repeat")])
         ]),
         _vm._v(" "),
-        _vm._m(1),
+        _c("div", { staticClass: "email__search w100" }, [
+          _c("div", { staticClass: "input-field" }, [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.search,
+                  expression: "search"
+                }
+              ],
+              staticClass: "validate",
+              attrs: { id: "last_name", type: "text" },
+              domProps: { value: _vm.search },
+              on: {
+                keyup: function($event) {
+                  return _vm.mySearch(_vm.message.html)
+                },
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.search = $event.target.value
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("label", { attrs: { for: "last_name" } }, [_vm._v("Поиск")]),
+            _vm._v(" "),
+            _c("i", { staticClass: "material-icons" }, [_vm._v("search")])
+          ])
+        ]),
         _vm._v(" "),
-        _vm._m(2)
+        _vm._m(1)
       ]),
       _vm._v(" "),
       _vm.preloader
         ? _c("div", { staticClass: "preloader-wrapper big active " }, [
-            _vm._m(3)
+            _vm._m(2)
           ])
         : _c("div", { staticClass: "mess__open-content" }, [
             _c("div", { staticClass: "open__header" }, [
@@ -54945,6 +54992,7 @@ var render = function() {
             _vm._v(" "),
             _c("div", {
               staticClass: "open__body",
+              attrs: { id: "rangeBody" },
               domProps: { innerHTML: _vm._s(_vm.message.html) }
             }),
             _vm._v(" "),
@@ -55030,23 +55078,6 @@ var staticRenderFns = [
       _c("i", { staticClass: "material-icons back" }, [_vm._v("arrow_back")]),
       _vm._v(" "),
       _c("i", { staticClass: "material-icons next" }, [_vm._v("arrow_forward")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "email__search" }, [
-      _c("div", { staticClass: "input-field" }, [
-        _c("input", {
-          staticClass: "validate",
-          attrs: { id: "last_name", type: "text" }
-        }),
-        _vm._v(" "),
-        _c("label", { attrs: { for: "last_name" } }, [_vm._v("Поиск")]),
-        _vm._v(" "),
-        _c("i", { staticClass: "material-icons" }, [_vm._v("search")])
-      ])
     ])
   },
   function() {
