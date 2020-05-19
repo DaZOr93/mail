@@ -6,8 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Folders;
 use App\Models\Letter;
 use App\Services\MessageService;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Http\JsonResponse as JsonResponseAlias;
+use Illuminate\Http\Request;
 
 
 class MessagesController extends Controller
@@ -56,6 +56,11 @@ class MessagesController extends Controller
         $this->messageService->update();
     }
 
+    public function storeDraft(Request $request)
+    {
+        return response()->json($this->messageService->storeDraft($request) , 200);
+    }
+
     public function folderMess($slug)
     {
         $folder_id = Folders::where('slug', $slug)->first()->id;
@@ -70,7 +75,7 @@ class MessagesController extends Controller
 
     public function download()
     {
-        return response()->download('storage/' . \request()->path);
+        return response()->download('storage/' . \request()->path , \request()->name);
     }
 
     public function favorite($method, $message_id, $uid)
@@ -82,12 +87,10 @@ class MessagesController extends Controller
     {
        return response()->json($this->messageService->search($value) , 200);
     }
+
     public function getSearch($value)
     {
         return response()->json($this->messageService->getSearch($value) , 200);
     }
-
-
-
 
 }

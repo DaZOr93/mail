@@ -1,13 +1,15 @@
 <template>
     <div class="w100">
         <div class="new__email-bar">
-            <div  @click="$router.go(-1)" class="email__arrows">
-                <i   class="material-icons">arrow_back</i>
+            <div @click="$router.go(-1)" class="email__arrows">
+                <i class="material-icons">arrow_back</i>
             </div>
             <div class="email__actions">
                 <div class="action_group">
                     <i class="material-icons">attach_file</i>
-                    <div class="action_text">Прикрепить</div>
+                    <input id="fileUpload" type="file" @click="draftTrigger" name="file" multiple=""
+                           @change="fileInputChange">
+                    <label for="fileUpload" class="action_text">Прикрепить</label>
                 </div>
                 <div class="action_group">
                     <i class="material-icons">archive</i>
@@ -60,8 +62,6 @@
                     </div>
                 </div>
             </div>
-
-
             <div class="new__email-body">
                 <div class="email__header-box">
                     <div class="email__subject">
@@ -78,7 +78,7 @@
                     </div>
                     <div class="switch new__email-switch">
                         <label>
-                            <input type="checkbox"  v-model="message.deliveryRequest">
+                            <input type="checkbox" v-model="message.deliveryRequest">
                             <span class="lever"></span>
                             Уведомить о доставке
                         </label>
@@ -86,7 +86,24 @@
                 </div>
             </div>
             <div id="editor">
-                <ckeditor :editor="editor"   v-model="message.editorData" :config="editorConfig"></ckeditor>
+                <ckeditor :editor="editor" v-model="message.editorData" :config="editorConfig"></ckeditor>
+            </div>
+            <div class="messages__attachments" v-if="filesFinish.length > 0">
+                <div class="progress" :style="{width: fileProgress + '%'}"></div>
+                <i class="material-icons">attachment</i>
+                <div>
+                    <div class="attachments-tile">Вложения</div>
+                    <ul>
+                        <li v-for="(file , index) in filesFinish" :key="index" @click="delAttach(index)">
+                            <span class="attach-name">{{ file.name | shortName}}</span>
+                            <img
+                                class="attach_icon"
+                                :src="'/img/attach' + '-' + 'pdf' + '.png'"
+                                alt="attach">
+                        </li>
+                      <!--  :src="'/img/attach' + '-' + filesFinishData[index][1] + '.png'"-->
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
@@ -94,15 +111,19 @@
 
 <script>
     import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+    import VuePureLightbox from 'vue-pure-lightbox'
     import {eventBus} from "../../../app"
 
     export default {
         name: 'app',
+        components: {VuePureLightbox},
         data() {
             return {
                 editor: ClassicEditor,
                 message: {
-                    'editorData': 'Введите сообщение'
+                    'editorData': 'Введите сообщение',
+                    'attach': [],
+                    'subject': ""
                 },
                 editorConfig: {
                     toolbar: [
@@ -114,37 +135,141 @@
                         'NumberedList',
                         'Blockquote',
                     ]
+                },
+                filesFinish: [],
+                fileProgress: 0,
+                filesFinishData: [],
+                draft: false,
+                draftId: 0
+            }
+        },
+        methods: {
+            draftTrigger() {
+                this.draft = true;
+            },
+            delAttach(index) {
+                axios.delete('/api/delete/attachments/' + this.filesFinishData[index][0].slice(1));
+                this.message.attach.splice(index , 1);
+                this.filesFinishData.splice(index, 1);
+                this.filesFinish.splice(index, 1);
+            },
+            async fileInputChange(event) {
+                let files = Array.from(event.target.files);
+                this.filesOrder = files.slice();
+                for (let item of files) {
+                    await this.uploadFiles(item);
                 }
+            },
+            async uploadFiles(file) {
+                this.draft = true;
+                let form = new FormData();
+                form.append('file', file);
+                form.append('draftId', this.draftId);
+                await axios.post('api/upload/attachments', form, {
+                    onUploadProgress: (itemUpload) => {
+                        this.fileProgress = Math.round((itemUpload.loaded / itemUpload.total) * 100);
+                    }
+                })
+                    .then(r => {
+                        this.fileProgress = 0;
+                        this.filesFinish.push(file);
+                        this.filesFinishData.push(r.data);
+                        this.message.attach.push(r.data);
+                    })
             }
         },
         watch: {
-            message(){
-               this.$store.state.newMessage = this.message
-            },
-            'message.editorData'(){
+            message() {
                 this.$store.state.newMessage = this.message
+            },
+            'message.editorData'() {
+                this.draft = true;
+                this.$store.state.newMessage = this.message
+            },
+            'message.subject'() {
+                this.draft = true;
+                this.$store.state.newMessage = this.message
+            },
+            draft() {
+                if (this.message) {
+                    axios.post('/api/storeDraft', this.message)
+                        .then(r => this.draftId = r.data)
+                }
+            },
+            draftId() {
+                this.message.letterId = this.draftId;
+            }
+        },
+        filters: {
+            shortName: function (value) {
+                let mime_type = value.slice(value.lastIndexOf('.'));
+
+                return value.slice(0, 4) + '...' + mime_type;
             }
         },
         created() {
-            eventBus.$on('reset', (notify) => {
-                this.message = {}
-            })
-            if(this.$route.params.replayMessage){
+            eventBus.$on('reset', () => {
+                 this.message = {
+                     'editorData': 'Введите сообщение',
+                     'attach': []
+                 };
+                 this.filesFinish = [];
+                 this.filesFinishData = [];
+                 this.draft = false;
+            });
+            if (this.$route.params.replayMessage) {
                 this.message = {
                     'editorData': '<blockquote>' + this.$route.params.replayMessage.html + '/<blockquote>',
                     'to': this.$route.params.replayMessage.from,
-                    'subject' : 'Re:'+' ' + this.$route.params.replayMessage.subject,
-                    'deliveryRequest' : true,
-
+                    'subject': 'Re:' + ' ' + this.$route.params.replayMessage.subject,
+                    'deliveryRequest': true,
                 };
-
-
             }
         }
     }
 </script>
 
 <style scoped>
+
+    .new__email-wrap .messages__attachments li {
+        position: relative;
+    }
+    .new__email-wrap .messages__attachments li:hover::after,
+    .new__email-wrap .messages__attachments li:hover::before {
+        content: '';
+        position: absolute;
+        width: 44px;
+        height: 4px;
+        background: #ff5d5d;
+        left: 50%;
+        top: 50%;
+        margin-top: 12px;
+        margin-left: -27px;
+        cursor: pointer;
+    }
+    .new__email-wrap .messages__attachments li:hover::before {
+        transform: rotate(-45deg);
+    }
+    .new__email-wrap .messages__attachments li:hover::after{
+        transform: rotate(45deg);
+    }
+    #fileUpload {
+        display: none;
+    }
+
+    #fileUpload + label {
+        display: block;
+    }
+    .progress{
+        top: -12px;
+        left: 3px;
+        position: absolute;
+    }
+    .messages__attachments {
+        top: 35%;
+        width: 100%;
+    }
+
     .new__email-body {
         margin-bottom: 10px;
     }
@@ -155,10 +280,12 @@
         height: 609px;
         position: relative
     }
+
     .input-field {
         margin: 0;
     }
-    .email__header-box .input-field{
+
+    .email__header-box .input-field {
         max-width: 585px;
         width: 100%;
     }
@@ -181,7 +308,7 @@
         border-radius: 0px 4px 4px 0px !important;
         border-left: none !important;
         font-weight: bold;
-        font-size: 12px!important;
+        font-size: 12px !important;
         line-height: 40px;
         color: #999999;
         padding-left: 35px !important;

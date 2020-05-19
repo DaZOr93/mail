@@ -64,14 +64,15 @@ class ConnectServices
         $dataAttachments = $data->getAttachments();
 
         foreach ($dataAttachments as $attach) {
+            $uniq_path = uniqid();
             $BdAttachments = new Attachments();
             $BdAttachments->letter_id = $letter_id;
-            $BdAttachments->path = $attach->getName();
+            $BdAttachments->path = '\app\incoming\\' . $uniq_path .$attach->getName();
             $BdAttachments->mime_type = substr($attach->getName(), strrpos($attach->getName(), '.') + 1);
             $BdAttachments->imageSrc = $attach->getImgSrc();
             $BdAttachments->name = $attach->getName();
             $BdAttachments->save();
-            $attach->save();
+            $attach->save(storage_path() .'\app\incoming' ,  $uniq_path .$attach->getName());
         }
 
     }

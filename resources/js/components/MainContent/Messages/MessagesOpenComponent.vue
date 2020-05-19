@@ -9,12 +9,14 @@
                 <i class="material-icons">report</i>
                 <i @click="deleteMess" class="material-icons">delete</i>
                 <i class="material-icons">archive</i>
-               <router-link tag="i" :to="{name: 'newEmail', params: {replayMessage: message}}" class="material-icons">call_missed_outgoing</router-link>
+                <router-link tag="i" :to="{name: 'newEmail', params: {replayMessage: message}}" class="material-icons">
+                    call_missed_outgoing
+                </router-link>
                 <i class="material-icons">repeat</i>
             </div>
             <div class="email__search w100">
                 <div class="input-field">
-                    <input  v-model="search" @keyup="mySearch(message.html)" id="last_name" type="text" class="validate">
+                    <input v-model="search" @keyup="mySearch(message.html)" id="last_name" type="text" class="validate">
                     <label for="last_name">Поиск</label>
                     <i class="material-icons">search</i>
                 </div>
@@ -72,7 +74,7 @@
                             <img
                                 v-else
                                 class="attach_icon"
-                                @click="download(attach.path)"
+                                @click="downloads(attach.path , attach.name)"
                                 :src="'/img/attach' + '-' + attach.mime_type + '.png'"
                                 alt="attach">
                         </li>
@@ -97,7 +99,7 @@
             return {
                 uid: this.$route.params.uid,
                 modal: false,
-                search: ""
+                search: "",
             }
         },
         computed: {
@@ -109,6 +111,7 @@
             },
         },
         methods: {
+
             getDate(time) {
                 let date = time.split(' ')[1];
                 date = date.split(':');
@@ -119,23 +122,27 @@
                 this.modal = true;
             }
             ,
-            download(path) {
-                window.location = '/download?path=' + path
+            downloads(path , name) {
+                window.location = '/download?path=' + path + '&name=' + name;
             },
-            mySearch(html){
+            mySearch(html) {
                 let pattern = '(<[^>]*>)|' + this.search.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
-                document.querySelectorAll('.open__body').forEach(function(n) {
+                document.querySelectorAll('.open__body').forEach(function (n) {
                     if (!n.dataset.textOriginal) {
-                        n.dataset.textOriginal = html;
-                        console.log( n.dataset.textOriginal)
+                        n.dataset.textOriginal = n.innerHTML;
                     }
-
                     n.innerHTML = n.dataset.textOriginal.replace(new RegExp(pattern, 'gi'), function (m0, m1) {
                         if (m1) return m0;
                         return '<span class="highlight">' + m0 + '</span>';
                     });
                 });
-            }
+                if(this.search.length === 0) {
+                    this.message.html = '';
+                    setTimeout( () => {
+                        this.message.html = html;
+                    }, 1)
+                }
+            },
         },
         filters: {
             shortName: function (value) {
@@ -148,9 +155,6 @@
             $route(to) {
                 this.uid = to.params['uid']
             },
-            search() {
-
-            }
         },
         created() {
             this.$store.dispatch('getMessage', this.uid);
@@ -169,6 +173,7 @@
         display: flex;
         background: #fff
     }
+
     .highlight {
         background-color: yellow;
     }
@@ -177,6 +182,7 @@
         margin-right: 37px;
         color: #D8D8D8
     }
+
     span {
         font-weight: 500;
     }
@@ -255,8 +261,9 @@
     }
 
     .open__email-bar input[type=text]:not(.browser-default):focus:not([readonly]) + label {
-        color: #9e9e9e!important
+        color: #9e9e9e !important
     }
+
     .open__email-bar .email__arrows {
         padding: 0px 7px;
         border-right: 2px solid #F5F5F5;

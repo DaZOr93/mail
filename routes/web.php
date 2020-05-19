@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/{any}', 'Api\HomeController@index')
-    ->where('any', '^(?!auth|api|download).*$');
+    ->where('any', '^(?!auth|api|download|storage).*$');
 
 
 //auth

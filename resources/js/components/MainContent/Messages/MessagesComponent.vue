@@ -149,7 +149,7 @@
                         <div>
                             <div
                                 class="email__name"
-                                :class="'bg_' + randomBg(1 , 5)"
+                                :class="'bg_' + index"
                             >
                                 {{ ( message.to_name === "0" ) ? message.to[0] : message.to_name[0]}}
                             </div>

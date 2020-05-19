@@ -29,9 +29,13 @@ Route::get('/messages/{filters}/{offset}', 'Api\MessagesController@filters');
 
 
 Route::post('/user/folders/update' , 'Api\MessagesController@update');
+Route::post('upload/attachments' , 'Api\AttachmentsController@store');
+Route::delete('delete/attachments/sending/{path}' , 'Api\AttachmentsController@delete');
 Route::get('/search/messages/{value}' , 'Api\MessagesController@search');
 Route::get('/getSearch/messages/{value}' , 'Api\MessagesController@getSearch');
+Route::post('/storeDraft' , 'Api\MessagesController@storeDraft');
 Route::get('/store/messages' , 'Api\StoreMessagesController');
+
 
 Route::get('/delete/{uid}/{message_id}', 'Api\MessagesController@delete');
 Route::get('/favorite/{method}/{message_id}/{uid}', 'Api\MessagesController@favorite');

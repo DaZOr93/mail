@@ -11,6 +11,9 @@
     export default {
         name: "SentComponent",
         components: {sentMessages},
+        data(){
+          return {}
+        },
         methods: {
             getResults(page = 1) {
                 this.$store.dispatch('getServiceMessages', { folder : 'sending' , page:page});

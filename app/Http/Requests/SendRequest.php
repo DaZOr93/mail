@@ -27,6 +27,8 @@ class SendRequest extends FormRequest
             'subject' => 'required|string',
             'to' => 'required|string',
             'editorData' => 'required|min:20',
+            'attach' => 'array',
+            'letterId' => 'integer',
         ];
     }
 

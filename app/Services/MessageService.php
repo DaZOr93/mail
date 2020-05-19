@@ -21,13 +21,13 @@ class MessageService extends ConnectServices
 
         return Letter::where($servicesFolder, 1)->orderByDesc('date_send')->paginate(10);
 
-        $oFolder = $this->connect('default');
-        $data['messages'] = $oFolder->getMessages('ALL', false, true, true, true, 10, $offset);
-        $data['attr'] = $this->getAttribute($data['messages']);
-        $data['pagination'] = $this->paginate($oFolder, $data['messages'], $offset);
-        $data['pagination']['page'] = $offset;
-
-        return $data;
+//        $oFolder = $this->connect('default');
+//        $data['messages'] = $oFolder->getMessages('ALL', false, true, true, true, 10, $offset);
+//        $data['attr'] = $this->getAttribute($data['messages']);
+//        $data['pagination'] = $this->paginate($oFolder, $data['messages'], $offset);
+//        $data['pagination']['page'] = $offset;
+//
+//        return $data;
 
     }
 
@@ -81,9 +81,6 @@ class MessageService extends ConnectServices
      * Удалить пиьсмо
      *
      * @param $uid
-     * @param $folder
-     * @param $messages
-     * @param $offset
      *
      * @param $message_id
      */
@@ -95,13 +92,6 @@ class MessageService extends ConnectServices
         $letter->delete();
         $this->mainFolder()->getMessage($uid, false, false, false, false)->delete();
     }
-
-
-    public function download($path)
-    {
-        return response()->download($path);
-    }
-
 
     /**
      * Избранное
@@ -130,6 +120,29 @@ class MessageService extends ConnectServices
 
         $letter->save();
 
+    }
+
+    public function storeDraft($request)
+    {
+        $data = $request->only(['editorData', 'subject', 'to']);
+        $letter = new Letter();
+        $letter->message_id = uniqid();
+        $letter->uid = uniqid();
+        $letter->date_send = date('Y-m-d H:m:s');
+        $letter->to = $data['to'] ?? '';
+        $letter->from = 'it2.0team3@gmail.com';
+        $letter->to_name = $data['to'] ?? '';
+        $letter->from_name = 'it2.0team3';
+        $letter->subject = $data['subject'] ?? '';
+        $letter->html = $data['editorData'];
+        $letter->text = strip_tags($data['editorData']);
+        $letter->draft = 1;
+        $letter->inbox = 0;
+        $letter->seen = 0;
+        $letter->attach = 1;
+        $letter->save();
+
+        return $letter->id;
     }
 
     public function search($value)
