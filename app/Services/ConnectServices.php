@@ -72,7 +72,7 @@ class ConnectServices
             $BdAttachments->imageSrc = $attach->getImgSrc();
             $BdAttachments->name = $attach->getName();
             $BdAttachments->save();
-            $attach->save(storage_path() .'\app\incoming' ,  $uniq_path .$attach->getName());
+            $attach->save(storage_path() .'/app/incoming' ,  $uniq_path .$attach->getName());
         }
 
     }

@@ -123,7 +123,7 @@
             }
             ,
             downloads(path , name) {
-                window.location = '/download?path=' + path + '&name=' + name;
+                window.location = '/download?path=' + path.replace(/\\/g, "/") + '&name=' + name;
             },
             mySearch(html) {
                 let pattern = '(<[^>]*>)|' + this.search.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');

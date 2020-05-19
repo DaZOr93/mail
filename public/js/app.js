@@ -2664,7 +2664,7 @@ __webpack_require__.r(__webpack_exports__);
       this.modal = true;
     },
     downloads: function downloads(path, name) {
-      window.location = '/download?path=' + path + '&name=' + name;
+      window.location = '/download?path=' + path.replace(/\\/g, "/") + '&name=' + name;
     },
     mySearch: function mySearch(html) {
       var _this = this;

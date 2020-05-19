@@ -33,7 +33,7 @@ class SentEmail extends Mailable
         $email = $this->view('email')->subject($this->email->subjcet)->from($this->email->to);
 
         foreach ($this->email->attach as $filePath) {
-            $email->attach( 'storage\app\\' .$filePath[0] , [
+            $email->attach( 'storage/app/' .$filePath[0] , [
                 'as' => $filePath[2]
             ]);
         }
