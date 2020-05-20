@@ -2,8 +2,9 @@
     <div class="w100">
         <div class="open__email-bar">
             <div class="email__arrows">
-                <i class="material-icons back">arrow_back</i>
-                <i class="material-icons next">arrow_forward</i>
+                <router-link tag="i" :to="{name: 'incoming'}" class="material-icons back">
+                    arrow_back
+                </router-link>
             </div>
             <div class="email__actions">
                 <i class="material-icons">report</i>
@@ -12,17 +13,19 @@
                 <router-link tag="i" :to="{name: 'newEmail', params: {replayMessage: message}}" class="material-icons">
                     call_missed_outgoing
                 </router-link>
-                <i class="material-icons">repeat</i>
+                <!--                <router-link tag="i" :to="{name: 'newEmail', params: {forwardMessage: message}}" class="material-icons">-->
+                <!--                    repeat-->
+                <!--                </router-link>-->
             </div>
             <div class="email__search w100">
                 <div class="input-field">
-                    <input v-model="search" @keyup="mySearch(message.html)" id="last_name" type="text" class="validate">
+                    <input v-model="search" @keyup="mySearch(message.html , 'html')" id="last_name" type="text" class="validate">
                     <label for="last_name">Поиск</label>
                     <i class="material-icons">search</i>
                 </div>
             </div>
             <div class="email-dop">
-                <i class="material-icons">local_printshop</i>
+                <i @click="print" class="material-icons">local_printshop</i>
                 <i class="material-icons">settings</i>
             </div>
         </div>
@@ -44,10 +47,10 @@
                 От
                 <div class="open__user-wrap">
                     <div class="open__user-photo">
-                        {{ (message.from_name[0]) ? message.from_name[0]: message.from[0]}}
+                        {{ (!message.from_name[0] ) ? message.from_name[0]: message.from[0]}}
                     </div>
                     <div class="open__user-name">
-                        {{ (message.from_name[0]) ? message.from_name : message.from}}
+                        {{ (!message.from_name[0]) ? message.from_name : message.from}}
                     </div>
                 </div>
                 <div class="open__subject">
@@ -91,10 +94,12 @@
 <script>
     import VuePureLightbox from 'vue-pure-lightbox'
     import deleteModal from '../../Modal/DeleteModalComponent'
+    import searchMixin from '../../../Mixins/Search'
 
     export default {
         name: "MessagesOpenComponent",
         components: {deleteModal, VuePureLightbox},
+        mixins: [searchMixin],
         data() {
             return {
                 uid: this.$route.params.uid,
@@ -111,7 +116,6 @@
             },
         },
         methods: {
-
             getDate(time) {
                 let date = time.split(' ')[1];
                 date = date.split(':');
@@ -122,27 +126,15 @@
                 this.modal = true;
             }
             ,
-            downloads(path , name) {
+            downloads(path, name) {
                 window.location = '/download?path=' + path.replace(/\\/g, "/") + '&name=' + name;
             },
-            mySearch(html) {
-                let pattern = '(<[^>]*>)|' + this.search.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
-                document.querySelectorAll('.open__body').forEach(function (n) {
-                    if (!n.dataset.textOriginal) {
-                        n.dataset.textOriginal = n.innerHTML;
-                    }
-                    n.innerHTML = n.dataset.textOriginal.replace(new RegExp(pattern, 'gi'), function (m0, m1) {
-                        if (m1) return m0;
-                        return '<span class="highlight">' + m0 + '</span>';
-                    });
-                });
-                if(this.search.length === 0) {
-                    this.message.html = '';
-                    setTimeout( () => {
-                        this.message.html = html;
-                    }, 1)
-                }
-            },
+            print() {
+                let  windowForPrint = window.open("","","width=1000px,height=1000px");
+                let message = this.message.html;
+                windowForPrint.document.write(message);
+                windowForPrint.print();
+            }
         },
         filters: {
             shortName: function (value) {
@@ -265,7 +257,7 @@
     }
 
     .open__email-bar .email__arrows {
-        padding: 0px 7px;
+        padding: 0 30px;
         border-right: 2px solid #F5F5F5;
         height: 88px;
         display: flex;

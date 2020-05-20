@@ -34,6 +34,7 @@ Route::delete('delete/attachments/sending/{path}' , 'Api\AttachmentsController@d
 Route::get('/search/messages/{value}' , 'Api\MessagesController@search');
 Route::get('/getSearch/messages/{value}' , 'Api\MessagesController@getSearch');
 Route::post('/storeDraft' , 'Api\MessagesController@storeDraft');
+Route::post('/updateDraft' , 'Api\MessagesController@updateDraft');
 Route::get('/store/messages' , 'Api\StoreMessagesController');
 
 

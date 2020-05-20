@@ -24,9 +24,9 @@ class SendRequest extends FormRequest
     public function rules()
     {
         return [
-            'subject' => 'required|string',
+            'subject' => 'string',
             'to' => 'required|string',
-            'editorData' => 'required|min:20',
+            'editorData' => 'min:20',
             'attach' => 'array',
             'letterId' => 'integer',
         ];

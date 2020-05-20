@@ -11,7 +11,7 @@
                            @change="fileInputChange">
                     <label for="fileUpload" class="action_text">Прикрепить</label>
                 </div>
-                <div class="action_group">
+                <div class="action_group" @click="saveMessage">
                     <i class="material-icons">archive</i>
                     <div class="action_text">Сохранить</div>
                 </div>
@@ -20,7 +20,7 @@
                     <div class="action_text">Подпись</div>
                 </div>
             </div>
-            <div class="email__search-wrap">
+            <div class="email__search-wrap w100">
                 <div class="email__search">
                     <div class="input-field">
                         <label for="last_name">Поиск</label>
@@ -31,7 +31,7 @@
             </div>
             <div class="email-dop">
                 <div>
-                    <i title="Печать" class="material-icons">local_printshop</i>
+                    <i title="Печать" @click="print" class="material-icons">local_printshop</i>
                 </div>
                 <div>
                     <i title="Настройки" class="material-icons">settings</i>
@@ -146,9 +146,9 @@
         methods: {
             draftTrigger(event) {
                 this.draft = true;
-                if(this.filesFinish.length === 5) {
+                if (this.filesFinish.length === 5) {
                     event.preventDefault();
-                    return this.toast('не более пяти файлов' , 'warning');
+                    return this.toast('не более пяти файлов', 'warning');
                 }
             },
             delAttach(index) {
@@ -165,7 +165,7 @@
                 }
             },
             async uploadFiles(file) {
-                if(this.filesFinish.length === 5) return this.toast('не более пяти файлов' , 'warning');
+                if (this.filesFinish.length === 5) return this.toast('не более пяти файлов', 'warning');
                 this.draft = true;
                 let form = new FormData();
                 form.append('file', file);
@@ -181,11 +181,25 @@
                         this.filesFinishData.push(r.data);
                         this.message.attach.push(r.data);
                     })
-                    .catch( error => {
-                        this.toast('Недопустимый формат файла' , 'warning')
+                    .catch(error => {
+                        this.toast('Недопустимый формат файла', 'warning')
                     })
             },
-            toast(msg, type){
+            print() {
+                let  windowForPrint = window.open("","","width=1000px,height=1000px");
+                let message = this.message.editorData;
+                windowForPrint.document.write(message);
+                windowForPrint.print();
+            },
+            saveMessage(){
+                if ( this.draftId < 1) {
+                    return this.toast('Нечего сохронять', 'warning')
+                }
+                axios.post('/api/updateDraft' , { message: this.message , id: this.draftId});
+
+                return this.toast('Cохранил', 'success')
+            },
+            toast(msg, type) {
                 Vue.$toast.open({
                     message: msg,
                     type: type,
@@ -206,6 +220,10 @@
                 this.draft = true;
                 this.$store.state.newMessage = this.message
             },
+            'message.to'(){
+                this.draft = true;
+                this.$store.state.newMessage = this.message
+            },
             draft() {
                 if (this.message) {
                     axios.post('/api/storeDraft', this.message)
@@ -214,15 +232,16 @@
             },
             draftId() {
                 this.message.letterId = this.draftId;
-            }
+            },
         },
         filters: {
             shortName: function (value) {
                 let mime_type = value.slice(value.lastIndexOf('.'));
 
                 return value.slice(0, 4) + '...' + mime_type;
-            }
+            },
         },
+
         created() {
             eventBus.$on('reset', () => {
                 this.message = {
@@ -416,7 +435,7 @@
     }
 
     .email__search-wrap {
-        padding: 6px 25px 6px 30px;
+        padding: 21px 25px 21px 30px;
         border-right: 2px solid #F5F5F5;
     }
 
@@ -442,7 +461,6 @@
     }
 
     .new__email-bar input {
-        width: 240px !important;
         border-bottom: none !important;
         margin-bottom: 0 !important;
     }

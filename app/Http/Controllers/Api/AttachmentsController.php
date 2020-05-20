@@ -13,7 +13,7 @@ class AttachmentsController extends Controller
         $attach = new Attachments();
         $attach->letter_id = $request->draftId;
         $attach->name = $request->file('file')->getClientOriginalName();
-        $attach->path = $request->file('file')->store('\sending');
+        $attach->path = $request->file('file')->store('/sending');
         $attach->mime_type =substr( $attach->name, strrpos( $attach->name, '.') + 1);
 
         $attach->save();
@@ -23,7 +23,7 @@ class AttachmentsController extends Controller
 
     public function delete($path)
     {
-         Attachments::where('path' , "\sending/{$path}")->first()->delete();
+         Attachments::where('path' , "/sending/{$path}")->first()->delete();
          unlink('storage/app/sending/' . $path);
 
          return response()->json('deleted' , 200);

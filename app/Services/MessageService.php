@@ -9,41 +9,18 @@ use App\Models\Letter;
 
 class MessageService extends ConnectServices
 {
-    /**
-     * Получить  письма
-     *
-     * @param $servicesFolder
-     *
-     * @return mixed
-     */
+
     public function index($servicesFolder)
     {
-
         return Letter::where($servicesFolder, 1)->orderByDesc('date_send')->paginate(10);
-
-//        $oFolder = $this->connect('default');
-//        $data['messages'] = $oFolder->getMessages('ALL', false, true, true, true, 10, $offset);
-//        $data['attr'] = $this->getAttribute($data['messages']);
-//        $data['pagination'] = $this->paginate($oFolder, $data['messages'], $offset);
-//        $data['pagination']['page'] = $offset;
-//
-//        return $data;
-
     }
 
-    /**
-     * Получить посьмо по uid
-     *
-     * @param $message_id
-     *
-     * @return mixed
-     */
     public function show($message_id)
     {
         $letter = Letter::where('message_id', $message_id)->with('attachments')->first();
         $letter->update(['seen' => 0]);
 
-        return response()->json($letter, 202);
+        return $letter;
     }
 
     public function update()
@@ -57,14 +34,10 @@ class MessageService extends ConnectServices
             $letter->save();
         }
 
+        return;
     }
 
 
-    /**
-     * Кол-во писем в служебных папок
-     *
-     * @return array $data
-     */
     public function messagesTollsCount()
     {
         $data = [];
@@ -77,14 +50,6 @@ class MessageService extends ConnectServices
     }
 
 
-    /**
-     * Удалить пиьсмо
-     *
-     * @param $uid
-     *
-     * @param $message_id
-     */
-
     public function delete($uid, $message_id)
     {
         $letter = Letter::where('message_id', $message_id)->with('attachments')->first();
@@ -92,17 +57,6 @@ class MessageService extends ConnectServices
         $letter->delete();
         $this->mainFolder()->getMessage($uid, false, false, false, false)->delete();
     }
-
-    /**
-     * Избранное
-     *
-     * @param $method
-     *
-     * @param $message_id
-     *
-     * @param $uid
-     */
-
 
     public function favorite($method, $message_id, $uid)
     {
@@ -145,22 +99,31 @@ class MessageService extends ConnectServices
         return $letter->id;
     }
 
+    public function updateDraft($request)
+    {
+
+        $letter = Letter::find($request->id);
+        $letter->html = $request->message['editorData'] ?? '';
+        $letter->attach = (count($request->message['attach']) > 0) ?1 :0;
+        $letter->subject = $request->message['subject'] ?? '';
+        $letter->to = $request->message['to'] ?? '';
+
+        return$letter->save();
+    }
+
     public function search($value)
     {
-        return Letter::where("subject" , "like" , "%{$value}%")->orWhere("text" , "like" ,   "%{$value}%")
-            ->select('subject' , 'text')
-            ->groupBy('subject' , 'text')
+        return Letter::where("subject", "like", "%{$value}%")->orWhere("text", "like", "%{$value}%")
+            ->select('subject', 'text')
+            ->groupBy('subject', 'text')
             ->get();
     }
+
     public function getSearch($value)
     {
-        return Letter::where("subject" , "like" , "%{$value}%")->orWhere("text" , "like" ,   "%{$value}%")->paginate(10);
+        return Letter::where("subject", "like", "%{$value}%")->orWhere("text", "like", "%{$value}%")->paginate(10);
     }
 
-
-    /*
-     * Удаления вложеностей
-     * */
 
     public function deleteAttach($attachments, $letter_id)
     {
