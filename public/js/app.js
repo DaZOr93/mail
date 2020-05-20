@@ -3234,8 +3234,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     };
   },
   methods: {
-    draftTrigger: function draftTrigger() {
+    draftTrigger: function draftTrigger(event) {
       this.draft = true;
+
+      if (this.filesFinish.length === 5) {
+        event.preventDefault();
+        return this.toast('не более пяти файлов', 'warning');
+      }
     },
     delAttach: function delAttach(index) {
       axios["delete"]('/api/delete/attachments/' + this.filesFinishData[index][0].slice(1));
@@ -3289,11 +3294,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
+                if (!(_this2.filesFinish.length === 5)) {
+                  _context2.next = 2;
+                  break;
+                }
+
+                return _context2.abrupt("return", _this2.toast('не более пяти файлов', 'warning'));
+
+              case 2:
                 _this2.draft = true;
                 form = new FormData();
                 form.append('file', file);
                 form.append('draftId', _this2.draftId);
-                _context2.next = 6;
+                _context2.next = 8;
                 return axios.post('api/upload/attachments', form, {
                   onUploadProgress: function onUploadProgress(itemUpload) {
                     _this2.fileProgress = Math.round(itemUpload.loaded / itemUpload.total * 100);
@@ -3306,15 +3319,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                   _this2.filesFinishData.push(r.data);
 
                   _this2.message.attach.push(r.data);
+                })["catch"](function (error) {
+                  _this2.toast('Недопустимый формат файла', 'warning');
                 });
 
-              case 6:
+              case 8:
               case "end":
                 return _context2.stop();
             }
           }
         }, _callee2);
       }))();
+    },
+    toast: function toast(msg, type) {
+      Vue.$toast.open({
+        message: msg,
+        type: type,
+        position: 'top',
+        duration: 1000
+      });
     }
   },
   watch: {
@@ -8419,7 +8442,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n.new__email-wrap .messages__attachments li[data-v-4e583fa8] {\n    position: relative;\n}\n.new__email-wrap .messages__attachments li[data-v-4e583fa8]:hover::after,\n.new__email-wrap .messages__attachments li[data-v-4e583fa8]:hover::before {\n    content: '';\n    position: absolute;\n    width: 44px;\n    height: 4px;\n    background: #ff5d5d;\n    left: 50%;\n    top: 50%;\n    margin-top: 12px;\n    margin-left: -27px;\n    cursor: pointer;\n}\n.new__email-wrap .messages__attachments li[data-v-4e583fa8]:hover::before {\n    transform: rotate(-45deg);\n}\n.new__email-wrap .messages__attachments li[data-v-4e583fa8]:hover::after{\n    transform: rotate(45deg);\n}\n#fileUpload[data-v-4e583fa8] {\n    display: none;\n}\n#fileUpload + label[data-v-4e583fa8] {\n    display: block;\n}\n.progress[data-v-4e583fa8]{\n    top: -12px;\n    left: 3px;\n    position: absolute;\n}\n.messages__attachments[data-v-4e583fa8] {\n    top: 35%;\n    width: 100%;\n}\n.new__email-body[data-v-4e583fa8] {\n    margin-bottom: 10px;\n}\n.new__email-wrap[data-v-4e583fa8] {\n    background: #fff;\n    padding-top: 10px;\n    height: 609px;\n    position: relative\n}\n.input-field[data-v-4e583fa8] {\n    margin: 0;\n}\n.email__header-box .input-field[data-v-4e583fa8] {\n    max-width: 585px;\n    width: 100%;\n}\n.email__header-box[data-v-4e583fa8] {\n    display: flex;\n    padding-right: 17px;\n    padding-left: 31px;\n}\n.email__to[data-v-4e583fa8], .email__subject[data-v-4e583fa8] {\n    display: flex;\n    max-width: 690px;\n    width: 100%;\n}\n.email__to input[data-v-4e583fa8], .email__subject input[data-v-4e583fa8] {\n    margin: 0 !important;\n    border: 2px solid #F5F5F5 !important;\n    border-radius: 0px 4px 4px 0px !important;\n    border-left: none !important;\n    font-weight: bold;\n    font-size: 12px !important;\n    line-height: 40px;\n    color: #999999;\n    padding-left: 35px !important;\n    max-width: 690px;\n}\n.new__email-switch[data-v-4e583fa8] {\n    display: flex;\n    align-items: center;\n}\n.switch label .lever[data-v-4e583fa8] {\n    width: 40px;\n    height: 25px;\n    border: 2px solid #F0F0F0;\n    background-color: transparent;\n}\n.switch label .lever[data-v-4e583fa8]:before, .switch label .lever[data-v-4e583fa8]:after {\n    width: 15px;\n    height: 15px;\n    left: 5px;\n    top: 2px;\n}\n.switch label input[type=checkbox]:checked + .lever[data-v-4e583fa8] {\n    background-color: #1875F0;\n}\n.switch label input[type=checkbox]:checked + .lever[data-v-4e583fa8]:after {\n    background-color: #FFFFFF\n}\n.switch label .lever[data-v-4e583fa8]:after {\n    background-color: #E6E6E6;\n}\n.email__to input[data-v-4e583fa8]:focus, .email__subject input[data-v-4e583fa8]:focus {\n    box-shadow: none !important;\n}\n.validate[data-v-4e583fa8], .valid[data-v-4e583fa8] {\n    box-shadow: none !important;\n}\n.email__to span[data-v-4e583fa8], .email__subject span[data-v-4e583fa8] {\n    font-style: normal;\n    font-weight: 900;\n    font-size: 10px;\n    line-height: 45px;\n    letter-spacing: 1.25px;\n    padding: 0 17px;\n    border: 2px solid #F5F5F5;\n    border-radius: 4px 0px 0px 4px;\n    color: #B3B3B3;\n}\n.new__email-bar[data-v-4e583fa8] {\n    display: flex;\n    align-items: center;\n    background: #fff;\n    border-bottom: 2px solid #F5F5F5;\n    color: #D8D8D8;\n    font-style: normal;\n    font-weight: 500;\n    font-size: 12px;\n}\n.new__email-bar i[data-v-4e583fa8] {\n    width: 26px;\n    height: 26px;\n}\n.email__actions[data-v-4e583fa8] {\n    display: flex;\n    border-right: 2px solid #F5F5F5;\n}\n.email__actions .action_group[data-v-4e583fa8] {\n    padding: 20px 22px;\n    text-align: center;\n}\n.email__search-wrap[data-v-4e583fa8] {\n    padding: 6px 25px 6px 30px;\n    border-right: 2px solid #F5F5F5;\n}\n.email__search div[data-v-4e583fa8] {\n    display: flex;\n    align-items: center;\n}\n.email__search i[data-v-4e583fa8] {\n    position: relative;\n    z-index: 222;\n    cursor: pointer;\n}\n.email__arrows[data-v-4e583fa8] {\n    padding: 32px 30px 30px 32px;\n    display: flex;\n    border-right: 2px solid #F5F5F5;\n}\n.email__actions .action_text[data-v-4e583fa8] {\n    color: #CCCCCC;\n}\n.new__email-bar input[data-v-4e583fa8] {\n    width: 240px !important;\n    border-bottom: none !important;\n    margin-bottom: 0 !important;\n}\n.new__email-bar label.active[data-v-4e583fa8] {\n    color: #D8D8D8 !important;\n}\n.new__email-bar input[data-v-4e583fa8]:focus {\n    box-shadow: none !important\n}\n.email-dop[data-v-4e583fa8] {\n    display: flex\n}\n.email-dop div[data-v-4e583fa8] {\n    padding: 29px 15px;\n}\n.email__arrows[data-v-4e583fa8], .action_group[data-v-4e583fa8], .email-dop div[data-v-4e583fa8] {\n    cursor: pointer;\n}\n.email__arrows[data-v-4e583fa8]:hover, .action_group[data-v-4e583fa8]:hover, .email-dop div[data-v-4e583fa8]:hover {\n    background: rgba(24, 117, 240, 0.16);\n}\n\n\n", ""]);
+exports.push([module.i, "\n.new__email-wrap .messages__attachments li[data-v-4e583fa8] {\n    position: relative;\n}\n.new__email-wrap .messages__attachments li[data-v-4e583fa8]:hover::after,\n.new__email-wrap .messages__attachments li[data-v-4e583fa8]:hover::before {\n    content: '';\n    position: absolute;\n    width: 44px;\n    height: 4px;\n    background: #ff5d5d;\n    left: 50%;\n    top: 50%;\n    margin-top: 12px;\n    margin-left: -27px;\n    cursor: pointer;\n}\n.new__email-wrap .messages__attachments li[data-v-4e583fa8]:hover::before {\n    transform: rotate(-45deg);\n}\n.new__email-wrap .messages__attachments li[data-v-4e583fa8]:hover::after {\n    transform: rotate(45deg);\n}\n#fileUpload[data-v-4e583fa8] {\n    display: none;\n}\n#fileUpload + label[data-v-4e583fa8] {\n    display: block;\n}\n.progress[data-v-4e583fa8] {\n    top: -12px;\n    left: 3px;\n    position: absolute;\n}\n.messages__attachments[data-v-4e583fa8] {\n    top: 35%;\n    width: 100%;\n}\n.new__email-body[data-v-4e583fa8] {\n    margin-bottom: 10px;\n}\n.new__email-wrap[data-v-4e583fa8] {\n    background: #fff;\n    padding-top: 10px;\n    height: 609px;\n    position: relative\n}\n.input-field[data-v-4e583fa8] {\n    margin: 0;\n}\n.email__header-box .input-field[data-v-4e583fa8] {\n    max-width: 585px;\n    width: 100%;\n}\n.email__header-box[data-v-4e583fa8] {\n    display: flex;\n    padding-right: 17px;\n    padding-left: 31px;\n}\n.email__to[data-v-4e583fa8], .email__subject[data-v-4e583fa8] {\n    display: flex;\n    max-width: 690px;\n    width: 100%;\n}\n.email__to input[data-v-4e583fa8], .email__subject input[data-v-4e583fa8] {\n    margin: 0 !important;\n    border: 2px solid #F5F5F5 !important;\n    border-radius: 0px 4px 4px 0px !important;\n    border-left: none !important;\n    font-weight: bold;\n    font-size: 12px !important;\n    line-height: 40px;\n    color: #999999;\n    padding-left: 35px !important;\n    max-width: 690px;\n}\n.new__email-switch[data-v-4e583fa8] {\n    display: flex;\n    align-items: center;\n}\n.switch label .lever[data-v-4e583fa8] {\n    width: 40px;\n    height: 25px;\n    border: 2px solid #F0F0F0;\n    background-color: transparent;\n}\n.switch label .lever[data-v-4e583fa8]:before, .switch label .lever[data-v-4e583fa8]:after {\n    width: 15px;\n    height: 15px;\n    left: 5px;\n    top: 2px;\n}\n.switch label input[type=checkbox]:checked + .lever[data-v-4e583fa8] {\n    background-color: #1875F0;\n}\n.switch label input[type=checkbox]:checked + .lever[data-v-4e583fa8]:after {\n    background-color: #FFFFFF\n}\n.switch label .lever[data-v-4e583fa8]:after {\n    background-color: #E6E6E6;\n}\n.email__to input[data-v-4e583fa8]:focus, .email__subject input[data-v-4e583fa8]:focus {\n    box-shadow: none !important;\n}\n.validate[data-v-4e583fa8], .valid[data-v-4e583fa8] {\n    box-shadow: none !important;\n}\n.email__to span[data-v-4e583fa8], .email__subject span[data-v-4e583fa8] {\n    font-style: normal;\n    font-weight: 900;\n    font-size: 10px;\n    line-height: 45px;\n    letter-spacing: 1.25px;\n    padding: 0 17px;\n    border: 2px solid #F5F5F5;\n    border-radius: 4px 0px 0px 4px;\n    color: #B3B3B3;\n}\n.new__email-bar[data-v-4e583fa8] {\n    display: flex;\n    align-items: center;\n    background: #fff;\n    border-bottom: 2px solid #F5F5F5;\n    color: #D8D8D8;\n    font-style: normal;\n    font-weight: 500;\n    font-size: 12px;\n}\n.new__email-bar i[data-v-4e583fa8] {\n    width: 26px;\n    height: 26px;\n}\n.email__actions[data-v-4e583fa8] {\n    display: flex;\n    border-right: 2px solid #F5F5F5;\n}\n.email__actions .action_group[data-v-4e583fa8] {\n    padding: 20px 22px;\n    text-align: center;\n}\n.email__search-wrap[data-v-4e583fa8] {\n    padding: 6px 25px 6px 30px;\n    border-right: 2px solid #F5F5F5;\n}\n.email__search div[data-v-4e583fa8] {\n    display: flex;\n    align-items: center;\n}\n.email__search i[data-v-4e583fa8] {\n    position: relative;\n    z-index: 222;\n    cursor: pointer;\n}\n.email__arrows[data-v-4e583fa8] {\n    padding: 32px 30px 30px 32px;\n    display: flex;\n    border-right: 2px solid #F5F5F5;\n}\n.email__actions .action_text[data-v-4e583fa8] {\n    color: #CCCCCC;\n}\n.new__email-bar input[data-v-4e583fa8] {\n    width: 240px !important;\n    border-bottom: none !important;\n    margin-bottom: 0 !important;\n}\n.new__email-bar label.active[data-v-4e583fa8] {\n    color: #D8D8D8 !important;\n}\n.new__email-bar input[data-v-4e583fa8]:focus {\n    box-shadow: none !important\n}\n.email-dop[data-v-4e583fa8] {\n    display: flex\n}\n.email-dop div[data-v-4e583fa8] {\n    padding: 29px 15px;\n}\n.email__arrows[data-v-4e583fa8], .action_group[data-v-4e583fa8], .email-dop div[data-v-4e583fa8] {\n    cursor: pointer;\n}\n.email__arrows[data-v-4e583fa8]:hover, .action_group[data-v-4e583fa8]:hover, .email-dop div[data-v-4e583fa8]:hover {\n    background: rgba(24, 117, 240, 0.16);\n}\n\n\n", ""]);
 
 // exports
 
@@ -55838,7 +55861,7 @@ var render = function() {
                           _vm._v(
                             "\n                            " +
                               _vm._s(
-                                message.to_name === "0"
+                                !message.to_name
                                   ? message.to[0]
                                   : message.to_name[0]
                               ) +
@@ -55852,9 +55875,7 @@ var render = function() {
                       _vm._v(
                         "\n                        " +
                           _vm._s(
-                            message.to_name === "0"
-                              ? message.to
-                              : message.to_name
+                            !message.to_name ? message.to : message.to_name
                           ) +
                           "\n                    "
                       )
@@ -56417,7 +56438,11 @@ var render = function() {
                       _c("img", {
                         staticClass: "attach_icon",
                         attrs: {
-                          src: "/img/attach" + "-" + "pdf" + ".png",
+                          src:
+                            "/img/attach" +
+                            "-" +
+                            _vm.filesFinishData[index][1] +
+                            ".png",
                           alt: "attach"
                         }
                       })

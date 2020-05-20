@@ -98,10 +98,10 @@
                             <span class="attach-name">{{ file.name | shortName}}</span>
                             <img
                                 class="attach_icon"
-                                :src="'/img/attach' + '-' + 'pdf' + '.png'"
+                                :src="'/img/attach' + '-' + filesFinishData[index][1] + '.png'"
                                 alt="attach">
                         </li>
-                      <!--  :src="'/img/attach' + '-' + filesFinishData[index][1] + '.png'"-->
+
                     </ul>
                 </div>
             </div>
@@ -144,12 +144,16 @@
             }
         },
         methods: {
-            draftTrigger() {
+            draftTrigger(event) {
                 this.draft = true;
+                if(this.filesFinish.length === 5) {
+                    event.preventDefault();
+                    return this.toast('не более пяти файлов' , 'warning');
+                }
             },
             delAttach(index) {
                 axios.delete('/api/delete/attachments/' + this.filesFinishData[index][0].slice(1));
-                this.message.attach.splice(index , 1);
+                this.message.attach.splice(index, 1);
                 this.filesFinishData.splice(index, 1);
                 this.filesFinish.splice(index, 1);
             },
@@ -161,6 +165,7 @@
                 }
             },
             async uploadFiles(file) {
+                if(this.filesFinish.length === 5) return this.toast('не более пяти файлов' , 'warning');
                 this.draft = true;
                 let form = new FormData();
                 form.append('file', file);
@@ -176,6 +181,17 @@
                         this.filesFinishData.push(r.data);
                         this.message.attach.push(r.data);
                     })
+                    .catch( error => {
+                        this.toast('Недопустимый формат файла' , 'warning')
+                    })
+            },
+            toast(msg, type){
+                Vue.$toast.open({
+                    message: msg,
+                    type: type,
+                    position: 'top',
+                    duration: 1000
+                });
             }
         },
         watch: {
@@ -209,13 +225,13 @@
         },
         created() {
             eventBus.$on('reset', () => {
-                 this.message = {
-                     'editorData': 'Введите сообщение',
-                     'attach': []
-                 };
-                 this.filesFinish = [];
-                 this.filesFinishData = [];
-                 this.draft = false;
+                this.message = {
+                    'editorData': 'Введите сообщение',
+                    'attach': []
+                };
+                this.filesFinish = [];
+                this.filesFinishData = [];
+                this.draft = false;
             });
             if (this.$route.params.replayMessage) {
                 this.message = {
@@ -234,6 +250,7 @@
     .new__email-wrap .messages__attachments li {
         position: relative;
     }
+
     .new__email-wrap .messages__attachments li:hover::after,
     .new__email-wrap .messages__attachments li:hover::before {
         content: '';
@@ -247,12 +264,15 @@
         margin-left: -27px;
         cursor: pointer;
     }
+
     .new__email-wrap .messages__attachments li:hover::before {
         transform: rotate(-45deg);
     }
-    .new__email-wrap .messages__attachments li:hover::after{
+
+    .new__email-wrap .messages__attachments li:hover::after {
         transform: rotate(45deg);
     }
+
     #fileUpload {
         display: none;
     }
@@ -260,11 +280,13 @@
     #fileUpload + label {
         display: block;
     }
-    .progress{
+
+    .progress {
         top: -12px;
         left: 3px;
         position: absolute;
     }
+
     .messages__attachments {
         top: 35%;
         width: 100%;

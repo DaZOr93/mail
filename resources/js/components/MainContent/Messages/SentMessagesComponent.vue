@@ -127,11 +127,11 @@
                                 class="email__name"
                                 :class="'bg_' + index"
                             >
-                                {{ ( message.to_name === "0" ) ? message.to[0] : message.to_name[0]}}
+                                {{ ( !message.to_name ) ? message.to[0] : message.to_name[0]}}
                             </div>
                         </div>
                         <div class="email__driver">
-                            {{ ( message.to_name === "0" ) ? message.to : message.to_name}}
+                            {{ ( !message.to_name ) ? message.to : message.to_name}}
                         </div>
                     </div>
                 </td>

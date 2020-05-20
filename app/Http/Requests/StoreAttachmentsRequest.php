@@ -24,7 +24,14 @@ class StoreAttachmentsRequest extends FormRequest
     public function rules()
     {
         return [
-            'file' => 'file'
+            'file' => 'file|mimes:pdf,docx,doc,zip,rar,txt,xlsx,xls,ppt,jpeg,bmp,png'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'file.mimes' => 'Недопустимый формат файла'
         ];
     }
 }
