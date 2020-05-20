@@ -5,7 +5,7 @@
 </template>
 
 <script>
-    import messages from '../Messages/MessagesComponent';
+    import messages from '../Messages/IncomingMessagesComponent';
     import {eventBus} from "../../../app"
     export default {
         name: "IncomingComponent",

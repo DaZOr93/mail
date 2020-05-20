@@ -5,7 +5,7 @@
 </template>
 
 <script>
-    import messages from '../Messages/MessagesComponent'
+    import messages from '../Messages/IncomingMessagesComponent'
     export default {
         name: "FolderComponent",
         components: {messages},

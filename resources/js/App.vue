@@ -26,9 +26,9 @@
 
 
 <script>
-    import mHeader from './components/header/HeaderComponent';
-    import sidebar from './components/sidebar/SideBarComponent';
-    import mfooter from './components/footer/FooterComponent';
+    import mHeader from './components/Header/HeaderComponent';
+    import sidebar from './components/Sidebar/SideBarComponent';
+    import mfooter from './components/Footer/FooterComponent';
     import contentBar from './components/MainContent/Nav/NavBarComponent'
 
     export default {

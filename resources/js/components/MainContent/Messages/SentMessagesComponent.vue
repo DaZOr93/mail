@@ -1,5 +1,5 @@
 <template>
-    <div class="massage__list ">
+    <div class="massage__list">
         <div class="messages_wrap">
             <div class="messages_action disabled" id="ToolBars">
                 <div class="action__group">
@@ -9,13 +9,14 @@
                     </label>
                 </div>
                 <div class="action__group">
-                    <i title="обновить" class="material-icons">refresh</i>
+                    <i @click="reloadMess" title="обновить" class="reloadMess material-icons ">refresh</i>
                 </div>
                 <div class="action__group">
                     <i title="В спам!" class="material-icons">report</i>
                 </div>
+
                 <div class="action__group">
-                    <i title="В папку" class="material-icons">folder</i>
+                    <i @click="update_messages" title="В папку" class="material-icons">folder</i>
                 </div>
                 <div class="action__group">
                     <i
@@ -27,30 +28,44 @@
                     </i>
                 </div>
             </div>
-            <div class="email__search">
+            <div class="email__search w100">
+                <div class="nav__mobile-open" @click="openNav"><i class="material-icons">dehaze</i></div>
                 <div class="input-field">
-                    <input id="last_name" type="text" class="validate">
+                    <input id="last_name" @keyup="searchMessages" v-model="search" type="text" class="validate">
                     <label for="last_name">Поиск</label>
                     <i title="Поиск" class="material-icons">search</i>
+                </div>
+                <div id="search_range" class="search-items" v-if="messagesSearch.length > 0">
+                    <div class="search-item"
+                         v-for="message in messagesSearch"
+                         @click="getQueryMess(queryFilter(message.subject, message.text))">
+                        {{queryFilter(message.subject, message.text) }}
+                        <i title="Поиск" class="material-icons">search</i>
+                    </div>
                 </div>
             </div>
             <div class="email_simple-paginate">
                 <div class="paginate-numbers">
-                    {{pagination['start']}}-{{pagination['end']}} of {{pagination['total']}}
+
+                    {{ getMessages.from}}
+                    -
+                    {{ getMessages.to}}
+                    of
+                    {{ getMessages.total}}
                 </div>
                 <div class="paginate-arrows">
-                    <i title="Назад"
-                       @click="paginate('back')"
-                       class="material-icons"
-                       :class="{'pag_disabled': !paginatePrev}"
+                    <i
+                        @click="paginate(getMessages.prev_page_url)"
+                        :class="{'pag_disabled': !getMessages.prev_page_url}"
+                        title="Назад" class="material-icons"
                     >
                         arrow_back
                     </i>
                     <i
+                        @click="paginate(getMessages.next_page_url)"
+                        :class="{'pag_disabled': !getMessages.next_page_url}"
                         title="Вперед"
-                        @click="paginate('next')"
                         class="material-icons"
-                        :class="{'pag_disabled': paginateNext === false}"
                     >
                         arrow_forward
                     </i>
@@ -62,6 +77,7 @@
                 </div>
             </div>
         </div>
+
         <div class="preloader-wrapper big active " v-if="preloader">
             <div class="spinner-layer spinner-blue-only">
                 <div class="circle-clipper left">
@@ -79,22 +95,27 @@
             <tbody>
             <router-link
                 tag="tr"
-                :to="{name: 'SentMessagesOpen', params: {uid: message.uid}}"
-                v-for="(message , index) in sendMessages.attr"
+                v-for="(message , index) in getMessages.data"
+                :to="{name: 'MessagesOpen', params: {uid: message.message_id}}"
                 :key="index"
-                :class="{new__massage__list:sendMessages['messages'][`${message.message_id}`].flags.seen !== 1}"
+                :class="{new__massage__list: message.seen != 0}"
             >
                 <td>
                     <div class="message__select">
                         <label @click.prevent="setBg">
-                            <input ref="selectMes" type="checkbox" class="filled-in"/>
+                            <input :data-mess="index" ref="selectMes" type="checkbox" class="filled-in"/>
                             <span></span>
                         </label>
                     </div>
                 </td>
                 <td>
                     <div class="message__favorite">
-                        <i @click.prevent="favorite" class="material-icons">
+                        <i @click.prevent="favorite(message.message_id, message.uid, $event)"
+                           v-if="message.favorite === 1" style="color: rgb(249, 173, 61)" class="material-icons">
+                            star
+                        </i>
+                        <i @click.prevent="favorite(message.message_id, message.uid, $event)" v-else
+                           style="color: rgb(216, 216, 216);" class="material-icons">
                             star_border
                         </i>
                     </div>
@@ -104,28 +125,26 @@
                         <div>
                             <div
                                 class="email__name"
-                                :class="'bg_' + randomBg(1 , 5)"
+                                :class="'bg_' + index"
                             >
-<!-- {{ message.recipient[0].personal[0] }} нужно добавить !!!!-->
-                                {{ ( message.sender[0].personal ) ? message.sender[0].personal[0] :  message.sender[0].mailbox[0]}}
+                                {{ ( message.to_name === "0" ) ? message.to[0] : message.to_name[0]}}
                             </div>
                         </div>
                         <div class="email__driver">
- <!-- {{ message.recipient[0].personal}} нужно добавить !!!!-->
-                            {{  message.to[0].mailbox }}
+                            {{ ( message.to_name === "0" ) ? message.to : message.to_name}}
                         </div>
                     </div>
                 </td>
-                <td class="email__to-title">
+                <td class="td__subject">
                     <div class="email__title">
-                        {{ message.subject}}
+                        {{ (message.subject === "") ? "( Без темы )" : message.subject}}
                     </div>
                 </td>
                 <td>
                     <div class="email__attachments">
 
                         <i
-                            v-if="sendMessages['messages'][`${message.message_id}`].attachments.length != 0"
+                            v-if="message.attach !== 0"
                             class="material-icons"
                         >
                             attachment
@@ -134,135 +153,21 @@
                 </td>
                 <td>
                     <div class="email_date">
-                        {{ getDate( message.date) }} AM
+                        {{ getDate(message.date_send)}} AM
                     </div>
                 </td>
             </router-link>
             </tbody>
         </table>
+        <folderModal @close="modal = !modal" :modal="modal" :messages="messages"></folderModal>
     </div>
 </template>
 
 <script>
-
+    import MessagesMixin from  '../../../Mixins/Messages'
     export default {
         name: "SentMessagesComponent",
-        data() {
-            return {
-                selectMes: '',
-                selectAllMes: false,
-                checked: false,
-                filter: '&BB4EQgQ,BEAEMAQyBDsENQQ9BD0ESwQ1-'
-            }
-        },
-        computed: {
-            selectAll() {
-                return this.$store.getters.selectAll
-            },
-            pagination() {
-                return this.$store.getters.pagination
-            },
-            preloader() {
-                return this.$store.getters.preloader
-            },
-            sendMessages() {
-                return this.$store.getters.sendMessages
-            },
-            paginateNext() {
-                if (!this.preloader) {
-                    return this.sendMessages['pagination']['current'] >= 10;
-                }
-            },
-            paginatePrev() {
-                if (!this.preloader) {
-                    return this.sendMessages['pagination']['page'] != 1;
-                }
-            }
-        },
-        methods: {
-            favorite(event) {
-                let state = event.target.innerHTML;
-
-                if (state === 'star_border') {
-                    event.target.innerHTML = 'star';
-                    event.target.style.color = '#F9AD3D';
-                } else {
-                    event.target.innerHTML = 'star_border';
-                    event.target.style.color = '#D8D8D8';
-                }
-            },
-            paginate(way) {
-                if (!this.preloader) {
-                    if (way === 'next' && this.paginateNext) {
-                        this.$store.dispatch('getMessagesFilter', {
-                            'filter': this.filter ,
-                            'offset': +this.sendMessages['pagination']['page'] + 1
-                        });
-                    }
-                    if (way === 'back' && this.paginatePrev) {
-                        this.$store.dispatch('getMessagesFilter', {
-                            'filter': this.filter ,
-                            'offset': +this.sendMessages['pagination']['page'] - 1
-                        });
-                    }
-                }
-            },
-            randomBg(min, max) {
-                let rand = min - 0.5 + Math.random() * (max - min + 1);
-
-                return Math.round(rand);
-            },
-            getDate(time) {
-                let date = time.split('T')[1];
-                date = date.split(':');
-
-                return date[0] + ':' + date[1]
-            },
-            setBg(event) {
-                event.target.previousElementSibling.checked = !event.target.previousElementSibling.checked;
-
-                let toolbars = document.getElementById('ToolBars');
-                for (let i = 0; i < this.$refs.selectMes.length; i++) {
-                    if (this.$refs.selectMes[i].checked === true) {
-                        toolbars.classList.remove("disabled");
-                        break;
-                    } else {
-                        toolbars.classList.add("disabled");
-                    }
-                }
-
-                let element = event.target.parentElement.parentElement.parentElement.parentElement;
-                (!element.classList.contains('trSelect')) ? element.classList.add("trSelect") : element.classList.remove("trSelect");
-            }
-        },
-        watch: {
-            selectAllMes() {
-                let toolbars = document.getElementById('ToolBars');
-                let trAll = document.getElementsByTagName('tr');
-
-                let ArrayMess = this.$refs.selectMes;
-                this.checked = (this.checked === false);
-
-                (this.checked) ? toolbars.classList.remove("disabled") : toolbars.classList.add("disabled");
-
-                if (this.checked) {
-                    for (let i = 0; i < trAll.length; i++) {
-                        trAll[i].classList.add("trSelect")
-                    }
-                } else {
-                    for (let i = 0; i < trAll.length; i++) {
-                        trAll[i].classList.remove("trSelect")
-                    }
-                }
-
-                ArrayMess.map((mess) => {
-                    mess.checked = this.checked;
-                });
-            }
-        },
-        created() {
-            this.$store.dispatch('getMessagesFilter', {'filter': this.filter , 'offset':1});
-        }
+        mixins: [MessagesMixin]
     }
 </script>
 

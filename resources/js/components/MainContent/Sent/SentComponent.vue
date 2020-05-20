@@ -5,7 +5,7 @@
 </template>
 
 <script>
-    import sentMessages from '../Messages/MessagesComponent';
+    import sentMessages from '../Messages/SentMessagesComponent'
     import {eventBus} from "../../../app"
 
     export default {
