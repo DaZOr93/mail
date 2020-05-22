@@ -27,14 +27,25 @@ class MessageService extends ConnectServices
         return $letter;
     }
 
-    public function update()
+    public function update($action)
     {
-        $data = request()->only('body.slug', 'body.messages');
-        $folder_id = Folders::where('slug', $data['body']['slug'])->first()->id;
+        $data = request()->only('body.slug', 'body.messages', 'body.action');
+        if ($action == 'folder') $folder_id = Folders::where('slug', $data['body']['slug'])->first()->id;
 
         foreach ($data['body']['messages'] as $message) {
             $letter = Letter::where('message_id', $message['message_id'])->first();
-            $letter->folder_id = $folder_id;
+
+            if (isset($folder_id)) {
+                $letter->folder_id = $folder_id;
+            } else if ($action == 'seen') {
+                $letter->$action = !$letter->getOriginal($action);
+            } else {
+                $letter->$action = !$letter->getOriginal($action);
+                $letter->inbox = 0;
+                $letter->draft = 0;
+                $letter->sending = 0;
+            }
+
             $letter->save();
         }
 
@@ -90,7 +101,7 @@ class MessageService extends ConnectServices
 
     public function storeDraft($request)
     {
-        $data = $request->only(['editorData', 'subject', 'to', 'attach' , 'attachBol']);
+        $data = $request->only(['editorData', 'subject', 'to', 'attach', 'attachBol']);
         $letter = new Letter();
         $letter->message_id = uniqid();
         $letter->uid = rand(1, 200);

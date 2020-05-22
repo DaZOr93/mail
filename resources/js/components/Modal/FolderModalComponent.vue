@@ -1,5 +1,5 @@
 <template>
-    <div class="m_modal_wrap" :class="{'m_modal_show' : modal}" id="folder_modal">
+    <div class="m_modal_wrap" :class="{'m_modal_show' : modal_folder}" id="folder_modal">
         <div class="m_modal_bg"></div>
         <div class="m_modal">
             <div class="close" @click="close"></div>
@@ -29,7 +29,7 @@
 
 <script>
     export default {
-        props: ['modal', 'messages'],
+        props: ['modal_folder', 'messages'],
         name: "FolderComponent",
         methods: {
             close() {
@@ -40,7 +40,7 @@
                 if (folder) {
                     console.log(this.messages)
                     let folder_slug = folder.getAttribute('data-folder');
-                    this.$store.dispatch('update_messages', {slug: folder_slug, messages: this.messages});
+                    this.$store.dispatch('update_messages', {slug: folder_slug, action: 'folder' ,  messages: this.messages});
                     this.$emit('close');
                     Vue.$toast.open({
                         message: `Доавил`,

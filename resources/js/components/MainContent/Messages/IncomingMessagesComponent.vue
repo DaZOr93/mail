@@ -12,21 +12,22 @@
                     <i @click="reloadMess" title="обновить" class="reloadMess material-icons ">refresh</i>
                 </div>
                 <div class="action__group">
-                    <i title="В спам!" class="material-icons">report</i>
+                    <i @click="actions('spam')" title="В спам!" class="material-icons">report</i>
                 </div>
 
                 <div class="action__group">
-                    <i title="Прочитано/Не прочитано" class="material-icons">fiber_manual_record</i>
+                    <i @click="actions('seen')" title="Прочитано/Не прочитано" class="material-icons">fiber_manual_record</i>
                 </div>
 
                 <div class="action__group">
-                    <i @click="update_messages" title="В папку" class="material-icons">folder</i>
+                    <i @click="actions('folder')" title="В папку" class="material-icons">folder</i>
                 </div>
                 <div class="action__group">
                     <i
                         title="Удалить"
                         data-target="delMes"
-                        class="waves-effect waves-light modal-trigger material-icons"
+                        class="waves-effect waves-light material-icons"
+                        @click="actions('deleted')"
                     >
                         delete
                     </i>
@@ -185,7 +186,9 @@
             </router-link>
             </tbody>
         </table>
-        <folderModal @close="modal = !modal" :modal="modal" :messages="messages"></folderModal>
+        <folderModal @close="modal.folder = !modal.folder" :modal_folder="modal.folder" :messages="messages"></folderModal>
+        <spamModal @close="modal.spam = !modal.spam" :modal_spam="modal.spam" :messages="messages"></spamModal>
+        <deleteModal @close="modal.deleted = !modal.deleted" :deleteModal="modal.deleted" :messages="messages"></deleteModal>
     </div>
 </template>
 

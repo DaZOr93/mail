@@ -86,7 +86,7 @@
             </div>
             <div class="footer-border"></div>
         </div>
-        <deleteModal @close="modal = !modal" :modal="modal" :message_id="message.message_id"
+        <deleteModal @close="deleteModal = !deleteModal" :deleteModal="deleteModal" :message_id="message.message_id"
                      :uid="message.uid"></deleteModal>
     </div>
 </template>
@@ -103,7 +103,7 @@
         data() {
             return {
                 uid: this.$route.params.uid,
-                modal: false,
+                deleteModal: false,
                 search: "",
             }
         },
@@ -123,7 +123,7 @@
                 return date[0] + ':' + date[1]
             },
             deleteMess() {
-                this.modal = true;
+                this.deleteModal = true;
             }
             ,
             downloads(path, name) {

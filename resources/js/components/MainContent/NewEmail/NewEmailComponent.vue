@@ -95,7 +95,7 @@
                     <div class="attachments-tile">Вложения</div>
                     <ul>
                         <li v-for="(file , index) in filesFinishData" :key="index" @click="delAttach(index)">
-                            <span class="attach-name">{{ file.name}}</span>
+                            <span class="attach-name">{{ file.name || shortName}}</span>
                             <img
                                 class="attach_icon"
                                 :src="'/img/attach' + '-' + file.mime_type + '.png'"

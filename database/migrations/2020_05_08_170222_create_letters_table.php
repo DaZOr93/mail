@@ -28,6 +28,7 @@ class CreateLettersTable extends Migration
             $table->text('html');
             $table->text('text');
             $table->boolean('sending')->default(0);
+            $table->boolean('spam')->default(0);
             $table->boolean('inbox')->default(1);
             $table->boolean('seen')->default(1);
             $table->boolean('favorite')->default(0);

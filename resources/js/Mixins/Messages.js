@@ -1,9 +1,11 @@
 import folderModal from '../components/Modal/FolderModalComponent'
+import spamModal from '../components/Modal/SpamModalComponent'
+import deleteModal from '../components/Modal/DeleteModalComponent'
 import {eventBus} from "../app"
 import _ from 'lodash'
 
 export default {
-    components: {folderModal},
+    components: {folderModal, spamModal , deleteModal},
     props: ['getMessages'],
     data() {
         return {
@@ -11,7 +13,11 @@ export default {
             selectAllMes: false,
             checked: false,
             reload: false,
-            modal: false,
+            modal: {
+                'spam': false,
+                'deleted': false,
+                'folder': false,
+            },
             action: false,
             MessagesData: {},
             search: "",
@@ -84,14 +90,23 @@ export default {
             let element = event.target.parentElement.parentElement.parentElement.parentElement;
             (!element.classList.contains('trSelect')) ? element.classList.add("trSelect") : element.classList.remove("trSelect");
         },
-        update_messages() {
+        actions(action) {
             if (this.action === true) {
-                this.modal = true;
+                this.modal[action] = true;
                 this.messages = [];
                 let checked = this.$refs.selectMes.filter(mes => mes.checked === true);
                 for (let key in checked) {
                     let message = checked[key].getAttribute('data-mess');
                     this.messages.push(this.getMessages.data[message])
+                }
+
+                if (action === 'seen') {
+                    this.$store.dispatch('update_messages', {
+                        action: 'seen',
+                        messages: this.messages
+                    });
+
+                    return window.location.reload();
                 }
             }
         }

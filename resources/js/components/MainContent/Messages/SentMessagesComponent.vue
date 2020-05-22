@@ -12,14 +12,15 @@
                     <i @click="reloadMess" title="обновить" class="reloadMess material-icons ">refresh</i>
                 </div>
                 <div class="action__group">
-                    <i title="В спам!" class="material-icons">report</i>
+                    <i @click="actions('spam')" title="В спам!" class="material-icons">report</i>
                 </div>
 
                 <div class="action__group">
-                    <i @click="update_messages" title="В папку" class="material-icons">folder</i>
+                    <i @click="actions('folder')" title="В папку" class="material-icons">folder</i>
                 </div>
                 <div class="action__group">
                     <i
+                        @click="actions('deleted')"
                         title="Удалить"
                         data-target="delMes"
                         class="waves-effect waves-light modal-trigger material-icons"
@@ -36,12 +37,30 @@
                     <i title="Поиск" class="material-icons">search</i>
                 </div>
                 <div id="search_range" class="search-items" v-if="messagesSearch.length > 0">
-                    <div class="search-item"
-                         v-for="message in messagesSearch"
-                         @click="getQueryMess(queryFilter(message.subject, message.text))">
-                        {{queryFilter(message.subject, message.text) }}
-                        <i title="Поиск" class="material-icons">search</i>
-                    </div>
+                    <router-link
+                        class="search-item"
+                        tag="div"
+                        v-for="(message , index) in messagesSearch"
+                        :key="index"
+                        :to="{name: 'MessagesOpen', params: {uid: message.message_id}}">
+                        <div>
+                            <div class="item__photo">
+                                {{ message.from[0] }}
+                            </div>
+                            <div class="item__name">
+                                {{ message.from }}
+                            </div>
+                            <div class="item__subject">
+                                <span>Sub:&nbsp;</span> {{ (message.subject) ? message.subject : '( без темы )' }}
+                            </div>
+                            <div class="item__text">
+                                {{ (message.text == 0) ? ' ' : message.text }}
+                            </div>
+                        </div>
+                        <div class="item__time">
+                            {{ getDate(message.date_send)}} AM
+                        </div>
+                    </router-link>
                 </div>
             </div>
             <div class="email_simple-paginate">
@@ -159,7 +178,9 @@
             </router-link>
             </tbody>
         </table>
-        <folderModal @close="modal = !modal" :modal="modal" :messages="messages"></folderModal>
+        <folderModal @close="modal.folder = !modal.folder" :modal_folder="modal.folder" :messages="messages"></folderModal>
+        <spamModal @close="modal.spam = !modal.spam" :modal_spam="modal.spam" :messages="messages"></spamModal>
+        <deleteModal @close="modal.deleted = !modal.deleted" :deleteModal="modal.deleted" :messages="messages"></deleteModal>
     </div>
 </template>
 

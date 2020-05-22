@@ -24,12 +24,13 @@
             this.getResults();
         },
         created() {
+            this.$store.dispatch('countMessages');
             eventBus.$on('paginate', (page) => {
                 this.$store.dispatch('paginateMessages' , page);
             });
             eventBus.$on('searchMessages' , (search) => {
                 this.$store.dispatch('searchMessages' , search)
-            })
+            });
             eventBus.$on('getMessages' , () => {
                 this.$store.dispatch('getServiceMessages', { folder : 'deleted' , page: 1});
             })

@@ -52,12 +52,13 @@ class MessagesController extends Controller
     }
 
     /**
-     * Обновить письмо
+     * Действие с письмом
+     * @param $action
      * @return JsonResponseAlias
      */
-    public function update()
+    public function update($action)
     {
-        return response()->json($this->messageService->update() , 200);
+        return response()->json($this->messageService->update($action) , 200);
     }
 
     /**

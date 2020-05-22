@@ -2252,6 +2252,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     var _this = this;
 
+    this.$store.dispatch('countMessages');
     _app__WEBPACK_IMPORTED_MODULE_1__["eventBus"].$on('paginate', function (page) {
       _this.$store.dispatch('paginateMessages', page);
     });
@@ -2447,6 +2448,8 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Mixins_Messages__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../Mixins/Messages */ "./resources/js/Mixins/Messages.js");
+//
+//
 //
 //
 //
@@ -2834,6 +2837,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "MessagesComponent",
@@ -2961,7 +2967,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       uid: this.$route.params.uid,
-      modal: false,
+      deleteModal: false,
       search: ""
     };
   },
@@ -2980,7 +2986,7 @@ __webpack_require__.r(__webpack_exports__);
       return date[0] + ':' + date[1];
     },
     deleteMess: function deleteMess() {
-      this.modal = true;
+      this.deleteModal = true;
     },
     downloads: function downloads(path, name) {
       window.location = '/download?path=' + path.replace(/\\/g, "/") + '&name=' + name;
@@ -3020,6 +3026,27 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Mixins_Messages__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../Mixins/Messages */ "./resources/js/Mixins/Messages.js");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3923,16 +3950,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['modal', 'uid', 'message_id'],
+  props: ['deleteModal', 'uid', 'message_id', 'messages'],
   name: "DeleteComponent",
   methods: {
     close: function close() {
       this.$emit('close');
     },
     deleteMess: function deleteMess() {
-      axios.get('/api/delete/' + this.uid + '/' + this.message_id);
-      this.$store.dispatch('countMessages');
-      this.$router.go(-1);
+      if (!this.messages) {
+        axios.get('/api/delete/' + this.uid + '/' + this.message_id);
+        this.$router.go(-1);
+      } else {
+        this.$store.dispatch('update_messages', {
+          action: 'deleted',
+          messages: this.messages
+        });
+        this.$store.dispatch('countMessages');
+        return window.location.reload();
+      }
     }
   }
 });
@@ -3978,7 +4013,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
-  props: ['modal', 'messages'],
+  props: ['modal_folder', 'messages'],
   name: "FolderComponent",
   methods: {
     close: function close() {
@@ -3994,6 +4029,7 @@ __webpack_require__.r(__webpack_exports__);
         var folder_slug = folder.getAttribute('data-folder');
         this.$store.dispatch('update_messages', {
           slug: folder_slug,
+          action: 'folder',
           messages: this.messages
         });
         this.$emit('close');
@@ -4020,6 +4056,62 @@ __webpack_require__.r(__webpack_exports__);
   },
   created: function created() {
     this.$store.dispatch('userFolders');
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Modal/SpamModalComponent.vue?vue&type=script&lang=js&":
+/*!***********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Modal/SpamModalComponent.vue?vue&type=script&lang=js& ***!
+  \***********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  name: "SpamModalComponent",
+  props: ['modal_spam', 'messages'],
+  methods: {
+    close: function close() {
+      this.$emit('close');
+    },
+    store: function store() {
+      this.$store.dispatch('update_messages', {
+        action: 'spam',
+        messages: this.messages
+      });
+      this.$emit('close');
+      Vue.$toast.open({
+        message: "\u0414\u043E\u0430\u0432\u0438\u043B",
+        type: 'success',
+        position: 'top',
+        duration: 2000
+      });
+      return window.location.reload();
+    }
   }
 });
 
@@ -55209,9 +55301,37 @@ var render = function() {
               )
             ]),
             _vm._v(" "),
-            _vm._m(0),
+            _c("div", { staticClass: "action__group" }, [
+              _c(
+                "i",
+                {
+                  staticClass: "material-icons",
+                  attrs: { title: "В спам!" },
+                  on: {
+                    click: function($event) {
+                      return _vm.actions("spam")
+                    }
+                  }
+                },
+                [_vm._v("report")]
+              )
+            ]),
             _vm._v(" "),
-            _vm._m(1),
+            _c("div", { staticClass: "action__group" }, [
+              _c(
+                "i",
+                {
+                  staticClass: "material-icons",
+                  attrs: { title: "Прочитано/Не прочитано" },
+                  on: {
+                    click: function($event) {
+                      return _vm.actions("seen")
+                    }
+                  }
+                },
+                [_vm._v("fiber_manual_record")]
+              )
+            ]),
             _vm._v(" "),
             _c("div", { staticClass: "action__group" }, [
               _c(
@@ -55219,13 +55339,17 @@ var render = function() {
                 {
                   staticClass: "material-icons",
                   attrs: { title: "В папку" },
-                  on: { click: _vm.update_messages }
+                  on: {
+                    click: function($event) {
+                      return _vm.actions("folder")
+                    }
+                  }
                 },
                 [_vm._v("folder")]
               )
             ]),
             _vm._v(" "),
-            _vm._m(2)
+            _vm._m(0)
           ]
         ),
         _vm._v(" "),
@@ -55388,12 +55512,12 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _vm._m(3)
+        _vm._m(1)
       ]),
       _vm._v(" "),
       _vm.preloader
         ? _c("div", { staticClass: "preloader-wrapper big active " }, [
-            _vm._m(4)
+            _vm._m(2)
           ])
         : _vm._e(),
       _vm._v(" "),
@@ -55536,10 +55660,28 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("folderModal", {
-        attrs: { modal: _vm.modal, messages: _vm.messages },
+        attrs: { modal_folder: _vm.modal.folder, messages: _vm.messages },
         on: {
           close: function($event) {
-            _vm.modal = !_vm.modal
+            _vm.modal.folder = !_vm.modal.folder
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("spamModal", {
+        attrs: { modal_spam: _vm.modal.spam, messages: _vm.messages },
+        on: {
+          close: function($event) {
+            _vm.modal.spam = !_vm.modal.spam
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("deleteModal", {
+        attrs: { deleteModal: _vm.modal.deleted, messages: _vm.messages },
+        on: {
+          close: function($event) {
+            _vm.modal.deleted = !_vm.modal.deleted
           }
         }
       })
@@ -55548,31 +55690,6 @@ var render = function() {
   )
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "action__group" }, [
-      _c("i", { staticClass: "material-icons", attrs: { title: "В спам!" } }, [
-        _vm._v("report")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "action__group" }, [
-      _c(
-        "i",
-        {
-          staticClass: "material-icons",
-          attrs: { title: "Прочитано/Не прочитано" }
-        },
-        [_vm._v("fiber_manual_record")]
-      )
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -55711,9 +55828,37 @@ var render = function() {
               )
             ]),
             _vm._v(" "),
-            _vm._m(0),
+            _c("div", { staticClass: "action__group" }, [
+              _c(
+                "i",
+                {
+                  staticClass: "material-icons",
+                  attrs: { title: "В спам!" },
+                  on: {
+                    click: function($event) {
+                      return _vm.actions("spam")
+                    }
+                  }
+                },
+                [_vm._v("report")]
+              )
+            ]),
             _vm._v(" "),
-            _vm._m(1),
+            _c("div", { staticClass: "action__group" }, [
+              _c(
+                "i",
+                {
+                  staticClass: "material-icons",
+                  attrs: { title: "Прочитано/Не прочитано" },
+                  on: {
+                    click: function($event) {
+                      return _vm.actions("seen")
+                    }
+                  }
+                },
+                [_vm._v("fiber_manual_record")]
+              )
+            ]),
             _vm._v(" "),
             _c("div", { staticClass: "action__group" }, [
               _c(
@@ -55721,13 +55866,31 @@ var render = function() {
                 {
                   staticClass: "material-icons",
                   attrs: { title: "В папку" },
-                  on: { click: _vm.update_messages }
+                  on: {
+                    click: function($event) {
+                      return _vm.actions("folder")
+                    }
+                  }
                 },
                 [_vm._v("folder")]
               )
             ]),
             _vm._v(" "),
-            _vm._m(2)
+            _c("div", { staticClass: "action__group" }, [
+              _c(
+                "i",
+                {
+                  staticClass: "waves-effect waves-light material-icons",
+                  attrs: { title: "Удалить", "data-target": "delMes" },
+                  on: {
+                    click: function($event) {
+                      return _vm.actions("deleted")
+                    }
+                  }
+                },
+                [_vm._v("\n                    delete\n                ")]
+              )
+            ])
           ]
         ),
         _vm._v(" "),
@@ -55890,12 +56053,12 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _vm._m(3)
+        _vm._m(0)
       ]),
       _vm._v(" "),
       _vm.preloader
         ? _c("div", { staticClass: "preloader-wrapper big active " }, [
-            _vm._m(4)
+            _vm._m(1)
           ])
         : _vm._e(),
       _vm._v(" "),
@@ -56076,10 +56239,28 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("folderModal", {
-        attrs: { modal: _vm.modal, messages: _vm.messages },
+        attrs: { modal_folder: _vm.modal.folder, messages: _vm.messages },
         on: {
           close: function($event) {
-            _vm.modal = !_vm.modal
+            _vm.modal.folder = !_vm.modal.folder
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("spamModal", {
+        attrs: { modal_spam: _vm.modal.spam, messages: _vm.messages },
+        on: {
+          close: function($event) {
+            _vm.modal.spam = !_vm.modal.spam
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("deleteModal", {
+        attrs: { deleteModal: _vm.modal.deleted, messages: _vm.messages },
+        on: {
+          close: function($event) {
+            _vm.modal.deleted = !_vm.modal.deleted
           }
         }
       })
@@ -56088,46 +56269,6 @@ var render = function() {
   )
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "action__group" }, [
-      _c("i", { staticClass: "material-icons", attrs: { title: "В спам!" } }, [
-        _vm._v("report")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "action__group" }, [
-      _c(
-        "i",
-        {
-          staticClass: "material-icons",
-          attrs: { title: "Прочитано/Не прочитано" }
-        },
-        [_vm._v("fiber_manual_record")]
-      )
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "action__group" }, [
-      _c(
-        "i",
-        {
-          staticClass: "waves-effect waves-light modal-trigger material-icons",
-          attrs: { title: "Удалить", "data-target": "delMes" }
-        },
-        [_vm._v("\n                    delete\n                ")]
-      )
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -56395,13 +56536,13 @@ var render = function() {
       _vm._v(" "),
       _c("deleteModal", {
         attrs: {
-          modal: _vm.modal,
+          deleteModal: _vm.deleteModal,
           message_id: _vm.message.message_id,
           uid: _vm.message.uid
         },
         on: {
           close: function($event) {
-            _vm.modal = !_vm.modal
+            _vm.deleteModal = !_vm.deleteModal
           }
         }
       })
@@ -56519,7 +56660,21 @@ var render = function() {
               )
             ]),
             _vm._v(" "),
-            _vm._m(0),
+            _c("div", { staticClass: "action__group" }, [
+              _c(
+                "i",
+                {
+                  staticClass: "material-icons",
+                  attrs: { title: "В спам!" },
+                  on: {
+                    click: function($event) {
+                      return _vm.actions("spam")
+                    }
+                  }
+                },
+                [_vm._v("report")]
+              )
+            ]),
             _vm._v(" "),
             _c("div", { staticClass: "action__group" }, [
               _c(
@@ -56527,13 +56682,32 @@ var render = function() {
                 {
                   staticClass: "material-icons",
                   attrs: { title: "В папку" },
-                  on: { click: _vm.update_messages }
+                  on: {
+                    click: function($event) {
+                      return _vm.actions("folder")
+                    }
+                  }
                 },
                 [_vm._v("folder")]
               )
             ]),
             _vm._v(" "),
-            _vm._m(1)
+            _c("div", { staticClass: "action__group" }, [
+              _c(
+                "i",
+                {
+                  staticClass:
+                    "waves-effect waves-light modal-trigger material-icons",
+                  attrs: { title: "Удалить", "data-target": "delMes" },
+                  on: {
+                    click: function($event) {
+                      return _vm.actions("deleted")
+                    }
+                  }
+                },
+                [_vm._v("\n                    delete\n                ")]
+              )
+            ])
           ]
         ),
         _vm._v(" "),
@@ -56581,39 +56755,71 @@ var render = function() {
             ? _c(
                 "div",
                 { staticClass: "search-items", attrs: { id: "search_range" } },
-                _vm._l(_vm.messagesSearch, function(message) {
+                _vm._l(_vm.messagesSearch, function(message, index) {
                   return _c(
-                    "div",
+                    "router-link",
                     {
+                      key: index,
                       staticClass: "search-item",
-                      on: {
-                        click: function($event) {
-                          _vm.getQueryMess(
-                            _vm.queryFilter(message.subject, message.text)
-                          )
+                      attrs: {
+                        tag: "div",
+                        to: {
+                          name: "MessagesOpen",
+                          params: { uid: message.message_id }
                         }
                       }
                     },
                     [
-                      _vm._v(
-                        "\n                    " +
-                          _vm._s(
-                            _vm.queryFilter(message.subject, message.text)
-                          ) +
-                          "\n                    "
-                      ),
-                      _c(
-                        "i",
-                        {
-                          staticClass: "material-icons",
-                          attrs: { title: "Поиск" }
-                        },
-                        [_vm._v("search")]
-                      )
+                      _c("div", [
+                        _c("div", { staticClass: "item__photo" }, [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(message.from[0]) +
+                              "\n                        "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "item__name" }, [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(message.from) +
+                              "\n                        "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "item__subject" }, [
+                          _c("span", [_vm._v("Sub: ")]),
+                          _vm._v(
+                            " " +
+                              _vm._s(
+                                message.subject
+                                  ? message.subject
+                                  : "( без темы )"
+                              ) +
+                              "\n                        "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "item__text" }, [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(message.text == 0 ? " " : message.text) +
+                              "\n                        "
+                          )
+                        ])
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "item__time" }, [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(_vm.getDate(message.date_send)) +
+                            " AM\n                    "
+                        )
+                      ])
                     ]
                   )
                 }),
-                0
+                1
               )
             : _vm._e()
         ]),
@@ -56664,12 +56870,12 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _vm._m(2)
+        _vm._m(0)
       ]),
       _vm._v(" "),
       _vm.preloader
         ? _c("div", { staticClass: "preloader-wrapper big active " }, [
-            _vm._m(3)
+            _vm._m(1)
           ])
         : _vm._e(),
       _vm._v(" "),
@@ -56842,10 +57048,28 @@ var render = function() {
       ]),
       _vm._v(" "),
       _c("folderModal", {
-        attrs: { modal: _vm.modal, messages: _vm.messages },
+        attrs: { modal_folder: _vm.modal.folder, messages: _vm.messages },
         on: {
           close: function($event) {
-            _vm.modal = !_vm.modal
+            _vm.modal.folder = !_vm.modal.folder
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("spamModal", {
+        attrs: { modal_spam: _vm.modal.spam, messages: _vm.messages },
+        on: {
+          close: function($event) {
+            _vm.modal.spam = !_vm.modal.spam
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("deleteModal", {
+        attrs: { deleteModal: _vm.modal.deleted, messages: _vm.messages },
+        on: {
+          close: function($event) {
+            _vm.modal.deleted = !_vm.modal.deleted
           }
         }
       })
@@ -56854,31 +57078,6 @@ var render = function() {
   )
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "action__group" }, [
-      _c("i", { staticClass: "material-icons", attrs: { title: "В спам!" } }, [
-        _vm._v("report")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "action__group" }, [
-      _c(
-        "i",
-        {
-          staticClass: "waves-effect waves-light modal-trigger material-icons",
-          attrs: { title: "Удалить", "data-target": "delMes" }
-        },
-        [_vm._v("\n                    delete\n                ")]
-      )
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -57314,7 +57513,7 @@ var render = function() {
                     },
                     [
                       _c("span", { staticClass: "attach-name" }, [
-                        _vm._v(_vm._s(file.name))
+                        _vm._v(_vm._s(file.name || _vm.shortName))
                       ]),
                       _vm._v(" "),
                       _c("img", {
@@ -57620,7 +57819,7 @@ var render = function() {
     "div",
     {
       staticClass: "m_modal_wrap",
-      class: { m_modal_show: _vm.modal },
+      class: { m_modal_show: _vm.deleteModal },
       attrs: { id: "folder_modal" }
     },
     [
@@ -57695,7 +57894,7 @@ var render = function() {
     "div",
     {
       staticClass: "m_modal_wrap",
-      class: { m_modal_show: _vm.modal },
+      class: { m_modal_show: _vm.modal_folder },
       attrs: { id: "folder_modal" }
     },
     [
@@ -57766,6 +57965,83 @@ var render = function() {
   )
 }
 var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Modal/SpamModalComponent.vue?vue&type=template&id=520bddb4&scoped=true&":
+/*!***************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/Modal/SpamModalComponent.vue?vue&type=template&id=520bddb4&scoped=true& ***!
+  \***************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    {
+      staticClass: "m_modal_wrap",
+      class: { m_modal_show: _vm.modal_spam },
+      attrs: { id: "spam_modal" }
+    },
+    [
+      _c("div", { staticClass: "m_modal_bg" }),
+      _vm._v(" "),
+      _c("div", { staticClass: "m_modal" }, [
+        _c("div", { staticClass: "close", on: { click: _vm.close } }),
+        _vm._v(" "),
+        _c("div", { staticClass: "content" }, [
+          _c("div", { staticClass: "integration-modal" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("div", { staticClass: "hor__line" }),
+            _vm._v(" "),
+            _c("div", { staticClass: "modal__buttons" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "btn_modal",
+                  attrs: { type: "button" },
+                  on: { click: _vm.store }
+                },
+                [_vm._v("Продолжить")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "btn_modal",
+                  attrs: { type: "button" },
+                  on: { click: _vm.close }
+                },
+                [_vm._v("Отменить")]
+              )
+            ])
+          ])
+        ])
+      ])
+    ]
+  )
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group mb-0" }, [
+      _c("div", { staticClass: "sup-title" }, [_vm._v("Пометить как спам?")])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -75596,15 +75872,21 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Modal_FolderModalComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/Modal/FolderModalComponent */ "./resources/js/components/Modal/FolderModalComponent.vue");
-/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../app */ "./resources/js/app.js");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
-/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _components_Modal_SpamModalComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/Modal/SpamModalComponent */ "./resources/js/components/Modal/SpamModalComponent.vue");
+/* harmony import */ var _components_Modal_DeleteModalComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Modal/DeleteModalComponent */ "./resources/js/components/Modal/DeleteModalComponent.vue");
+/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../app */ "./resources/js/app.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_4__);
+
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    folderModal: _components_Modal_FolderModalComponent__WEBPACK_IMPORTED_MODULE_0__["default"]
+    folderModal: _components_Modal_FolderModalComponent__WEBPACK_IMPORTED_MODULE_0__["default"],
+    spamModal: _components_Modal_SpamModalComponent__WEBPACK_IMPORTED_MODULE_1__["default"],
+    deleteModal: _components_Modal_DeleteModalComponent__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   props: ['getMessages'],
   data: function data() {
@@ -75613,7 +75895,11 @@ __webpack_require__.r(__webpack_exports__);
       selectAllMes: false,
       checked: false,
       reload: false,
-      modal: false,
+      modal: {
+        'spam': false,
+        'deleted': false,
+        'folder': false
+      },
       action: false,
       MessagesData: {},
       search: "",
@@ -75631,9 +75917,9 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     paginate: function paginate(page) {
-      if (page) _app__WEBPACK_IMPORTED_MODULE_1__["eventBus"].$emit('paginate', page);
+      if (page) _app__WEBPACK_IMPORTED_MODULE_3__["eventBus"].$emit('paginate', page);
     },
-    searchMessages: lodash__WEBPACK_IMPORTED_MODULE_2___default.a.debounce(function (event) {
+    searchMessages: lodash__WEBPACK_IMPORTED_MODULE_4___default.a.debounce(function (event) {
       var _this = this;
 
       if (!event.target.value) {
@@ -75691,9 +75977,9 @@ __webpack_require__.r(__webpack_exports__);
       var element = event.target.parentElement.parentElement.parentElement.parentElement;
       !element.classList.contains('trSelect') ? element.classList.add("trSelect") : element.classList.remove("trSelect");
     },
-    update_messages: function update_messages() {
+    actions: function actions(action) {
       if (this.action === true) {
-        this.modal = true;
+        this.modal[action] = true;
         this.messages = [];
         var checked = this.$refs.selectMes.filter(function (mes) {
           return mes.checked === true;
@@ -75702,6 +75988,14 @@ __webpack_require__.r(__webpack_exports__);
         for (var key in checked) {
           var message = checked[key].getAttribute('data-mess');
           this.messages.push(this.getMessages.data[message]);
+        }
+
+        if (action === 'seen') {
+          this.$store.dispatch('update_messages', {
+            action: 'seen',
+            messages: this.messages
+          });
+          return window.location.reload();
         }
       }
     }
@@ -77295,6 +77589,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/Modal/SpamModalComponent.vue":
+/*!**************************************************************!*\
+  !*** ./resources/js/components/Modal/SpamModalComponent.vue ***!
+  \**************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _SpamModalComponent_vue_vue_type_template_id_520bddb4_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./SpamModalComponent.vue?vue&type=template&id=520bddb4&scoped=true& */ "./resources/js/components/Modal/SpamModalComponent.vue?vue&type=template&id=520bddb4&scoped=true&");
+/* harmony import */ var _SpamModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SpamModalComponent.vue?vue&type=script&lang=js& */ "./resources/js/components/Modal/SpamModalComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _SpamModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _SpamModalComponent_vue_vue_type_template_id_520bddb4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _SpamModalComponent_vue_vue_type_template_id_520bddb4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  "520bddb4",
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/Modal/SpamModalComponent.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/Modal/SpamModalComponent.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/components/Modal/SpamModalComponent.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SpamModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./SpamModalComponent.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Modal/SpamModalComponent.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_SpamModalComponent_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/Modal/SpamModalComponent.vue?vue&type=template&id=520bddb4&scoped=true&":
+/*!*********************************************************************************************************!*\
+  !*** ./resources/js/components/Modal/SpamModalComponent.vue?vue&type=template&id=520bddb4&scoped=true& ***!
+  \*********************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SpamModalComponent_vue_vue_type_template_id_520bddb4_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./SpamModalComponent.vue?vue&type=template&id=520bddb4&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/Modal/SpamModalComponent.vue?vue&type=template&id=520bddb4&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SpamModalComponent_vue_vue_type_template_id_520bddb4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_SpamModalComponent_vue_vue_type_template_id_520bddb4_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/Sidebar/SideBarComponent.vue":
 /*!**************************************************************!*\
   !*** ./resources/js/components/Sidebar/SideBarComponent.vue ***!
@@ -77662,7 +78025,7 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
       }))();
     },
     update_messages: function update_messages(cnt, payload) {
-      axios.post('/api/user/folders/update', {
+      axios.post("/api/user/".concat(payload.action, "/update"), {
         body: payload
       });
     },

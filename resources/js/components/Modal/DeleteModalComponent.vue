@@ -1,6 +1,6 @@
 <template>
     <!-- telegtam-modal -->
-    <div class="m_modal_wrap" :class="{'m_modal_show' : modal}" id="folder_modal">
+    <div class="m_modal_wrap" :class="{'m_modal_show' : deleteModal}" id="folder_modal">
         <div class="m_modal_bg"></div>
         <div class="m_modal">
             <div class="close" @click="close"></div>
@@ -23,16 +23,22 @@
 
 <script>
     export default {
-        props: ['modal', 'uid' , 'message_id'],
+        props: ['deleteModal', 'uid', 'message_id', 'messages'],
         name: "DeleteComponent",
         methods: {
             close() {
                 this.$emit('close')
             },
             deleteMess() {
+                if (!this.messages) {
                     axios.get('/api/delete/' + this.uid + '/' + this.message_id);
-                    this.$store.dispatch('countMessages');
                     this.$router.go(-1);
+                } else {
+                    this.$store.dispatch('update_messages', {action: 'deleted', messages: this.messages});
+                    this.$store.dispatch('countMessages');
+
+                    return window.location.reload()
+                }
             },
         }
 

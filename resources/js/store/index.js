@@ -112,7 +112,7 @@ export default new Vuex.Store({
                 .then(r => cnt.commit('getFolderMessages', r.data))
         },
         update_messages(cnt, payload) {
-            axios.post('/api/user/folders/update', {
+            axios.post(`/api/user/${payload.action}/update`, {
                 body: payload
             })
         },
