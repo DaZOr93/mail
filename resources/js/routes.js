@@ -10,7 +10,7 @@ import NewFile from './components/MainContent/NewFile/NewFileComponent';
 import PageNotFound from './components/Fails/404';
 import MessagesOpen from './components/MainContent/Messages/MessagesOpenComponent';
 import folder from './components/MainContent/File/FolderComponent'
-
+import Setting from './components/MainContent/Setting/SettingComponent'
 
 export default new VueRouter({
     routes: [
@@ -64,6 +64,11 @@ export default new VueRouter({
             path: '/folder/:slug',
             component: folder,
             name: 'folder'
+        },
+        {
+            path: '/setting',
+            component: Setting,
+            name: 'setting'
         },
         //404
         {
