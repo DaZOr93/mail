@@ -413,7 +413,7 @@ li {
 }
 
 .nav-wrap {
-  padding-bottom: 124px;
+  padding-bottom: 65px;
   background: #fff;
   border-right: 2px solid #F5F5F5;
   min-width: 226px;
@@ -480,6 +480,10 @@ li {
 
 .nav-menu li:nth-child(4) a::before {
   background: url("/img/ic_delete.svg");
+}
+
+.nav-menu li:nth-child(5) a::before {
+  background: url("/img/ic_spam.svg");
 }
 
 .nav-menu .active {

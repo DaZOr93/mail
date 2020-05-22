@@ -6,7 +6,7 @@
             <div class="content">
                 <div class="integration-modal">
                     <div class="form-group mb-0">
-                        <div class="sup-title">Пометить как спам?</div>
+                        <div class="sup-title"> {{ (msg) ? 'Убраить из спама' : 'Пометить как спам?' }}</div>
                     </div>
                     <div class="hor__line"></div>
                     <div class="modal__buttons">
@@ -22,7 +22,7 @@
 <script>
     export default {
         name: "SpamModalComponent",
-        props: ['modal_spam', 'messages'],
+        props: ['modal_spam', 'messages' , 'msg'],
         methods: {
             close() {
                 this.$emit('close');

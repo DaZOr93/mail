@@ -39,7 +39,7 @@ class AttachmentsServices
     /**
      * @param $path
      */
-    public function delete($path)
+    public function destroy($path)
     {
         Attachments::where('path', "sending/{$path}")->first()->delete();
         unlink('storage/app/sending/' . $path);

@@ -38,6 +38,10 @@
                     <router-link tag="a" active-class="active" to="/basket">Корзина</router-link>
                     <span v-if="countMessages.deleted !== 0">{{ countMessages.deleted }}</span>
                 </li>
+                <li>
+                    <router-link tag="a" active-class="active" to="/spam">Спам</router-link>
+                    <span v-if="countMessages.spam !== 0">{{ countMessages.spam }}</span>
+                </li>
             </ul>
         </div>
         <div class="work-labels">

@@ -2,6 +2,7 @@ import VueRouter from 'vue-router';
 import Home from "./components/HomeComponent";
 import Incoming from './components/MainContent/Incoming/IncomingComponent';
 import Draft from './components/MainContent/Draft/DraftComponent';
+import Spam from './components/MainContent/Spam/SpamComponent';
 import Sent from './components/MainContent/Sent/SentComponent';
 import Basket from './components/MainContent/Basket/BasketComponent';
 import NewEmail from './components/MainContent/NewEmail/NewEmailComponent';
@@ -27,6 +28,11 @@ export default new VueRouter({
             path: '/draft',
             component: Draft,
             name: 'draft'
+        },
+        {
+            path: '/spam',
+            component: Spam,
+            name: 'spam'
         },
         {
             path: '/sent',

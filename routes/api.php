@@ -30,7 +30,7 @@ Route::get('/messages/{filters}/{offset}', 'Api\MessagesController@filters');
 Route::post('/user/{action}/update', 'Api\MessagesController@update');
 Route::post('upload/attachments', 'Api\AttachmentsController@store');
 Route::get('/index/attachments/{id}', 'Api\AttachmentsController@index');
-Route::delete('delete/attachments/sending/{path}', 'Api\AttachmentsController@delete');
+Route::delete('/delete/attachments/sending/{path}', 'Api\AttachmentsController@destroy');
 Route::get('/search/messages/{value}', 'Api\MessagesController@search');
 Route::get('/getSearch/messages/{value}', 'Api\MessagesController@getSearch');
 Route::post('/storeDraft', 'Api\MessagesController@storeDraft');

@@ -45,11 +45,11 @@ class AttachmentsController extends Controller
      * @param $path
      * @return JsonResponse
      */
-    public function delete($path)
+    public function destroy($path)
     {
-        $this->service->delete($path);
+        $this->service->destroy($path);
 
-        return response()->json('deleted', 200);
+        return response()->json('destroyed', 200);
     }
 
 }

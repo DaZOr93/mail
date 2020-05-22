@@ -42,6 +42,7 @@ class MessageService extends ConnectServices
             } else {
                 $letter->$action = !$letter->getOriginal($action);
                 $letter->inbox = 0;
+                if (!$letter->$action) $letter->inbox = 1;
                 $letter->draft = 0;
                 $letter->sending = 0;
             }
@@ -60,6 +61,7 @@ class MessageService extends ConnectServices
         $data['draft'] = Letter::where('draft', 1)->count();
         $data['sending'] = Letter::where('sending', 1)->count();
         $data['deleted'] = Letter::where('deleted', 1)->count();
+        $data['spam'] = Letter::where('spam', 1)->count();
 
         return $data;
     }

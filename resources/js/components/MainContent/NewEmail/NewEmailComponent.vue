@@ -95,8 +95,15 @@
                     <div class="attachments-tile">Вложения</div>
                     <ul>
                         <li v-for="(file , index) in filesFinishData" :key="index" @click="delAttach(index)">
-                            <span class="attach-name">{{ file.name || shortName}}</span>
+                            <span class="attach-name">{{ file.name | shortName}}</span>
+                            <VuePureLightbox
+                                v-if="file.mime_type === 'jpg' || file.mime_type ==='png'"
+                                :thumbnail="`/storage/app/${file.path}`"
+                                :images="[`/storage/app/${file.path}`]"
+                            >
+                            </VuePureLightbox>
                             <img
+                                v-else
                                 class="attach_icon"
                                 :src="'/img/attach' + '-' + file.mime_type + '.png'"
                                 alt="attach">
