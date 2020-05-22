@@ -46,9 +46,9 @@ class MessagesController extends Controller
      * @param $message_id
      * @return JsonResponseAlias
      */
-    public function moveToBasket($uid, $message_id)
+    public function delete($uid, $message_id)
     {
-      return response()->json($this->messageService->moveToBasket($uid, $message_id) , 200);
+      return response()->json($this->messageService->delete($uid, $message_id) , 200);
     }
 
     /**

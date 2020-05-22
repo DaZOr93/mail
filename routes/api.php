@@ -38,7 +38,7 @@ Route::post('/updateDraft', 'Api\MessagesController@updateDraft');
 Route::get('/store/messages', 'Api\StoreMessagesController');
 
 
-Route::get('/delete/{uid}/{message_id}', 'Api\MessagesController@moveToBasket');
+Route::get('/delete/{uid}/{message_id}', 'Api\MessagesController@delete');
 Route::get('/favorite/{method}/{message_id}/{uid}', 'Api\MessagesController@favorite');
 
 //user-folders
