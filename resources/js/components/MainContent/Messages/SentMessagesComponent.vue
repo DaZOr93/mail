@@ -100,7 +100,7 @@
                 :key="index"
                 :class="{new__massage__list: message.seen != 0}"
             >
-                <td>
+                <td class="select_td">
                     <div class="message__select">
                         <label @click.prevent="setBg">
                             <input :data-mess="index" ref="selectMes" type="checkbox" class="filled-in"/>
@@ -108,7 +108,7 @@
                         </label>
                     </div>
                 </td>
-                <td>
+                <td class="favorite_td">
                     <div class="message__favorite">
                         <i @click.prevent="favorite(message.message_id, message.uid, $event)"
                            v-if="message.favorite === 1" style="color: rgb(249, 173, 61)" class="material-icons">
@@ -167,7 +167,10 @@
     import MessagesMixin from  '../../../Mixins/Messages'
     export default {
         name: "SentMessagesComponent",
-        mixins: [MessagesMixin]
+        mixins: [MessagesMixin],
+        created() {
+            this.$store.dispatch('countMessages');
+        }
     }
 </script>
 

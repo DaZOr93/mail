@@ -29,7 +29,7 @@
             });
             eventBus.$on('searchMessages' , (search) => {
                 this.$store.dispatch('searchMessages' , search)
-            })
+            });
             eventBus.$on('getMessages' , () => {
                 this.$store.dispatch('getServiceMessages', { folder : 'inbox' , page: 1});
             })

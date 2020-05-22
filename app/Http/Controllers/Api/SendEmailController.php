@@ -4,8 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\SendRequest;
-use App\Mail\SentEmail;
 use App\Services\SendEmailService;
+use Illuminate\Http\JsonResponse as JsonResponseAlias;
 
 
 class SendEmailController extends Controller
@@ -17,7 +17,12 @@ class SendEmailController extends Controller
         $this->sendService = $sendService;
     }
 
-    public function index(SendRequest $request)
+    /**
+     * Отправка сообщения
+     * @param SendRequest $request
+     * @return JsonResponseAlias
+     */
+    public function __invoke(SendRequest $request)
     {
         $data = $request->validated();
 

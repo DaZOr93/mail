@@ -22,7 +22,6 @@ class MessagesController extends Controller
 
     /**
      * @param $servicesFolder служебная папка
-     *
      * @return JsonResponseAlias
      */
     public function index($servicesFolder)
@@ -30,11 +29,9 @@ class MessagesController extends Controller
         return response()->json($this->messageService->index($servicesFolder), 200);
     }
 
+
     /**
-     * Показать сообщение по uid
-     *
      * @param $uid
-     *
      * @return JsonResponseAlias
      */
     public function show($uid)
@@ -44,32 +41,27 @@ class MessagesController extends Controller
 
     /**
      * Удалить сообщение
-     *
      * @param $uid
      * @param $message_id
-     *
      * @return JsonResponseAlias
      */
     public function delete($uid, $message_id)
     {
-      return response()->json($this->messageService->delete($uid, $message_id) , 200);
+        return response()->json($this->messageService->delete($uid, $message_id), 200);
     }
 
     /**
      * Обновить письмо
-     *
      * @return JsonResponseAlias
      */
     public function update()
     {
-        return response()->json($this->messageService->update() , 200);
+        return response()->json($this->messageService->update(), 200);
     }
 
     /**
      * Сохронить черновик
-     *
      * @param Request $request
-     *
      * @return JsonResponseAlias
      */
     public function storeDraft(Request $request)
@@ -79,10 +71,7 @@ class MessagesController extends Controller
 
     /**
      * Обновить черновик
-     *
      * @param Request $request
-     *
-     *
      * @return JsonResponseAlias
      */
     public function updateDraft(Request $request)
@@ -92,10 +81,7 @@ class MessagesController extends Controller
 
     /**
      * Сообщения в кастомной папке
-     *
      * @param $slug
-     *
-     *
      * @return JsonResponseAlias
      */
     public function folderMess($slug)
@@ -107,7 +93,6 @@ class MessagesController extends Controller
 
     /**
      * Подсчитать кол-во сообщений в служебных папок
-     *
      * @return JsonResponseAlias
      */
     public function messagesTollsCount()
@@ -117,7 +102,6 @@ class MessagesController extends Controller
 
     /**
      * Скачать вложенность
-     *
      * @return BinaryFileResponse
      */
     public function download()
@@ -127,38 +111,23 @@ class MessagesController extends Controller
 
     /**
      * Добавить в избранное
-     *
      * @param $method
      * @param $message_id
-     * @param $uid
-     *
      * @return JsonResponseAlias
      */
-    public function favorite($method, $message_id, $uid)
+    public function favorite($method, $message_id)
     {
-        return response()->json($this->messageService->favorite($method, $message_id, $uid), 200);
+        return response()->json($this->messageService->favorite($method, $message_id), 200);
     }
 
     /**
      * Поиск письмем
-     *
      * @param $value
      * @return JsonResponseAlias
      */
     public function search($value)
     {
         return response()->json($this->messageService->search($value), 200);
-    }
-
-    /**
-     * Получить что искал
-     *
-     * @param $value
-     * @return JsonResponseAlias
-     */
-    public function getSearch($value)
-    {
-        return response()->json($this->messageService->getSearch($value), 200);
     }
 
 }

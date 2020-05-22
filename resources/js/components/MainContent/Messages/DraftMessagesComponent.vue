@@ -1,5 +1,5 @@
 <template>
-    <div class="massage__list">
+    <div class="draft-wrap massage__list">
         <div class="messages_wrap">
             <div class="messages_action disabled" id="ToolBars">
                 <div class="action__group">
@@ -46,17 +46,22 @@
                         v-for="(message , index) in messagesSearch"
                         :key="index"
                         :to="{name: 'MessagesOpen', params: {uid: message.message_id}}">
-                        <div class="item__photo">
-                            {{ message.from[0] }}
+                        <div>
+                            <div class="item__photo">
+                                {{ message.from[0] }}
+                            </div>
+                            <div class="item__name">
+                                {{ message.from }}
+                            </div>
+                            <div class="item__subject">
+                                <span>Sub:&nbsp;</span> {{ (message.subject) ? message.subject : '( без темы )' }}
+                            </div>
+                            <div class="item__text">
+                                {{ (message.text == 0) ? ' ' : message.text }}
+                            </div>
                         </div>
-                        <div class="item__name">
-                            {{ message.from }}
-                        </div>
-                        <div class="item__subject">
-                            <span>Sub:&nbsp;</span> {{ (message.subject) ? message.subject : '( без темы )' }}
-                        </div>
-                        <div class="item__text">
-                            {{ (message.text == 0) ? ' ' : message.text }}
+                        <div class="item__time">
+                            {{ getDate(message.date_send)}} AM
                         </div>
                     </router-link>
                 </div>
@@ -112,9 +117,8 @@
             <router-link
                 tag="tr"
                 v-for="(message , index) in getMessages.data"
-                :to="{name: 'MessagesOpen', params: {uid: message.message_id}}"
+                :to="{name: 'newEmail', params: {draftMessage: message}}"
                 :key="index"
-                :class="{new__massage__list: message.seen != 0}"
             >
                 <td class="select_td">
                     <div class="message__select">
@@ -136,24 +140,9 @@
                         </i>
                     </div>
                 </td>
-                <td class="seen">
-                    <div
-                        :class="{'message__seen-dot' :message.seen != 0}">
-                    </div>
-                </td>
-                <td class="email__from-td">
-                    <div class="email__from">
-                        <div>
-                            <div
-                                class="email__name"
-                                :class="'bg_' + index"
-                            >
-                                {{ ( message.from_name === "0" ) ? message.from[0] : message.from_name[0]}}
-                            </div>
-                        </div>
-                        <div class="email__driver">
-                            {{ ( message.from_name === "0" ) ? message.from : message.from_name}}
-                        </div>
+                <td class="draft_td">
+                    <div class="draft-text">
+                        Черновик
                     </div>
                 </td>
                 <td class="td__subject">
@@ -188,88 +177,26 @@
     import MessagesMixin from '../../../Mixins/Messages'
 
     export default {
-        name: "MessagesComponent",
-        mixins: [MessagesMixin]
+        name: "draftMessagesComponent",
+        mixins: [MessagesMixin],
+        created() {
+            this.$store.dispatch('countMessages');
+        }
     }
 </script>
 
 <style>
-    .search-items {
-        position: absolute;
-        background: #ffffff;
-        left: 0;
-        width: 100%;
+    .select_td, .favorite_td {
+        width: 4%;
     }
 
-    td.seen {
-        width: 1%;
+    .draft_td {
+        width: 7%;
+        color: #dd4b39;
+        font-weight: 600;
     }
 
-    .massage__list .email__search {
-        position: relative;
-    }
-
-    .massage__list .email__search .search-items {
-        display: block;
-        color: #666666;
-        max-height: 550px;
-        overflow: auto;
-    }
-
-    .email__search .search-item {
-        padding: 10px 20px;
-        cursor: pointer;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-        border-top: 1px solid rgba(0, 0, 0, 0.12);
-        font-weight: 700;
-        justify-content: space-between;
-    }
-
-    .email__search .search-item .item__photo {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        background: #FFE9C5;
-        border-radius: 100px;
-        color: #D36B1E;
-        font-weight: bold;
-        font-size: 12px;
-        margin-right: 15px;
-        text-transform: uppercase;
-    }
-
-    .email__search .search-item .item__name,
-    .email__search .search-item .item__subject {
-        margin-right: 40px;
-    }
-
-    .email__search .search-item:hover {
-        background: #f6f6f6;
-    }
-
-    .email__search .search-item {
-        display: inline-block;
-    }
-
-    .email__search .search-item .title {
-        width: 55%;
-    }
-
-    .valid {
-        box-shadow: none !important
-    }
-
-    .pag_disabled {
-        cursor: default !important;
-    }
-
-    .pag_disabled:hover {
-        color: #D8D8D8 !important;
-    }
-
-    .td__subject {
-        width: 51%;
+    .draft-wrap.massage__list .td__subject {
+        width: 72%;
     }
 </style>

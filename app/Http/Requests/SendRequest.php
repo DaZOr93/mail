@@ -24,9 +24,9 @@ class SendRequest extends FormRequest
     public function rules()
     {
         return [
-            'subject' => 'string',
-            'to' => 'required|string',
-            'editorData' => 'min:20',
+            'subject' => 'string|nullable',
+            'to' => 'required|email:rfc',
+            'editorData' => 'string|nullable',
             'attach' => 'array',
             'letterId' => 'integer',
         ];
@@ -38,11 +38,8 @@ class SendRequest extends FormRequest
     public function messages()
     {
         return [
-            'subject.required' => 'Тема обязательно к заполнению',
-            'subject.string' => 'Неверный формат данных',
-            'to.required' => 'Укажите Email получателя',
-            'editorData.required' => 'Письмо не может быть пустым',
-            'editorData.min' => 'Миниум 20 символов',
+           'to.email' => 'Не верный формат email',
+           'to.required' => 'Введите получателя'
         ];
     }
 

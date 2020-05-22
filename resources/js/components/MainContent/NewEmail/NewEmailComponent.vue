@@ -53,13 +53,13 @@
                             >
                         </div>
                     </div>
-                    <div class="switch new__email-switch">
-                        <label>
-                            <input type="checkbox">
-                            <span class="lever"></span>
-                            Запрос ответа
-                        </label>
-                    </div>
+<!--                    <div class="switch new__email-switch">-->
+<!--                        <label>-->
+<!--                            <input type="checkbox">-->
+<!--                            <span class="lever"></span>-->
+<!--                            Запрос ответа-->
+<!--                        </label>-->
+<!--                    </div>-->
                 </div>
             </div>
             <div class="new__email-body">
@@ -76,29 +76,29 @@
                             >
                         </div>
                     </div>
-                    <div class="switch new__email-switch">
-                        <label>
-                            <input type="checkbox" v-model="message.deliveryRequest">
-                            <span class="lever"></span>
-                            Уведомить о доставке
-                        </label>
-                    </div>
+<!--                    <div class="switch new__email-switch">-->
+<!--                        <label>-->
+<!--                            <input type="checkbox" v-model="message.deliveryRequest">-->
+<!--                            <span class="lever"></span>-->
+<!--                            Уведомить о доставке-->
+<!--                        </label>-->
+<!--                    </div>-->
                 </div>
             </div>
             <div id="editor">
                 <ckeditor :editor="editor" v-model="message.editorData" :config="editorConfig"></ckeditor>
             </div>
-            <div class="messages__attachments" v-if="filesFinish.length > 0">
+            <div class="messages__attachments" v-if="filesFinishData.length > 0">
                 <div class="progress" :style="{width: fileProgress + '%'}"></div>
                 <i class="material-icons">attachment</i>
                 <div>
                     <div class="attachments-tile">Вложения</div>
                     <ul>
-                        <li v-for="(file , index) in filesFinish" :key="index" @click="delAttach(index)">
-                            <span class="attach-name">{{ file.name | shortName}}</span>
+                        <li v-for="(file , index) in filesFinishData" :key="index" @click="delAttach(index)">
+                            <span class="attach-name">{{ file.name}}</span>
                             <img
                                 class="attach_icon"
-                                :src="'/img/attach' + '-' + filesFinishData[index][1] + '.png'"
+                                :src="'/img/attach' + '-' + file.mime_type + '.png'"
                                 alt="attach">
                         </li>
 
@@ -123,6 +123,7 @@
                 message: {
                     'editorData': 'Введите сообщение',
                     'attach': [],
+                    'attachBol': 0,
                     'subject': ""
                 },
                 editorConfig: {
@@ -146,26 +147,25 @@
         methods: {
             draftTrigger(event) {
                 this.draft = true;
-                if (this.filesFinish.length === 5) {
+                if (this.filesFinishData.length > 4) {
                     event.preventDefault();
                     return this.toast('не более пяти файлов', 'warning');
                 }
             },
             delAttach(index) {
-                axios.delete('/api/delete/attachments/' + this.filesFinishData[index][0].slice(1));
+                axios.delete('/api/delete/attachments/' + this.filesFinishData[index].path);
                 this.message.attach.splice(index, 1);
                 this.filesFinishData.splice(index, 1);
                 this.filesFinish.splice(index, 1);
             },
             async fileInputChange(event) {
                 let files = Array.from(event.target.files);
-                this.filesOrder = files.slice();
                 for (let item of files) {
                     await this.uploadFiles(item);
                 }
             },
             async uploadFiles(file) {
-                if (this.filesFinish.length === 5) return this.toast('не более пяти файлов', 'warning');
+                if (this.filesFinishData.length > 4) return this.toast('не более пяти файлов', 'warning');
                 this.draft = true;
                 let form = new FormData();
                 form.append('file', file);
@@ -177,7 +177,6 @@
                 })
                     .then(r => {
                         this.fileProgress = 0;
-                        this.filesFinish.push(file);
                         this.filesFinishData.push(r.data);
                         this.message.attach.push(r.data);
                     })
@@ -225,7 +224,7 @@
                 this.$store.state.newMessage = this.message
             },
             draft() {
-                if (this.message) {
+                if (this.message && this.draftId === 0) {
                     axios.post('/api/storeDraft', this.message)
                         .then(r => this.draftId = r.data)
                 }
@@ -241,7 +240,13 @@
                 return value.slice(0, 4) + '...' + mime_type;
             },
         },
-
+        beforeRouteLeave(to, from, next){
+            if(this.filesFinishData.length > 0) this.message.attachBol = 1;
+            if(this.draft) {
+                axios.post('/api/updateDraft' , { message: this.message , id: this.draftId});
+            }
+            next();
+        },
         created() {
             eventBus.$on('reset', () => {
                 this.message = {
@@ -255,10 +260,29 @@
             if (this.$route.params.replayMessage) {
                 this.message = {
                     'editorData': '<blockquote>' + this.$route.params.replayMessage.html + '/<blockquote>',
-                    'to': this.$route.params.replayMessage.from,
+                    'to': this.$route.params.replayMessage.to,
                     'subject': 'Re:' + ' ' + this.$route.params.replayMessage.subject,
                     'deliveryRequest': true,
+                    'attach': [],
+                    'attachBol': this.$route.params.replayMessage.attach
                 };
+                this.draft = true;
+            }
+            if (this.$route.params.draftMessage){
+                this.message = {
+                    'editorData': this.$route.params.draftMessage.html,
+                    'to': this.$route.params.draftMessage.to,
+                    'subject': this.$route.params.draftMessage.subject,
+                    'deliveryRequest': true,
+                    'attach': [],
+                    'attachBol': this.$route.params.draftMessage.attach
+                };
+
+                this.message.attach = this.$route.params.draftMessage.attachments;
+                this.draft = true;
+                this.draftId = this.$route.params.draftMessage.id
+                axios.get('/api/index/attachments/' +  this.$route.params.draftMessage.id)
+                    .then( r => this.filesFinishData = r.data)
             }
         }
     }
