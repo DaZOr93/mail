@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Services\ConnectServices;
-
+use Illuminate\Http\JsonResponse;
 
 
 class StoreMessagesController extends Controller
@@ -20,6 +20,10 @@ class StoreMessagesController extends Controller
         $this->services = $services;
     }
 
+    /**
+     * Подгрузка новых сообщений
+     * @return JsonResponse
+     */
     public function __invoke()
     {
         return $this->services->store();

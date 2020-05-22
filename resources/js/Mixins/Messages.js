@@ -31,23 +31,9 @@ export default {
         paginate(page) {
             if (page) eventBus.$emit('paginate', page)
         },
-        getQueryMess(text) {
-            this.search = text.slice(0 , text.lastIndexOf('...'));
-            this.messagesSearch = [];
-            eventBus.$emit('searchMessages',this.search)
-        },
-        queryFilter(subject, text) {
-
-            if (subject.indexOf(this.search) + 1) {
-                return subject.slice(0, 30)
-            }
-
-            return text.slice(0, 30) + ' ... ' + this.search;
-        },
         searchMessages: _.debounce(function (event) {
             if (!event.target.value) {
-                this.messagesSearch = []
-                eventBus.$emit('getMessages')
+                this.messagesSearch = [];
             } else {
                 axios.get('/api/search/messages/' + event.target.value).then(r => {
                     this.messagesSearch = r.data;

@@ -4,29 +4,52 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreAttachmentsRequest;
-use App\Models\Attachments;
+use App\Services\AttachmentsServices;
+use Illuminate\Http\JsonResponse;
 
 class AttachmentsController extends Controller
 {
-    public function store(StoreAttachmentsRequest $request)
+    /**
+     * @var AttachmentsServices
+     */
+    private $service;
+
+    public function __construct(AttachmentsServices $service)
     {
-        $attach = new Attachments();
-        $attach->letter_id = $request->draftId;
-        $attach->name = $request->file('file')->getClientOriginalName();
-        $attach->path = $request->file('file')->store('/sending');
-        $attach->mime_type =substr( $attach->name, strrpos( $attach->name, '.') + 1);
-
-        $attach->save();
-
-        return response()->json([$attach->path, $attach->mime_type ,  $attach->name] , 200);
+        $this->service = $service;
     }
 
+
+    /**
+     * Показать вложености
+     * @param $letter_id
+     * @return JsonResponse
+     */
+    public function index($letter_id)
+    {
+        return response()->json($this->service->index($letter_id), 200);
+    }
+
+    /**
+     * Добавить вложенность в сообщения
+     * @param StoreAttachmentsRequest $request
+     * @return JsonResponse
+     */
+    public function store(StoreAttachmentsRequest $request)
+    {
+        return response()->json($this->service->store($request), 200);
+    }
+
+    /**
+     * Удалиение вложенности из сообщения
+     * @param $path
+     * @return JsonResponse
+     */
     public function delete($path)
     {
-         Attachments::where('path' , "/sending/{$path}")->first()->delete();
-         unlink('storage/app/sending/' . $path);
+        $this->service->delete($path);
 
-         return response()->json('deleted' , 200);
+        return response()->json('deleted', 200);
     }
 
 }

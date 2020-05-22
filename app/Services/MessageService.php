@@ -6,13 +6,17 @@ namespace App\Services;
 use App\Models\Attachments;
 use App\Models\Folders;
 use App\Models\Letter;
+use Illuminate\Support\Carbon;
 
 class MessageService extends ConnectServices
 {
 
     public function index($servicesFolder)
     {
-        return Letter::where($servicesFolder, 1)->orderByDesc('date_send')->paginate(10);
+        return Letter::where($servicesFolder, 1)
+            ->with('attachments')
+            ->orderByDesc('date_send')
+            ->paginate(10);
     }
 
     public function show($message_id)
@@ -68,18 +72,16 @@ class MessageService extends ConnectServices
         $letter->save();
     }
 
-    public function favorite($method, $message_id, $uid)
+    public function favorite($method, $message_id)
     {
 
         $letter = Letter::where('message_id', $message_id)->first();
 
         if ($method == 'add') {
             $letter->favorite = 1;
-            $this->mainFolder()->getMessage($uid, false, false, false, false)->setFlag('flagged');
         }
         if ($method == 'remove') {
             $letter->favorite = 0;
-            $this->mainFolder()->getMessage($uid, false, false, false, false)->unsetFlag('flagged');
         }
 
         $letter->save();
@@ -88,11 +90,11 @@ class MessageService extends ConnectServices
 
     public function storeDraft($request)
     {
-        $data = $request->only(['editorData', 'subject', 'to']);
+        $data = $request->only(['editorData', 'subject', 'to', 'attach' , 'attachBol']);
         $letter = new Letter();
         $letter->message_id = uniqid();
-        $letter->uid = uniqid();
-        $letter->date_send = date('Y-m-d H:m:s');
+        $letter->uid = rand(1, 200);
+        $letter->date_send = Carbon::now('Europe/Kiev')->format('Y-m-d H:i:s');
         $letter->to = $data['to'] ?? '';
         $letter->from = 'it2.0team3@gmail.com';
         $letter->to_name = $data['to'] ?? '';
@@ -103,7 +105,7 @@ class MessageService extends ConnectServices
         $letter->draft = 1;
         $letter->inbox = 0;
         $letter->seen = 0;
-        $letter->attach = 1;
+        $letter->attach = $data['attachBol'];
         $letter->save();
 
         return $letter->id;
@@ -111,14 +113,13 @@ class MessageService extends ConnectServices
 
     public function updateDraft($request)
     {
-
         $letter = Letter::find($request->id);
         $letter->html = $request->message['editorData'] ?? '';
-        $letter->attach = (count($request->message['attach']) > 0) ?1 :0;
+        $letter->attach = $request->message['attachBol'];
         $letter->subject = $request->message['subject'] ?? '';
         $letter->to = $request->message['to'] ?? '';
 
-        return$letter->save();
+        return $letter->save();
     }
 
     public function search($value)
@@ -129,18 +130,13 @@ class MessageService extends ConnectServices
             ->get();
     }
 
-    public function getSearch($value)
-    {
-        return Letter::where("subject", "like", "%{$value}%")->orWhere("text", "like", "%{$value}%")->paginate(10);
-    }
-
 
     public function deleteAttach($attachments, $letter_id)
     {
         Attachments::where('letter_id', $letter_id)->delete();
 
         foreach ($attachments as $attach) {
-            unlink('storage/' . $attach->path);
+            unlink('storage/app/' . $attach->path);
         }
     }
 }

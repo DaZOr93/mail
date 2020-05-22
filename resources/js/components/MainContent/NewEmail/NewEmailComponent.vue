@@ -53,13 +53,13 @@
                             >
                         </div>
                     </div>
-                    <div class="switch new__email-switch">
-                        <label>
-                            <input type="checkbox">
-                            <span class="lever"></span>
-                            Запрос ответа
-                        </label>
-                    </div>
+                    <!--                    <div class="switch new__email-switch">-->
+                    <!--                        <label>-->
+                    <!--                            <input type="checkbox">-->
+                    <!--                            <span class="lever"></span>-->
+                    <!--                            Запрос ответа-->
+                    <!--                        </label>-->
+                    <!--                    </div>-->
                 </div>
             </div>
             <div class="new__email-body">
@@ -76,29 +76,29 @@
                             >
                         </div>
                     </div>
-                    <div class="switch new__email-switch">
-                        <label>
-                            <input type="checkbox" v-model="message.deliveryRequest">
-                            <span class="lever"></span>
-                            Уведомить о доставке
-                        </label>
-                    </div>
+                    <!--                    <div class="switch new__email-switch">-->
+                    <!--                        <label>-->
+                    <!--                            <input type="checkbox" v-model="message.deliveryRequest">-->
+                    <!--                            <span class="lever"></span>-->
+                    <!--                            Уведомить о доставке-->
+                    <!--                        </label>-->
+                    <!--                    </div>-->
                 </div>
             </div>
             <div id="editor">
                 <ckeditor :editor="editor" v-model="message.editorData" :config="editorConfig"></ckeditor>
             </div>
-            <div class="messages__attachments" v-if="filesFinish.length > 0">
+            <div class="messages__attachments" v-if="filesFinishData.length > 0">
                 <div class="progress" :style="{width: fileProgress + '%'}"></div>
                 <i class="material-icons">attachment</i>
                 <div>
                     <div class="attachments-tile">Вложения</div>
                     <ul>
-                        <li v-for="(file , index) in filesFinish" :key="index" @click="delAttach(index)">
-                            <span class="attach-name">{{ file.name | shortName}}</span>
+                        <li v-for="(file , index) in filesFinishData" :key="index" @click="delAttach(index)">
+                            <span class="attach-name">{{ file.name}}</span>
                             <img
                                 class="attach_icon"
-                                :src="'/img/attach' + '-' + filesFinishData[index][1] + '.png'"
+                                :src="'/img/attach' + '-' + file.mime_type + '.png'"
                                 alt="attach">
                         </li>
 
@@ -113,7 +113,6 @@
     import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
     import VuePureLightbox from 'vue-pure-lightbox'
     import {eventBus} from "../../../app"
-
     export default {
         name: 'app',
         components: {VuePureLightbox},
@@ -123,6 +122,7 @@
                 message: {
                     'editorData': 'Введите сообщение',
                     'attach': [],
+                    'attachBol': 0,
                     'subject': ""
                 },
                 editorConfig: {
@@ -146,26 +146,25 @@
         methods: {
             draftTrigger(event) {
                 this.draft = true;
-                if (this.filesFinish.length === 5) {
+                if (this.filesFinishData.length > 4) {
                     event.preventDefault();
                     return this.toast('не более пяти файлов', 'warning');
                 }
             },
             delAttach(index) {
-                axios.delete('/api/delete/attachments/' + this.filesFinishData[index][0].slice(1));
+                axios.delete('/api/delete/attachments/' + this.filesFinishData[index].path);
                 this.message.attach.splice(index, 1);
                 this.filesFinishData.splice(index, 1);
                 this.filesFinish.splice(index, 1);
             },
             async fileInputChange(event) {
                 let files = Array.from(event.target.files);
-                this.filesOrder = files.slice();
                 for (let item of files) {
                     await this.uploadFiles(item);
                 }
             },
             async uploadFiles(file) {
-                if (this.filesFinish.length === 5) return this.toast('не более пяти файлов', 'warning');
+                if (this.filesFinishData.length > 4) return this.toast('не более пяти файлов', 'warning');
                 this.draft = true;
                 let form = new FormData();
                 form.append('file', file);
@@ -177,7 +176,6 @@
                 })
                     .then(r => {
                         this.fileProgress = 0;
-                        this.filesFinish.push(file);
                         this.filesFinishData.push(r.data);
                         this.message.attach.push(r.data);
                     })
@@ -196,7 +194,6 @@
                     return this.toast('Нечего сохронять', 'warning')
                 }
                 axios.post('/api/updateDraft' , { message: this.message , id: this.draftId});
-
                 return this.toast('Cохранил', 'success')
             },
             toast(msg, type) {
@@ -225,7 +222,7 @@
                 this.$store.state.newMessage = this.message
             },
             draft() {
-                if (this.message) {
+                if (this.message && this.draftId === 0) {
                     axios.post('/api/storeDraft', this.message)
                         .then(r => this.draftId = r.data)
                 }
@@ -237,16 +234,22 @@
         filters: {
             shortName: function (value) {
                 let mime_type = value.slice(value.lastIndexOf('.'));
-
                 return value.slice(0, 4) + '...' + mime_type;
             },
         },
-
+        beforeRouteLeave(to, from, next){
+            if(this.filesFinishData.length > 0) this.message.attachBol = 1;
+            if(this.draft) {
+                axios.post('/api/updateDraft' , { message: this.message , id: this.draftId});
+            }
+            next();
+        },
         created() {
             eventBus.$on('reset', () => {
                 this.message = {
                     'editorData': 'Введите сообщение',
-                    'attach': []
+                    'attach': [],
+                    'attachBol': 0
                 };
                 this.filesFinish = [];
                 this.filesFinishData = [];
@@ -255,22 +258,37 @@
             if (this.$route.params.replayMessage) {
                 this.message = {
                     'editorData': '<blockquote>' + this.$route.params.replayMessage.html + '/<blockquote>',
-                    'to': this.$route.params.replayMessage.from,
+                    'to': this.$route.params.replayMessage.to,
                     'subject': 'Re:' + ' ' + this.$route.params.replayMessage.subject,
-                    'attach': [],
                     'deliveryRequest': true,
+                    'attach': [],
+                    'attachBol': this.$route.params.replayMessage.attach
                 };
+                this.draft = true;
+            }
+            if (this.$route.params.draftMessage){
+                this.message = {
+                    'editorData': this.$route.params.draftMessage.html,
+                    'to': this.$route.params.draftMessage.to,
+                    'subject': this.$route.params.draftMessage.subject,
+                    'deliveryRequest': true,
+                    'attach': [],
+                    'attachBol': this.$route.params.draftMessage.attach
+                };
+                this.message.attach = this.$route.params.draftMessage.attachments;
+                this.draft = true;
+                this.draftId = this.$route.params.draftMessage.id
+                axios.get('/api/index/attachments/' +  this.$route.params.draftMessage.id)
+                    .then( r => this.filesFinishData = r.data)
             }
         }
     }
 </script>
 
 <style scoped>
-
     .new__email-wrap .messages__attachments li {
         position: relative;
     }
-
     .new__email-wrap .messages__attachments li:hover::after,
     .new__email-wrap .messages__attachments li:hover::before {
         content: '';
@@ -284,66 +302,53 @@
         margin-left: -27px;
         cursor: pointer;
     }
-
     .new__email-wrap .messages__attachments li:hover::before {
         transform: rotate(-45deg);
     }
-
     .new__email-wrap .messages__attachments li:hover::after {
         transform: rotate(45deg);
     }
-
     #fileUpload {
         display: none;
     }
-
     #fileUpload + label {
         display: block;
     }
-
     .progress {
         top: -12px;
         left: 3px;
         position: absolute;
     }
-
     .messages__attachments {
         top: 35%;
         width: 100%;
     }
-
     .new__email-body {
         margin-bottom: 10px;
     }
-
     .new__email-wrap {
         background: #fff;
         padding-top: 10px;
         height: 609px;
         position: relative
     }
-
     .input-field {
         margin: 0;
     }
-
     .email__header-box .input-field {
         max-width: 585px;
         width: 100%;
     }
-
     .email__header-box {
         display: flex;
         padding-right: 17px;
         padding-left: 31px;
     }
-
     .email__to, .email__subject {
         display: flex;
         max-width: 690px;
         width: 100%;
     }
-
     .email__to input, .email__subject input {
         margin: 0 !important;
         border: 2px solid #F5F5F5 !important;
@@ -356,46 +361,37 @@
         padding-left: 35px !important;
         max-width: 690px;
     }
-
     .new__email-switch {
         display: flex;
         align-items: center;
     }
-
     .switch label .lever {
         width: 40px;
         height: 25px;
         border: 2px solid #F0F0F0;
         background-color: transparent;
     }
-
     .switch label .lever:before, .switch label .lever:after {
         width: 15px;
         height: 15px;
         left: 5px;
         top: 2px;
     }
-
     .switch label input[type=checkbox]:checked + .lever {
         background-color: #1875F0;
     }
-
     .switch label input[type=checkbox]:checked + .lever:after {
         background-color: #FFFFFF
     }
-
     .switch label .lever:after {
         background-color: #E6E6E6;
     }
-
     .email__to input:focus, .email__subject input:focus {
         box-shadow: none !important;
     }
-
     .validate, .valid {
         box-shadow: none !important;
     }
-
     .email__to span, .email__subject span {
         font-style: normal;
         font-weight: 900;
@@ -407,8 +403,6 @@
         border-radius: 4px 0px 0px 4px;
         color: #B3B3B3;
     }
-
-
     .new__email-bar {
         display: flex;
         align-items: center;
@@ -419,76 +413,59 @@
         font-weight: 500;
         font-size: 12px;
     }
-
     .new__email-bar i {
         width: 26px;
         height: 26px;
     }
-
     .email__actions {
         display: flex;
         border-right: 2px solid #F5F5F5;
     }
-
     .email__actions .action_group {
         padding: 20px 22px;
         text-align: center;
     }
-
     .email__search-wrap {
         padding: 21px 25px 21px 30px;
         border-right: 2px solid #F5F5F5;
     }
-
     .email__search div {
         display: flex;
         align-items: center;
     }
-
     .email__search i {
         position: relative;
         z-index: 222;
         cursor: pointer;
     }
-
     .email__arrows {
         padding: 32px 30px 30px 32px;
         display: flex;
         border-right: 2px solid #F5F5F5;
     }
-
     .email__actions .action_text {
         color: #CCCCCC;
     }
-
     .new__email-bar input {
         border-bottom: none !important;
         margin-bottom: 0 !important;
     }
-
     .new__email-bar label.active {
         color: #D8D8D8 !important;
     }
-
     .new__email-bar input:focus {
         box-shadow: none !important
     }
-
     .email-dop {
         display: flex
     }
-
     .email-dop div {
         padding: 29px 15px;
     }
-
     .email__arrows, .action_group, .email-dop div {
         cursor: pointer;
     }
-
     .email__arrows:hover, .action_group:hover, .email-dop div:hover {
         background: rgba(24, 117, 240, 0.16);
     }
-
-
 </style>

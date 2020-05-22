@@ -40,17 +40,29 @@
                     <i title="Поиск" class="material-icons">search</i>
                 </div>
                 <div id="search_range" class="search-items" v-if="messagesSearch.length > 0">
-                    <div class="search-item"
-                         v-for="message in messagesSearch"
-                         @click="getQueryMess(queryFilter(message.subject, message.text))">
-                        {{queryFilter(message.subject, message.text) }}
-                        <i title="Поиск" class="material-icons">search</i>
-                    </div>
+                    <router-link
+                        class="search-item"
+                        tag="div"
+                        v-for="(message , index) in messagesSearch"
+                        :key="index"
+                        :to="{name: 'MessagesOpen', params: {uid: message.message_id}}">
+                        <div class="item__photo">
+                            {{ message.from[0] }}
+                        </div>
+                        <div class="item__name">
+                            {{ message.from }}
+                        </div>
+                        <div class="item__subject">
+                            <span>Sub:&nbsp;</span> {{ (message.subject) ? message.subject : '( без темы )' }}
+                        </div>
+                        <div class="item__text">
+                            {{ (message.text == 0) ? ' ' : message.text }}
+                        </div>
+                    </router-link>
                 </div>
             </div>
             <div class="email_simple-paginate">
                 <div class="paginate-numbers">
-
                     {{ getMessages.from}}
                     -
                     {{ getMessages.to}}
@@ -104,7 +116,7 @@
                 :key="index"
                 :class="{new__massage__list: message.seen != 0}"
             >
-                <td>
+                <td class="select_td">
                     <div class="message__select">
                         <label @click.prevent="setBg">
                             <input :data-mess="index" ref="selectMes" type="checkbox" class="filled-in"/>
@@ -112,7 +124,7 @@
                         </label>
                     </div>
                 </td>
-                <td>
+                <td class="favorite_td">
                     <div class="message__favorite">
                         <i @click.prevent="favorite(message.message_id, message.uid, $event)"
                            v-if="message.favorite === 1" style="color: rgb(249, 173, 61)" class="material-icons">
@@ -124,12 +136,12 @@
                         </i>
                     </div>
                 </td>
-                <td class="seen" v-if="$route.path !== '/sent' ||  $route.path === '/draft'">
+                <td class="seen">
                     <div
                         :class="{'message__seen-dot' :message.seen != 0}">
                     </div>
                 </td>
-                <td class="email__from-td" v-if="$route.path !== '/sent'">
+                <td class="email__from-td">
                     <div class="email__from">
                         <div>
                             <div
@@ -141,21 +153,6 @@
                         </div>
                         <div class="email__driver">
                             {{ ( message.from_name === "0" ) ? message.from : message.from_name}}
-                        </div>
-                    </div>
-                </td>
-                <td v-else class="email__to-td">
-                    <div class="email__to">
-                        <div>
-                            <div
-                                class="email__name"
-                                :class="'bg_' + index"
-                            >
-                                {{ ( message.to_name === "0" ) ? message.to[0] : message.to_name[0]}}
-                            </div>
-                        </div>
-                        <div class="email__driver">
-                            {{ ( message.to_name === "0" ) ? message.to : message.to_name}}
                         </div>
                     </div>
                 </td>
@@ -188,7 +185,7 @@
 </template>
 
 <script>
-import MessagesMixin from  '../../../Mixins/Messages'
+    import MessagesMixin from '../../../Mixins/Messages'
     export default {
         name: "MessagesComponent",
         mixins: [MessagesMixin]
@@ -202,50 +199,63 @@ import MessagesMixin from  '../../../Mixins/Messages'
         left: 0;
         width: 100%;
     }
-
+    td.seen {
+        width: 1%;
+    }
     .massage__list .email__search {
         position: relative;
     }
-
     .massage__list .email__search .search-items {
         display: block;
-        color: #666666
+        color: #666666;
+        max-height: 550px;
+        overflow: auto;
     }
-
     .email__search .search-item {
-        padding: 30px;
+        padding: 10px 20px;
         cursor: pointer;
         border-bottom: 1px solid rgba(0, 0, 0, 0.12);
         border-top: 1px solid rgba(0, 0, 0, 0.12);
         font-weight: 700;
         justify-content: space-between;
     }
-
+    .email__search .search-item .item__photo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        background: #FFE9C5;
+        border-radius: 100px;
+        color: #D36B1E;
+        font-weight: bold;
+        font-size: 12px;
+        margin-right: 15px;
+        text-transform: uppercase;
+    }
+    .email__search .search-item .item__name,
+    .email__search .search-item .item__subject {
+        margin-right: 40px;
+    }
     .email__search .search-item:hover {
         background: #f6f6f6;
     }
-
     .email__search .search-item {
         display: inline-block;
     }
-
     .email__search .search-item .title {
         width: 55%;
     }
-
     .valid {
         box-shadow: none !important
     }
-
     .pag_disabled {
         cursor: default !important;
     }
-
     .pag_disabled:hover {
         color: #D8D8D8 !important;
     }
-
     .td__subject {
-        width: 50%;
+        width: 51%;
     }
 </style>

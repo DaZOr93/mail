@@ -21,35 +21,29 @@ Route::get('user', 'Api\User\UserController@index');
 Route::get('/user/{slug}/messages', 'Api\MessagesController@folderMess');
 
 
-
 Route::get('/count/messages', 'Api\MessagesController@messagesTollsCount');
 Route::get('/messages/{servicesFolder}', 'Api\MessagesController@index');
 Route::get('/message/{uid}', 'Api\MessagesController@show');
 Route::get('/messages/{filters}/{offset}', 'Api\MessagesController@filters');
 
 
-Route::post('/user/folders/update' , 'Api\MessagesController@update');
-Route::post('upload/attachments' , 'Api\AttachmentsController@store');
-Route::delete('delete/attachments/sending/{path}' , 'Api\AttachmentsController@delete');
-Route::get('/search/messages/{value}' , 'Api\MessagesController@search');
-Route::get('/getSearch/messages/{value}' , 'Api\MessagesController@getSearch');
-Route::post('/storeDraft' , 'Api\MessagesController@storeDraft');
-Route::post('/updateDraft' , 'Api\MessagesController@updateDraft');
-Route::get('/store/messages' , 'Api\StoreMessagesController');
+Route::post('/user/folders/update', 'Api\MessagesController@update');
+Route::post('upload/attachments', 'Api\AttachmentsController@store');
+Route::get('/index/attachments/{id}', 'Api\AttachmentsController@index');
+Route::delete('delete/attachments/sending/{path}', 'Api\AttachmentsController@delete');
+Route::get('/search/messages/{value}', 'Api\MessagesController@search');
+Route::get('/getSearch/messages/{value}', 'Api\MessagesController@getSearch');
+Route::post('/storeDraft', 'Api\MessagesController@storeDraft');
+Route::post('/updateDraft', 'Api\MessagesController@updateDraft');
+Route::get('/store/messages', 'Api\StoreMessagesController');
 
 
 Route::get('/delete/{uid}/{message_id}', 'Api\MessagesController@moveToBasket');
 Route::get('/favorite/{method}/{message_id}/{uid}', 'Api\MessagesController@favorite');
 
 //user-folders
-Route::get('/user/folders' , 'Api\FoldersController@index');
+Route::get('/user/folders', 'Api\FoldersController@index');
 
 Route::get('/sentMessage/{uid}', 'Api\MessagesController@show'); //??????????????нужно создать SentMessagesController@show ?????????????
 Route::get('/sentMessage/sending/{uid}', 'Api\MessagesController@sending'); //??????????????нужно создать SentMessagesController@show ?????????????
-Route::post('/send-email', 'Api\SendEmailController@index');
-
-
-
-
-
-
+Route::post('/send-email', 'Api\SendEmailController');
