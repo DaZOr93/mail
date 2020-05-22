@@ -58,6 +58,16 @@ class MessageService extends ConnectServices
         $this->mainFolder()->getMessage($uid, false, false, false, false)->delete();
     }
 
+    public function moveToBasket($uid, $message_id)
+    {
+        $letter = Letter::where('message_id', $message_id)->with('attachments')->first();
+        $letter->sending = 0;
+        $letter->inbox = 0;
+        $letter->draft = 0;
+        $letter->deleted = 1;
+        $letter->save();
+    }
+
     public function favorite($method, $message_id, $uid)
     {
 

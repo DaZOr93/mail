@@ -257,6 +257,7 @@
                     'editorData': '<blockquote>' + this.$route.params.replayMessage.html + '/<blockquote>',
                     'to': this.$route.params.replayMessage.from,
                     'subject': 'Re:' + ' ' + this.$route.params.replayMessage.subject,
+                    'attach': [],
                     'deliveryRequest': true,
                 };
             }
