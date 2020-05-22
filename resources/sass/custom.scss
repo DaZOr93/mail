@@ -4,6 +4,79 @@
 
 
 //modal
+
+
+.delete_signature i {
+    color: #F93F3F;
+}
+.m_modal .nav__buttons  button {
+    background: #1875F0;
+    border: 2px solid #F5F5F5;
+    border-radius: 4px;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 10px;
+    line-height: 50px;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    padding: 0 29px;
+    margin-right: 20px;
+    cursor: pointer;
+}
+.m_modal .signature__buttons  button {
+    background: #1875F0;
+    border: 2px solid #F5F5F5;
+    border-radius: 4px;
+    font-style: normal;
+    font-weight: 900;
+    font-size: 10px;
+    line-height: 40px;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    padding: 0 29px;
+    margin-right: 20px;
+    cursor: pointer;
+    width: 130px;
+
+
+
+
+}
+.delete_signature span {
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    color: #B3B3B3;
+}
+.delete_signature {
+    cursor: pointer;
+    margin-top: 15px;
+}
+.signature__line {
+    max-width: 350px;
+    width: 100%;
+    background: #F5F5F5;
+    margin-top: 15px;
+}
+
+
+
+.signature input[type=text] {
+    background: #FFFFFF;
+    border: 2px solid #F5F5F5;
+    box-sizing: border-box;
+    border-radius: 4px;
+    height: 50px;
+    width: 100%;
+}
+.signature label {
+    font-style: normal;
+    font-weight: bold;
+    font-size: 12px;
+    color: #999999;
+    padding: 3px;
+}
+
 .m_modal_wrap{
     visibility: hidden;
     opacity: 0;

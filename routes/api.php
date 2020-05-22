@@ -47,3 +47,5 @@ Route::get('/user/folders', 'Api\FoldersController@index');
 Route::get('/sentMessage/{uid}', 'Api\MessagesController@show'); //??????????????нужно создать SentMessagesController@show ?????????????
 Route::get('/sentMessage/sending/{uid}', 'Api\MessagesController@sending'); //??????????????нужно создать SentMessagesController@show ?????????????
 Route::post('/send-email', 'Api\SendEmailController');
+Route::get('/signature' , 'Api\SignaturesController@index');
+Route::post('/signature/save/{signatures}' , 'Api\SignaturesController@save');
