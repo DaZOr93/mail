@@ -1,7 +1,13 @@
 <template>
     <div>
+        <mobileNav></mobileNav>
         <header class="header">
             <div class="wrap">
+                <div class="togglermenu" @click="openNavMenu">
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </div>
                 <div class="logo-wrap ">
                     <div class="logo-inner" :class="{ compactBar: toggleBol }">
                         <div class="logo">
@@ -22,7 +28,7 @@
                         <img :src="user.avatar_url" alt="">
                     </div>
                     <div class="arrow-bottom">
-                        <img  @click="userDrop = !userDrop" src="/img/arrow.png" alt="">
+                        <img @click="userDrop = !userDrop" src="/img/arrow.png" alt="">
                         <div class="user_drop" :class="{user_show : userDrop}">
                             <a href="#" @click.prevent="logout">Выйти из системы</a>
                         </div>
@@ -34,18 +40,20 @@
 </template>
 
 <script>
+    import mobileNav from '../Header/MobileNavComponent';
     export default {
         name: "main-header",
+        components: {mobileNav},
         data() {
-          return {
-              userDrop: false
-          }
+            return {
+                userDrop: false
+            }
         },
         computed: {
             toggleBol() {
                 return this.$store.getters.toggleBar;
             },
-            user(){
+            user() {
                 return this.$store.getters.getUser;
             }
         },
@@ -53,14 +61,20 @@
             toggleBar() {
                 this.$store.commit('toggleBar');
             },
-            auth(){
+            auth() {
                 this.$store.dispatch('auth')
             },
-            logout(){
+            logout() {
                 axios.get('/auth/logout');
-                axios.get('https://team1-group-project.azurewebsites.net/api/client_logout' , { headers: {Authorization: "Bearer " + `${this.user.token}`}})
-                    .then(r => location.href= r.data)
-            }
+                axios.get('https://team1-group-project.azurewebsites.net/api/client_logout', {headers: {Authorization: "Bearer " + `${this.user.token}`}})
+                    .then(r => location.href = r.data)
+            },
+            openNavMenu() {
+                let nav = document.getElementById('mob_nav');
+                document.body.classList.toggle('hidden');
+                nav.classList.toggle('mon_nav_open')
+            },
+
 
         },
         created() {
@@ -70,6 +84,6 @@
     }
 </script>
 
-<style scoped>
+<style>
 
 </style>

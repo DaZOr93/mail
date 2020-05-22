@@ -1,5 +1,5 @@
 <template>
-    <div class="w100">
+    <div class="w100 new__email-inner">
         <div class="new__email-bar">
             <div @click="$router.go(-1)" class="email__arrows">
                 <i class="material-icons">arrow_back</i>
@@ -21,6 +21,7 @@
                 </div>
             </div>
             <div class="email__search-wrap w100">
+                <div class="nav__mobile-open" @click="openNav"><i class="material-icons">dehaze</i></div>
                 <div class="email__search">
                     <div class="input-field">
                         <label for="last_name">Поиск</label>
@@ -149,6 +150,10 @@
             }
         },
         methods: {
+            openNav() {
+                let nav = document.getElementById('nav_wrap');
+                nav.classList.toggle("nav-wrap__open");
+            },
             draftTrigger(event) {
                 this.draft = true;
                 if (this.filesFinishData.length > 4) {
@@ -292,6 +297,9 @@
 
 <style scoped>
     .new__email-wrap .messages__attachments li {
+        position: relative;
+    }
+    .new__email-inner {
         position: relative;
     }
     .new__email-wrap .messages__attachments li:hover::after,

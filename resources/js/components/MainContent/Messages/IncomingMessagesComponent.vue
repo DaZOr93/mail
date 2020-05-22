@@ -178,7 +178,7 @@
                         </i>
                     </div>
                 </td>
-                <td>
+                <td class="date__td">
                     <div class="email_date">
                         {{ getDate(message.date_send)}} AM
                     </div>

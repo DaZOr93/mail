@@ -9,6 +9,9 @@
     .content-wrap {
         padding: 45px 24px 0 10px;
     }
+    .new__email-inner .email__to input, .new__email-inner .email__subject input {
+        width: 95%!important;
+    }
 }
 
 
@@ -86,6 +89,7 @@
         padding-right: 0;
     }
     //header
+
 }
 
 @media (max-width: 977px) {
@@ -102,7 +106,7 @@
         display: block!important;
     }
     .write_letter {
-        padding: 19px 27px 0px 20px;
+        padding: 19px 27px 0 20px;
     }
     .nav-wrap__open {
         left: 0;
@@ -112,13 +116,38 @@
         right: 0;
         top: 32px;
     }
-    .massage__list .email__search {
-        position: absolute;
+    .massage__list .email__search , .new__email-inner .email__search-wrap {
+        position: absolute!important;
         top: -89px;
         background: #fff;
-        width: 101%;
+        max-width: 1000px;
+        width: 100%;
         border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+        border-right: none!important;
         padding: 9px 0 9px 45px;
+    }
+    .new__email-inner {
+        margin-top: 90px;
+    }
+    .email__to span[data-v-4e583fa8], .email__subject span[data-v-4e583fa8] {
+        line-height: 42px!important;
+    }
+    .new__email-bar .nav__mobile-open {
+        cursor: pointer;
+    }
+    .new__email-bar .email__search {
+        padding-left: 15px;
+    }
+    .new__email-bar .email__actions {
+        width: 100%;
+    }
+    .new__email-wrap .email__header-box{
+        padding-left: 2px!important;
+    }
+
+    .email_simple-paginate{
+        max-width: 500px;
+        width: 100%;
     }
     .nav__mobile-open {
         position: absolute;
@@ -139,10 +168,48 @@
     .main-wrap {
         overflow: hidden;
     }
+    .massage__list .email__search i {
+        right: 10px;
+    }
+   .user_drop {
+       z-index: 2;
+       background: #fff;
+       bottom: -40px;
+       right: 20px;
+       position: absolute;
+       opacity: 0;
+       transition: all 0.36s;
+       width: 132px;
+       padding: 0;
+   }
+    .user_show {
+        opacity: 1;
+    }
 }
 
 // Medium devices (tablets, 768px and up)
 @media (max-width: 768px) {
+    .sidebar-wrap, .logo-wrap  {
+        display: none;
+    }
+    .header .wrap , .user-wrap {
+        align-items: center;
+    }
+    .user-photo, .arrow-bottom {
+        margin-top: 0;
+        margin-right: 0;
+    }
+    .togglermenu{
+        display: block!important;
+    }
+    .nav__mobile-open i {
+        left: -1px;
+    }
+    .header .wrap {
+        padding-left: 10px;
+    }
+
+
 }
 
 
