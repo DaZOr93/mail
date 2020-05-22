@@ -124,10 +124,7 @@ class MessageService extends ConnectServices
 
     public function search($value)
     {
-        return Letter::where("subject", "like", "%{$value}%")->orWhere("text", "like", "%{$value}%")
-            ->select('subject', 'text')
-            ->groupBy('subject', 'text')
-            ->get();
+        return Letter::where("subject", "like", "%{$value}%")->orWhere("text", "like", "%{$value}%")->get();
     }
 
 

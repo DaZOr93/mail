@@ -46,17 +46,22 @@
                         v-for="(message , index) in messagesSearch"
                         :key="index"
                         :to="{name: 'MessagesOpen', params: {uid: message.message_id}}">
-                        <div class="item__photo">
-                            {{ message.from[0] }}
+                        <div>
+                            <div class="item__photo">
+                                {{ message.from[0] }}
+                            </div>
+                            <div class="item__name">
+                                {{ message.from }}
+                            </div>
+                            <div class="item__subject">
+                                <span>Sub:&nbsp;</span> {{ (message.subject) ? message.subject : '( без темы )' }}
+                            </div>
+                            <div class="item__text">
+                                {{ (message.text == 0) ? ' ' : message.text }}
+                            </div>
                         </div>
-                        <div class="item__name">
-                            {{ message.from }}
-                        </div>
-                        <div class="item__subject">
-                            <span>Sub:&nbsp;</span> {{ (message.subject) ? message.subject : '( без темы )' }}
-                        </div>
-                        <div class="item__text">
-                            {{ (message.text == 0) ? ' ' : message.text }}
+                        <div class="item__time">
+                            {{ getDate(message.date_send)}} AM
                         </div>
                     </router-link>
                 </div>
@@ -186,6 +191,7 @@
 
 <script>
     import MessagesMixin from '../../../Mixins/Messages'
+
     export default {
         name: "MessagesComponent",
         mixins: [MessagesMixin]
@@ -199,18 +205,22 @@
         left: 0;
         width: 100%;
     }
+
     td.seen {
         width: 1%;
     }
+
     .massage__list .email__search {
         position: relative;
     }
+
     .massage__list .email__search .search-items {
         display: block;
         color: #666666;
         max-height: 550px;
         overflow: auto;
     }
+
     .email__search .search-item {
         padding: 10px 20px;
         cursor: pointer;
@@ -219,6 +229,7 @@
         font-weight: 700;
         justify-content: space-between;
     }
+
     .email__search .search-item .item__photo {
         display: flex;
         align-items: center;
@@ -233,28 +244,36 @@
         margin-right: 15px;
         text-transform: uppercase;
     }
+
     .email__search .search-item .item__name,
     .email__search .search-item .item__subject {
         margin-right: 40px;
     }
+
     .email__search .search-item:hover {
         background: #f6f6f6;
     }
+
     .email__search .search-item {
         display: inline-block;
     }
+
     .email__search .search-item .title {
         width: 55%;
     }
+
     .valid {
         box-shadow: none !important
     }
+
     .pag_disabled {
         cursor: default !important;
     }
+
     .pag_disabled:hover {
         color: #D8D8D8 !important;
     }
+
     .td__subject {
         width: 51%;
     }

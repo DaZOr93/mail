@@ -2829,6 +2829,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "MessagesComponent",
@@ -55785,38 +55790,50 @@ var render = function() {
                       }
                     },
                     [
-                      _c("div", { staticClass: "item__photo" }, [
-                        _vm._v(
-                          "\n                        " +
-                            _vm._s(message.from[0]) +
-                            "\n                    "
-                        )
+                      _c("div", [
+                        _c("div", { staticClass: "item__photo" }, [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(message.from[0]) +
+                              "\n                        "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "item__name" }, [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(message.from) +
+                              "\n                        "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "item__subject" }, [
+                          _c("span", [_vm._v("Sub: ")]),
+                          _vm._v(
+                            " " +
+                              _vm._s(
+                                message.subject
+                                  ? message.subject
+                                  : "( без темы )"
+                              ) +
+                              "\n                        "
+                          )
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "item__text" }, [
+                          _vm._v(
+                            "\n                            " +
+                              _vm._s(message.text == 0 ? " " : message.text) +
+                              "\n                        "
+                          )
+                        ])
                       ]),
                       _vm._v(" "),
-                      _c("div", { staticClass: "item__name" }, [
+                      _c("div", { staticClass: "item__time" }, [
                         _vm._v(
                           "\n                        " +
-                            _vm._s(message.from) +
-                            "\n                    "
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "item__subject" }, [
-                        _c("span", [_vm._v("Sub: ")]),
-                        _vm._v(
-                          " " +
-                            _vm._s(
-                              message.subject ? message.subject : "( без темы )"
-                            ) +
-                            "\n                    "
-                        )
-                      ]),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "item__text" }, [
-                        _vm._v(
-                          "\n                        " +
-                            _vm._s(message.text == 0 ? " " : message.text) +
-                            "\n                    "
+                            _vm._s(_vm.getDate(message.date_send)) +
+                            " AM\n                    "
                         )
                       ])
                     ]
