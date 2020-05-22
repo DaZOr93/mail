@@ -3499,7 +3499,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
 
 
 
@@ -3518,7 +3517,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         'subject': ""
       },
       editorConfig: {
-        toolbar: ['bold', 'italic', 'link', 'imageUpload', 'BulletedList', 'NumberedList', 'Blockquote']
+        toolbar: ['bold', 'italic', 'link', 'BulletedList', 'NumberedList', 'Blockquote']
       },
       filesFinish: [],
       fileProgress: 0,

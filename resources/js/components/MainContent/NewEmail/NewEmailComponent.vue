@@ -101,7 +101,6 @@
                                 :src="'/img/attach' + '-' + file.mime_type + '.png'"
                                 alt="attach">
                         </li>
-
                     </ul>
                 </div>
             </div>
@@ -130,7 +129,6 @@
                         'bold',
                         'italic',
                         'link',
-                        'imageUpload',
                         'BulletedList',
                         'NumberedList',
                         'Blockquote',
