@@ -93,9 +93,9 @@
                 </div>
             </div>
             <div class="email-dop">
-                <div>
+                <router-link to="/settings">
                     <i title="настройки" class="material-icons">settings</i>
-                </div>
+                </router-link>
             </div>
         </div>
 
