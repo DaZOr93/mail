@@ -4336,6 +4336,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -4349,7 +4350,6 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       item: 'NewFolderSettings',
-      store_button_text: "Продолжить",
       check_password: false
     };
   },
@@ -4360,7 +4360,6 @@ __webpack_require__.r(__webpack_exports__);
 
       if (check_pass) {
         this.item = 'NewFolderPassword';
-        this.store_button_text = 'Ok';
       } else {
         alert('folder created successfuly!');
         this.$emit('close');
@@ -4369,8 +4368,14 @@ __webpack_require__.r(__webpack_exports__);
     close: function close() {
       this.$emit('close');
     },
+    back: function back() {
+      this.item = 'NewFolderSettings';
+      this.check_password = false;
+    },
     add_password: function add_password() {
       alert('password saved successfuly!');
+      this.item = 'NewFolderSettings';
+      this.check_password = false;
       this.$emit('close');
     }
   }
@@ -9912,7 +9917,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n.m_modal[data-v-5c37fa06] {\n    position: relative;\n    width: 350px;\n    background-color: #fff;\n    transition: transform .3s ease-out;\n    transform: translate(0,-50px);\n    margin: 100px auto auto;\n    padding: 30px 30px 25px 21px;\n    border-radius: 5px;\n}\n.m_modal .password_button[data-v-5c37fa06] {\n    width: 200px;\n    height: 50px;\n    color: #ffffff;\n    font-family: Roboto;\n    font-size: 12px;\n    font-weight: 900;\n    line-height: 50px;\n    text-transform: uppercase;\n}\n", ""]);
+exports.push([module.i, "\n.m_modal[data-v-5c37fa06] {\n    position: relative;\n    width: 350px;\n    background-color: #fff;\n    transition: transform .3s ease-out;\n    transform: translate(0,-50px);\n    margin: 100px auto auto;\n    padding: 30px 30px 25px 21px;\n    border-radius: 5px;\n}\n/* .m_modal .password_button {\n    width: 200px;\n    height: 50px;\n    color: #ffffff;\n    font-family: Roboto;\n    font-size: 12px;\n    font-weight: 900;\n    line-height: 50px;\n    text-transform: uppercase;\n} */\n", ""]);
 
 // exports
 
@@ -60022,7 +60027,7 @@ var render = function() {
               _c("div", { staticClass: "hor__line" }),
               _vm._v(" "),
               _c("div", { staticClass: "modal__buttons" }, [
-                _vm.item !== "NewFolderPassword"
+                _vm.item === "NewFolderSettings"
                   ? _c(
                       "button",
                       {
@@ -60034,7 +60039,7 @@ var render = function() {
                     )
                   : _vm._e(),
                 _vm._v(" "),
-                _vm.item !== "NewFolderPassword"
+                _vm.item === "NewFolderSettings"
                   ? _c(
                       "button",
                       {
@@ -60050,11 +60055,23 @@ var render = function() {
                   ? _c(
                       "button",
                       {
-                        staticClass: "btn_modal password_button",
+                        staticClass: "btn_modal",
                         attrs: { type: "button" },
                         on: { click: _vm.add_password }
                       },
                       [_vm._v("ОК")]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.item === "NewFolderPassword"
+                  ? _c(
+                      "button",
+                      {
+                        staticClass: "btn_modal",
+                        attrs: { type: "button" },
+                        on: { click: _vm.back }
+                      },
+                      [_vm._v("Назад")]
                     )
                   : _vm._e()
               ])

@@ -8,9 +8,10 @@
           <component  @checked="check_password = !check_password" :check_password="check_password" :is="item"></component>
           <div class="hor__line"></div>
           <div class="modal__buttons">
-            <button type="button" v-if="item!=='NewFolderPassword'" @click="store" class="btn_modal">Продолжить</button> 
-            <button type="button" v-if="item!=='NewFolderPassword'" @click="close" class="btn_modal">Отменить</button> 
-            <button type="button" v-if="item==='NewFolderPassword'" @click="add_password" class="btn_modal password_button">ОК</button>
+            <button type="button" v-if="item==='NewFolderSettings'" @click="store" class="btn_modal">Продолжить</button> 
+            <button type="button" v-if="item==='NewFolderSettings'" @click="close" class="btn_modal">Отменить</button> 
+            <button type="button" v-if="item==='NewFolderPassword'" @click="add_password" class="btn_modal">ОК</button>
+            <button type="button" v-if="item==='NewFolderPassword'" @click="back" class="btn_modal">Назад</button>
           </div>
         </div>  
       </div>
@@ -34,7 +35,6 @@ export default {
   data() {
     return {
       item:'NewFolderSettings',
-      store_button_text: "Продолжить",
       check_password: false,
     };
   },
@@ -46,7 +46,6 @@ export default {
       let check_pass = this.check_password;
       if(check_pass) {
         this.item = 'NewFolderPassword';
-        this.store_button_text = 'Ok';
       } else {
           alert('folder created successfuly!');
           this.$emit('close');
@@ -55,8 +54,14 @@ export default {
     close() {
       this.$emit('close');
       },
+    back() {
+      this.item = 'NewFolderSettings';
+      this.check_password = false;
+    },
     add_password() {
       alert('password saved successfuly!');
+      this.item = 'NewFolderSettings';
+      this.check_password = false;
       this.$emit('close');
     }
   }
@@ -75,7 +80,7 @@ export default {
     padding: 30px 30px 25px 21px;
     border-radius: 5px;
 }
-.m_modal .password_button {
+/* .m_modal .password_button {
     width: 200px;
     height: 50px;
     color: #ffffff;
@@ -84,5 +89,5 @@ export default {
     font-weight: 900;
     line-height: 50px;
     text-transform: uppercase;
-}
+} */
 </style>
