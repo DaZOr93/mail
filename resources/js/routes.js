@@ -6,10 +6,10 @@ import Spam from './components/MainContent/Spam/SpamComponent';
 import Sent from './components/MainContent/Sent/SentComponent';
 import Basket from './components/MainContent/Basket/BasketComponent';
 import NewEmail from './components/MainContent/NewEmail/NewEmailComponent';
-import NewFile from './components/MainContent/NewFile/NewFileComponent';
 import PageNotFound from './components/Fails/404';
 import MessagesOpen from './components/MainContent/Messages/MessagesOpenComponent';
 import folder from './components/MainContent/File/FolderComponent'
+import Settings from './components/Settings/Settings';
 
 
 export default new VueRouter({
@@ -50,12 +50,6 @@ export default new VueRouter({
             name: 'newEmail'
         },
         {
-            path: '/newFile',
-            component: NewFile,
-            name: 'newFile'
-        },
-
-        {
             path: '/messages/:uid',
             component: MessagesOpen,
             name: 'MessagesOpen'
@@ -64,6 +58,11 @@ export default new VueRouter({
             path: '/folder/:slug',
             component: folder,
             name: 'folder'
+        },
+        {
+            path: '/settings',
+            component: Settings,
+            name: 'Settings',
         },
         //404
         {

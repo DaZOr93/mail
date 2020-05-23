@@ -1,14 +1,7 @@
 <template>
-  <div class="modal-content">
-    <div class="card">
-        <div class="card-content">
-          <div class="row">
-            <div class="col s10 card-title">
-              <span>Новая папка</span>
-            </div>
-            <div class="col s2 close_button modal-close">
-               <i class="material-icons">clear</i>
-            </div>
+  <div class="">
+    <div class="col s10 card-title">
+            <span>Новая папка</span>
           </div>
           <div class="folder_name-block">
             <div class="input-field folder_name-input">
@@ -40,30 +33,14 @@
                 <span>Защитить папку паролем</span>
               </label>
             </div>
-          </form>
-        </div>
-        <div class="row card-action">
-          <div class="col s6">
-            <a
-              class="action_button-continue btn waves-effect waves-light center-align"
-              href="#"
-            >Продолжить</a>
-          </div>
-          <div class="col s6">
-            <a
-              class="action_button-cancel btn waves-effect waves-light center-align"
-              href="#"
-            >Отменить</a>
-          </div>
-        </div>
-      </div>
+          </form>      
   </div>
 </template>
 
+
 <script>
 export default {
-  name: "NewFileComponent",
-
+  name: "NewFolderSettings",
   data: function() {
     return {
       colors: [
@@ -90,11 +67,16 @@ export default {
       coverTrigger: false,
       closeOnClick: false,
       inDuration: 600,
-      outDuration: 600,
+      outDuration: 600
     });
   },
   methods: {
-    selectColor() {}
+    close() {
+      this.$emit('close')
+      },
+    selectColor() {
+
+    },
   }
 };
 </script>
@@ -102,20 +84,6 @@ export default {
 <style scoped>
 /* переопределение переменных Materialize */
 
-.modal {
-    display: none;
-    position: fixed;
-    left: 0;
-    right: 0;
-    background-color: #fafafa;
-    padding: 0;
-    max-height: 93%;
-    width: 19%;
-    margin: auto;
-    overflow-y: hidden;
-    border-radius: 2px;
-    will-change: top, opacity;
-}
 /* Text inputs */
 input:not([type]),
 input[type="text"]:not(.browser-default),
@@ -167,6 +135,16 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
 }
 
 /* custom styles */
+.m_modal {
+    position: relative;
+    width: 350px;
+    background-color: #fff;
+    transition: transform .3s ease-out;
+    transform: translate(0,-50px);
+    margin: 100px auto auto;
+    padding: 30px 30px 25px 21px;
+    border-radius: 5px;
+}
 .row .col .wrapper {
   font-family: Roboto;
   width: 350px;
@@ -194,12 +172,13 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
   font-size: 26px;
   color: #dfdfdf;
 }
-.close_button i:hover, .close_button i:focus {
+.close_button i:hover,
+.close_button i:focus {
   font-size: 30px;
   color: #b8b8b8;
   -webkit-transform: rotate(360deg);
-          transform: rotate(360deg);
-    transition: all 0.9s ease-in-out 0s;
+  transform: rotate(360deg);
+  transition: all 0.9s ease-in-out 0s;
 }
 .card-title {
   color: #666666;
@@ -222,7 +201,7 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
 .folder_name-input {
   margin-bottom: 55px;
 }
-.folder_name-block label{
+.folder_name-block label {
   margin-left: 20px;
 }
 .folder_name-block .validate,

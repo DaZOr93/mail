@@ -55,19 +55,24 @@
         </div>
         <div class="new-file">
             <div class="write_letter">
-                <a class="waves-effect waves-light modal-trigger" href="#modal">новая папка</a>
+                <a @click="create_folder" class="waves-effect waves-light modal-trigger">новая папка</a>
             </div>
         </div>
-        <NewFile id="modal" class="modal"></NewFile>
+        <NewFolder @close="modal = !modal" :modal="modal"></NewFolder>
     </div>
 </template>
 
 <script>
     import {eventBus} from "../../../app"
-    import NewFile from "../NewFile/NewFileComponent";
+    import NewFolder from "../../Modal/NewFolder/NewFolderComponent";
     export default {
-        components: {NewFile},
+        components: {NewFolder},
         name: "NavBarComponent",
+        data(){
+          return {
+            modal: false,
+          }
+        },
         computed: {
             newMessage(){
                 return this.$store.getters.newMessage
@@ -111,7 +116,10 @@
                     }
                 },500)
                 this.$store.dispatch('countMessages');
-            }
+            },
+            create_folder() {
+                this.modal = true;
+            },
         },
         created(){
             this.$store.dispatch('userFolders');

@@ -11,7 +11,7 @@
             <!--sidebar-->
 
             <div class="content-wrap w100">
-                <div class="content-nav">
+                <div class="content-nav" v-if="$route.path !== '/settings'">
                     <contentBar></contentBar>
                 </div>
                 <router-view></router-view>
