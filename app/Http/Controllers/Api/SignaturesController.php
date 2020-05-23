@@ -19,10 +19,10 @@ class SignaturesController extends Controller
         return response()->json($this->signaturesService->index(), 200);
     }
 
-    public function save($signatures)
+    public function save(Request $request)
     {
 
-        return response()->json($this->signaturesService->save($signatures), 200);
+        return response()->json($this->signaturesService->save($request), 200);
     }
     //
 }

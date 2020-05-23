@@ -27,7 +27,7 @@
                             </div>
                             <div class="col s6 default_signature">
                                 <label>
-                                    <input ref="signature"  class="with-gap" name="group1"
+                                    <input value="1" name="default" v-model="signature.default"
                                            type="radio"/>
                                     Подпись по умолчанию
                                 </label>
@@ -48,7 +48,7 @@
 
                     <div class="signature__buttons row">
                         <button type="button" @click="save" class="btn_modal col s3 offset-s8">Ok</button>
-
+{{signatures}}
                     </div>
                 </div>
             </div>
@@ -86,7 +86,8 @@
             add() {
                 this.signatures.unshift({
                     name: '',
-                    text: ''
+                    text: '',
+                    id: ''
                 });
             },
             save() {

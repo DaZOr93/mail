@@ -4565,7 +4565,8 @@ __webpack_require__.r(__webpack_exports__);
     add: function add() {
       this.signatures.unshift({
         name: '',
-        text: ''
+        text: '',
+        id: ''
       });
     },
     save: function save() {
@@ -59606,13 +59607,24 @@ var render = function() {
                     _c("div", { staticClass: "col s6 default_signature" }, [
                       _c("label", [
                         _c("input", {
-                          ref: "signature",
-                          refInFor: true,
-                          staticClass: "with-gap",
-                          attrs: { name: "group1", type: "radio" }
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: signature.default,
+                              expression: "signature.default"
+                            }
+                          ],
+                          attrs: { value: "1", name: "default", type: "radio" },
+                          domProps: { checked: _vm._q(signature.default, "1") },
+                          on: {
+                            change: function($event) {
+                              return _vm.$set(signature, "default", "1")
+                            }
+                          }
                         }),
                         _vm._v(
-                          "\n                                Подпись по умолчанию\n                            "
+                          "\n                                    Подпись по умолчанию\n                                "
                         )
                       ])
                     ]),
@@ -59666,7 +59678,8 @@ var render = function() {
                   on: { click: _vm.save }
                 },
                 [_vm._v("Ok")]
-              )
+              ),
+              _vm._v("\n" + _vm._s(_vm.signatures) + "\n                    ")
             ])
           ])
         ])
