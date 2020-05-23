@@ -43,6 +43,8 @@ Route::get('/favorite/{method}/{message_id}/{uid}', 'Api\MessagesController@favo
 
 //user-folders
 Route::get('/user/folders', 'Api\FoldersController@index');
+Route::post('/user/update', 'Api\FoldersController@update');
+Route::post('/user/delete', 'Api\FoldersController@delete');
 
 Route::get('/sentMessage/{uid}', 'Api\MessagesController@show'); //??????????????нужно создать SentMessagesController@show ?????????????
 Route::get('/sentMessage/sending/{uid}', 'Api\MessagesController@sending'); //??????????????нужно создать SentMessagesController@show ?????????????

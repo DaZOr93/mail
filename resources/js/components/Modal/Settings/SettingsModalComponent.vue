@@ -5,13 +5,7 @@
       <div class="close" @click="close"></div>
       <div class="content">
         <div class="integration-modal">
-          <component :is="item"></component>
-          <div class="hor__line"></div>
-          <div class="modal__buttons">
-            <!-- <button v-if="show_personal_data" type="button" @click="close" class="btn_modal">Выйти</button> -->
-            <button type="button" @click="close" class="btn_modal">Выйти</button>
-            <button type="button" @click="close" class="btn_modal">Отменить</button>
-          </div>
+          <component @close="close" :is="item"></component>
         </div>
       </div>
     </div>

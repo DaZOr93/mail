@@ -4661,18 +4661,142 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "FolderWorks",
   data: function data() {
     return {
-      folders: {}
+      folders: [],
+      deleteModal: false,
+      foldersItem: [],
+      deleteStatus: false,
+      pickerOpen: false,
+      deleteItems: [],
+      pagination: {
+        'perItem': 3,
+        'total': 0
+      },
+      colors: [{
+        name: "color_1",
+        colorName: 'Белый',
+        hex: '#ececec'
+      }, {
+        name: "color_2",
+        colorName: 'Желтый',
+        hex: '#f1c928'
+      }, {
+        name: "color_3",
+        colorName: 'Синий',
+        hex: '#1441ec'
+      }, {
+        name: "color_4",
+        colorName: 'Оранжевый',
+        hex: '#eb631f'
+      }, {
+        name: "color_5",
+        colorName: 'Зеленый',
+        hex: '#74af39'
+      }, {
+        name: "color_6",
+        colorName: 'Голубой',
+        hex: '#1288bd'
+      }, {
+        name: "color_7",
+        colorName: 'Розовый',
+        hex: '#c82484'
+      }, {
+        name: "color_8",
+        colorName: 'Фиолетовый',
+        hex: '#874ba7'
+      }, {
+        name: "color_9",
+        colorName: 'Зеленый',
+        hex: '#56c4ab'
+      }, {
+        name: "color_10",
+        colorName: 'Коричневый',
+        hex: '#976c4c'
+      }, {
+        name: "color_11",
+        colorName: 'Желтый',
+        hex: '#f1e7c2'
+      }, {
+        name: "color_12",
+        colorName: 'Градиент',
+        hex: '#FF6376'
+      }]
     };
+  },
+  methods: {
+    setColorName: function setColorName(color, index, hex) {
+      this.folders[index]['color_name'] = color;
+      this.folders[index]['color'] = hex;
+      this.pickerOpen = false;
+    },
+    save: function save() {
+      axios.post('/api/user/update', this.folders);
+
+      if (this.deleteStatus) {
+        axios.post('api/user/delete', this.deleteItems);
+      }
+
+      this.$emit('close');
+    },
+    update: function update(name, event, index) {
+      this.folders[index][name] = event.target.value;
+      this.$emit('close');
+    },
+    deleteFolder: function deleteFolder(index) {
+      this.deleteItems.push(this.folders[index].id);
+      this.folders.splice(index, 1);
+      this.deleteStatus = true;
+    },
+    folderColor: function folderColor() {
+      this.pickerOpen = true;
+    },
+    close: function close() {
+      this.$emit('close');
+    }
+  },
+  watch: {
+    deleteItems: function deleteItems() {
+      if (this.deleteItems.length) this.deleteStatus = false;
+    }
   },
   created: function created() {
     var _this = this;
 
     axios.get('/api/user/folders').then(function (r) {
-      return _this.folders = r.data;
+      _this.folders = r.data;
+      _this.pagination.total = r.data.length;
     });
   }
 });
@@ -4850,12 +4974,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Modal_Settings_SettingsItems_MailVisaComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../Modal/Settings/SettingsItems/MailVisaComponent */ "./resources/js/components/Modal/Settings/SettingsItems/MailVisaComponent.vue");
 /* harmony import */ var _Modal_Settings_SettingsItems_MailFetchComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../Modal/Settings/SettingsItems/MailFetchComponent */ "./resources/js/components/Modal/Settings/SettingsItems/MailFetchComponent.vue");
 /* harmony import */ var _Modal_Settings_SettingsItems_FolderWorksComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../Modal/Settings/SettingsItems/FolderWorksComponent */ "./resources/js/components/Modal/Settings/SettingsItems/FolderWorksComponent.vue");
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -10068,7 +10186,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* переопределение переменных Materialize */\r\n\r\n/* Text inputs */\ninput[data-v-7ebfc0cc]:not([type]),\r\ninput[type=\"text\"][data-v-7ebfc0cc]:not(.browser-default),\r\ntextarea.materialize-textarea[data-v-7ebfc0cc] {\r\n  border-bottom: none;\n}\ninput[data-v-7ebfc0cc]:not([type]):focus:not([readonly]),\r\ninput[type=\"text\"][data-v-7ebfc0cc]:not(.browser-default):focus:not([readonly]),\r\ntextarea.materialize-textarea[data-v-7ebfc0cc]:focus:not([readonly]) {\r\n  border-bottom: none;\r\n  box-shadow: none;\n}\ninput:not([type]):focus:not([readonly]) + label[data-v-7ebfc0cc],\r\ninput[type=\"text\"]:not(.browser-default):focus:not([readonly]) + label[data-v-7ebfc0cc],\r\ntextarea.materialize-textarea:focus:not([readonly]) + label[data-v-7ebfc0cc] {\r\n  color: #666666;\r\n  border-bottom: none;\n}\n.input-field > label:not(.label-icon).active[data-v-7ebfc0cc] {\r\n  transform: translateY(-30px) scale(0.8);\r\n  transform-origin: 0 0;\n}\r\n\r\n/* Checkbox */\n[type=\"checkbox\"].filled-in + span[data-v-7ebfc0cc]:not(.lever):after {\r\n  border-radius: 4px;\n}\n[type=\"checkbox\"].filled-in:not(:checked) + span[data-v-7ebfc0cc]:not(.lever):after {\r\n  height: 20px;\r\n  width: 20px;\r\n  background-color: transparent;\r\n  border: 2px solid #e6e6e6;\r\n  top: 0px;\r\n  z-index: 0;\n}\n[type=\"checkbox\"].filled-in:checked + span[data-v-7ebfc0cc]:not(.lever):after {\r\n  top: 0;\r\n  width: 20px;\r\n  height: 20px;\r\n  border: 2px solid #1875f0;\r\n  background-color: #1875f0;\r\n  z-index: 0;\n}\r\n\r\n/* custom styles */\n.m_modal[data-v-7ebfc0cc] {\r\n    position: relative;\r\n    width: 350px;\r\n    background-color: #fff;\r\n    transition: transform .3s ease-out;\r\n    transform: translate(0,-50px);\r\n    margin: 100px auto auto;\r\n    padding: 30px 30px 25px 21px;\r\n    border-radius: 5px;\n}\n.row .col .wrapper[data-v-7ebfc0cc] {\r\n  font-family: Roboto;\r\n  width: 350px;\r\n  padding: 0rem;\n}\n.card[data-v-7ebfc0cc] {\r\n  box-sizing: border-box;\r\n  font-family: Roboto;\r\n  width: 350px;\r\n  width: 100%;\r\n  height: 550px;\r\n  border-radius: 6px;\r\n  background-color: #ffffff;\r\n  margin: 0rem;\n}\n.card .card-content[data-v-7ebfc0cc] {\r\n  padding-top: 30px;\r\n  padding-left: 30px;\n}\n.close_button[data-v-7ebfc0cc] {\r\n  width: 26px;\r\n  height: 26px;\n}\n.close_button i[data-v-7ebfc0cc] {\r\n  font-size: 26px;\r\n  color: #dfdfdf;\n}\n.close_button i[data-v-7ebfc0cc]:hover,\r\n.close_button i[data-v-7ebfc0cc]:focus {\r\n  font-size: 30px;\r\n  color: #b8b8b8;\r\n  transform: rotate(360deg);\r\n  transition: all 0.9s ease-in-out 0s;\n}\n.card-title[data-v-7ebfc0cc] {\r\n  color: #666666;\r\n  font-family: Roboto;\r\n  font-size: 18px;\r\n  font-weight: 500;\r\n  line-height: 40px;\n}\n.folder_name-block[data-v-7ebfc0cc] {\r\n  width: 282px;\r\n  margin-top: 38px;\n}\n.input-field[data-v-7ebfc0cc] {\r\n  width: 100%;\r\n  height: 50px;\r\n  border-radius: 4px;\r\n  border: 2px solid #f5f5f5;\r\n  background-color: #ffffff;\n}\n.folder_name-input[data-v-7ebfc0cc] {\r\n  margin-bottom: 55px;\n}\n.folder_name-block label[data-v-7ebfc0cc] {\r\n  margin-left: 20px;\n}\n.folder_name-block .validate[data-v-7ebfc0cc],\r\n.folder_name-block .materialize-textarea[data-v-7ebfc0cc] {\r\n  padding-left: 20px;\n}\n.colorpicker_header[data-v-7ebfc0cc] {\r\n  height: 110px;\r\n  width: 220px;\r\n  margin-bottom: 5px;\r\n  padding: 0;\n}\n.colorpicker_panel-item[data-v-7ebfc0cc] {\r\n  padding: 0;\n}\n.colorpicker_title[data-v-7ebfc0cc] {\r\n  width: 105px;\r\n  height: 30px;\r\n  margin-right: 100px;\r\n  padding: 0;\r\n  color: #666666;\r\n  font-family: Roboto;\r\n  font-size: 14px;\r\n  font-weight: 500;\r\n  line-height: 30px;\n}\n.colorpicker_button[data-v-7ebfc0cc] {\r\n  width: 26px;\r\n  height: 26px;\r\n  color: #b2b2b2;\n}\n.colorpicker_panel[data-v-7ebfc0cc] {\r\n  padding: 5px;\r\n  min-height: 80px;\r\n  background: transparent;\r\n  border: none;\r\n  box-shadow: none;\n}\n.colorpicker_panel a[data-v-7ebfc0cc] {\r\n  padding: 3px;\r\n  margin-top: 15px;\r\n  height: 21px;\r\n  width: 21px;\r\n  border-radius: 50%;\r\n  border: transparent;\n}\n.color_1[data-v-7ebfc0cc] {\r\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\r\n  background-color: #ececec;\n}\n.color_2[data-v-7ebfc0cc] {\r\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\r\n  background-color: #f1c928;\n}\n.color_3[data-v-7ebfc0cc] {\r\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\r\n  background-color: #1441ec;\n}\n.color_4[data-v-7ebfc0cc] {\r\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\r\n  background-color: #eb631f;\n}\n.color_5[data-v-7ebfc0cc] {\r\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\r\n  background-color: #74af39;\n}\n.color_6[data-v-7ebfc0cc] {\r\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\r\n  background-color: #1288bd;\n}\n.color_7[data-v-7ebfc0cc] {\r\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\r\n  background-color: #c82484;\n}\n.color_8[data-v-7ebfc0cc] {\r\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\r\n  background-color: #874ba7;\n}\n.color_9[data-v-7ebfc0cc] {\r\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\r\n  background-color: #56c4ab;\n}\n.color_10[data-v-7ebfc0cc] {\r\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\r\n  background-color: #976c4c;\n}\n.color_11[data-v-7ebfc0cc] {\r\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\r\n  background-color: #f1e7c2;\n}\n.color_12[data-v-7ebfc0cc] {\r\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\r\n  background: rgb(131, 58, 180);\r\n  background: linear-gradient(\r\n    0deg,\r\n    rgba(131, 58, 180, 1) 0%,\r\n    rgba(253, 29, 29, 1) 50%,\r\n    rgba(252, 176, 69, 1) 100%\r\n  );\n}\n.colorpicker_panel_item-check_mark[data-v-7ebfc0cc] {\r\n  font-size: 14px;\r\n  font-weight: 1000;\r\n  color: transparent;\n}\n.color_1 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:focus,\r\n.color_1 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:hover,\r\n.color_2 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:focus,\r\n.color_2 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:hover,\r\n.color_11 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:focus,\r\n.color_11 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:hover {\r\n  color: #666666;\n}\n.color_3 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:focus,\r\n.color_3 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:hover,\r\n.color_4 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:focus,\r\n.color_4 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:hover,\r\n.color_5 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:focus,\r\n.color_5 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:hover,\r\n.color_6 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:focus,\r\n.color_6 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:hover,\r\n.color_7 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:focus,\r\n.color_7 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:hover,\r\n.color_8 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:focus,\r\n.color_8 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:hover,\r\n.color_9 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:focus,\r\n.color_9 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:hover,\r\n.color_10 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:focus,\r\n.color_10 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:hover,\r\n.color_12 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:focus,\r\n.color_12 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:hover {\r\n  color: #ffffff;\n}\n.folder_password-block[data-v-7ebfc0cc] {\r\n  height: 45px;\r\n  color: #b2b2b2;\r\n  font-size: 12px;\r\n  font-weight: 500;\r\n  line-height: 50px;\n}\n.folder_password-block .password-checkbox[data-v-7ebfc0cc] {\r\n  width: 20px;\r\n  height: 20px;\r\n  border-radius: 4px;\r\n  border: 2px solid #e6e6e6;\r\n  background-color: #ffffff;\n}\n.row .card-action[data-v-7ebfc0cc] {\r\n  padding-top: 24px;\r\n  margin-left: 0rem;\r\n  margin-right: 0rem;\n}\n.action_button-continue[data-v-7ebfc0cc],\r\n.action_button-cancel[data-v-7ebfc0cc] {\r\n  font-size: 10px;\r\n  font-weight: 900;\r\n  line-height: 40px;\r\n  color: #b2b2b2;\r\n  text-transform: uppercase;\r\n  width: 130px;\r\n  height: 40px;\r\n  border-radius: 4px;\r\n  border: 2px solid #f5f5f5;\r\n  background-color: #ffffff;\r\n  box-shadow: none;\n}\n.action_button-continue[data-v-7ebfc0cc]:focus,\r\n.action_button-continue[data-v-7ebfc0cc]:hover,\r\n.action_button-cancel[data-v-7ebfc0cc]:focus,\r\n.action_button-cancel[data-v-7ebfc0cc]:hover {\r\n  color: #ffffff;\r\n  border: 2px solid #1875f0;\r\n  background-color: #1875f0;\r\n  box-shadow: none;\n}\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* переопределение переменных Materialize */\n\n/* Text inputs */\ninput[data-v-7ebfc0cc]:not([type]),\ninput[type=\"text\"][data-v-7ebfc0cc]:not(.browser-default),\ntextarea.materialize-textarea[data-v-7ebfc0cc] {\n  border-bottom: none;\n}\ninput[data-v-7ebfc0cc]:not([type]):focus:not([readonly]),\ninput[type=\"text\"][data-v-7ebfc0cc]:not(.browser-default):focus:not([readonly]),\ntextarea.materialize-textarea[data-v-7ebfc0cc]:focus:not([readonly]) {\n  border-bottom: none;\n  box-shadow: none;\n}\ninput:not([type]):focus:not([readonly]) + label[data-v-7ebfc0cc],\ninput[type=\"text\"]:not(.browser-default):focus:not([readonly]) + label[data-v-7ebfc0cc],\ntextarea.materialize-textarea:focus:not([readonly]) + label[data-v-7ebfc0cc] {\n  color: #666666;\n  border-bottom: none;\n}\n.input-field > label:not(.label-icon).active[data-v-7ebfc0cc] {\n  transform: translateY(-30px) scale(0.8);\n  transform-origin: 0 0;\n}\n\n/* Checkbox */\n[type=\"checkbox\"].filled-in + span[data-v-7ebfc0cc]:not(.lever):after {\n  border-radius: 4px;\n}\n[type=\"checkbox\"].filled-in:not(:checked) + span[data-v-7ebfc0cc]:not(.lever):after {\n  height: 20px;\n  width: 20px;\n  background-color: transparent;\n  border: 2px solid #e6e6e6;\n  top: 0px;\n  z-index: 0;\n}\n[type=\"checkbox\"].filled-in:checked + span[data-v-7ebfc0cc]:not(.lever):after {\n  top: 0;\n  width: 20px;\n  height: 20px;\n  border: 2px solid #1875f0;\n  background-color: #1875f0;\n  z-index: 0;\n}\n\n/* custom styles */\n.m_modal[data-v-7ebfc0cc] {\n    position: relative;\n    width: 350px;\n    background-color: #fff;\n    transition: transform .3s ease-out;\n    transform: translate(0,-50px);\n    margin: 100px auto auto;\n    padding: 30px 30px 25px 21px;\n    border-radius: 5px;\n}\n.row .col .wrapper[data-v-7ebfc0cc] {\n  font-family: Roboto;\n  width: 350px;\n  padding: 0rem;\n}\n.card[data-v-7ebfc0cc] {\n  box-sizing: border-box;\n  font-family: Roboto;\n  width: 350px;\n  width: 100%;\n  height: 550px;\n  border-radius: 6px;\n  background-color: #ffffff;\n  margin: 0rem;\n}\n.card .card-content[data-v-7ebfc0cc] {\n  padding-top: 30px;\n  padding-left: 30px;\n}\n.close_button[data-v-7ebfc0cc] {\n  width: 26px;\n  height: 26px;\n}\n.close_button i[data-v-7ebfc0cc] {\n  font-size: 26px;\n  color: #dfdfdf;\n}\n.close_button i[data-v-7ebfc0cc]:hover,\n.close_button i[data-v-7ebfc0cc]:focus {\n  font-size: 30px;\n  color: #b8b8b8;\n  transform: rotate(360deg);\n  transition: all 0.9s ease-in-out 0s;\n}\n.card-title[data-v-7ebfc0cc] {\n  color: #666666;\n  font-family: Roboto;\n  font-size: 18px;\n  font-weight: 500;\n  line-height: 40px;\n}\n.folder_name-block[data-v-7ebfc0cc] {\n  width: 282px;\n  margin-top: 38px;\n}\n.input-field[data-v-7ebfc0cc] {\n  width: 100%;\n  height: 50px;\n  border-radius: 4px;\n  border: 2px solid #f5f5f5;\n  background-color: #ffffff;\n}\n.folder_name-input[data-v-7ebfc0cc] {\n  margin-bottom: 55px;\n}\n.folder_name-block label[data-v-7ebfc0cc] {\n  margin-left: 20px;\n}\n.folder_name-block .validate[data-v-7ebfc0cc],\n.folder_name-block .materialize-textarea[data-v-7ebfc0cc] {\n  padding-left: 20px;\n}\n.colorpicker_header[data-v-7ebfc0cc] {\n  height: 110px;\n  width: 220px;\n  margin-bottom: 5px;\n  padding: 0;\n}\n.colorpicker_panel-item[data-v-7ebfc0cc] {\n  padding: 0;\n}\n.colorpicker_title[data-v-7ebfc0cc] {\n  width: 105px;\n  height: 30px;\n  margin-right: 100px;\n  padding: 0;\n  color: #666666;\n  font-family: Roboto;\n  font-size: 14px;\n  font-weight: 500;\n  line-height: 30px;\n}\n.colorpicker_button[data-v-7ebfc0cc] {\n  width: 26px;\n  height: 26px;\n  color: #b2b2b2;\n}\n.colorpicker_panel[data-v-7ebfc0cc] {\n  padding: 5px;\n  min-height: 80px;\n  background: transparent;\n  border: none;\n  box-shadow: none;\n}\n.colorpicker_panel a[data-v-7ebfc0cc] {\n  padding: 3px;\n  margin-top: 15px;\n  height: 21px;\n  width: 21px;\n  border-radius: 50%;\n  border: transparent;\n}\n.colorpicker_panel_item-check_mark[data-v-7ebfc0cc] {\n  font-size: 14px;\n  font-weight: 1000;\n  color: transparent;\n}\n.color_1 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:focus,\n.color_1 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:hover,\n.color_2 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:focus,\n.color_2 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:hover,\n.color_11 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:focus,\n.color_11 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:hover {\n  color: #666666;\n}\n.color_3 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:focus,\n.color_3 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:hover,\n.color_4 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:focus,\n.color_4 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:hover,\n.color_5 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:focus,\n.color_5 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:hover,\n.color_6 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:focus,\n.color_6 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:hover,\n.color_7 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:focus,\n.color_7 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:hover,\n.color_8 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:focus,\n.color_8 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:hover,\n.color_9 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:focus,\n.color_9 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:hover,\n.color_10 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:focus,\n.color_10 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:hover,\n.color_12 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:focus,\n.color_12 .colorpicker_panel_item-check_mark[data-v-7ebfc0cc]:hover {\n  color: #ffffff;\n}\n.folder_password-block[data-v-7ebfc0cc] {\n  height: 45px;\n  color: #b2b2b2;\n  font-size: 12px;\n  font-weight: 500;\n  line-height: 50px;\n}\n.folder_password-block .password-checkbox[data-v-7ebfc0cc] {\n  width: 20px;\n  height: 20px;\n  border-radius: 4px;\n  border: 2px solid #e6e6e6;\n  background-color: #ffffff;\n}\n.row .card-action[data-v-7ebfc0cc] {\n  padding-top: 24px;\n  margin-left: 0rem;\n  margin-right: 0rem;\n}\n.action_button-continue[data-v-7ebfc0cc],\n.action_button-cancel[data-v-7ebfc0cc] {\n  font-size: 10px;\n  font-weight: 900;\n  line-height: 40px;\n  color: #b2b2b2;\n  text-transform: uppercase;\n  width: 130px;\n  height: 40px;\n  border-radius: 4px;\n  border: 2px solid #f5f5f5;\n  background-color: #ffffff;\n  box-shadow: none;\n}\n.action_button-continue[data-v-7ebfc0cc]:focus,\n.action_button-continue[data-v-7ebfc0cc]:hover,\n.action_button-cancel[data-v-7ebfc0cc]:focus,\n.action_button-cancel[data-v-7ebfc0cc]:hover {\n  color: #ffffff;\n  border: 2px solid #1875f0;\n  background-color: #1875f0;\n  box-shadow: none;\n}\n", ""]);
 
 // exports
 
@@ -10087,7 +10205,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../../node_module
 
 
 // module
-exports.push([module.i, "\n.settings__pagination[data-v-0485a0ea] {\n    margin-left: 65px;\n    font-style: normal;\n    font-weight: 500;\n    font-size: 13px;\n    text-align: right;\n    color: #666666;\n    display: flex;\n    align-items: center;\n}\n.settings__pagination span[data-v-0485a0ea] {\n    display: inline-block;\n    margin-left: 55px;\n    padding-top: 5px;\n    color: #D8D8D8\n}\n.settings__pagination span i[data-v-0485a0ea] {\n    cursor: pointer;\n}\n.settings__pagination span i[data-v-0485a0ea]:first-child {\n    margin-right: 15px;\n}\n.settings__row-numbers[data-v-0485a0ea] {\n    font-weight: 500;\n    font-size: 13px;\n    color: #666666;\n}\n.settings__row-numbers span[data-v-0485a0ea] {\n    margin-left: 70px;\n}\n.settings__folder-bottom[data-v-0485a0ea] {\n    display: flex;\n    align-items: center;\n    margin-bottom: 17px;\n}\n.setting__create-folder[data-v-0485a0ea] {\n    font-style: normal;\n    font-weight: 900;\n    font-size: 12px;\n    line-height: 50px;\n    text-align: center;\n    text-transform: uppercase;\n    color: #FFFFFF;\n    background: #1875F0;\n    max-width: 185px;\n    width: 100%;\n    border-radius: 4px;\n    cursor: pointer;\n    margin-right: 70px;\n}\n.settings__folder-title[data-v-0485a0ea] {\n    font-style: normal;\n    font-weight: 500;\n    font-size: 18px;\n    color: #666666;\n    margin-bottom: 5px;\n}\n.settings__folder-item[data-v-0485a0ea] {\n    display: flex;\n    position: relative;\n    padding-bottom: 53px;\n    margin-bottom: 30px;\n}\n.settings__folder-item[data-v-0485a0ea]::after {\n    content: '';\n    position: absolute;\n    left: -3%;\n    bottom: 0;\n    height: 2px;\n    width: 350px;\n    background: #F5F5F5;\n}\n.settings__folder-action[data-v-0485a0ea] {\n    display: flex;\n    position: absolute;\n    right: 0;\n    bottom: 25px;\n    font-style: normal;\n    font-weight: 500;\n    font-size: 13px;\n    line-height: 50px;\n    color: #B3B3B3;\n}\n.settings__folder-action div[data-v-0485a0ea] {\n    position: relative;\n}\n.settings__delete[data-v-0485a0ea] {\n    padding-left: 24px;\n    margin-left: 24px;\n    cursor: pointer\n}\n.settings__delete[data-v-0485a0ea]::before, .settings__delete[data-v-0485a0ea]::after {\n    content: '';\n    background: #F93F3F;\n    position: absolute;\n    width: 20px;\n    height: 2px;\n    left: -3px;\n    top: 48%;\n}\n.settings__delete[data-v-0485a0ea]::before {\n    transform: rotate(-45deg);\n}\n.settings__delete[data-v-0485a0ea]::after {\n    transform: rotate(45deg);\n}\n.settings__change-pass[data-v-0485a0ea] {\n    padding-left: 24px;\n    cursor: pointer;\n}\n.settings__change-pass[data-v-0485a0ea]::before {\n    content: '';\n    position: absolute;\n    background: url('/img/pen.svg');\n    width: 30px;\n    height: 30px;\n    left: -10px;\n    top: 50%;\n    margin-top: -15px;\n}\n.settings__folder-items input[data-v-0485a0ea] {\n    font-style: normal;\n    font-weight: bold;\n    font-size: 15px !important;\n    line-height: 40px;\n    padding-left: 30px !important;\n    color: #808080;\n    border: 2px solid #F5F5F5 !important;\n    border-radius: 4px !important;\n    box-sizing: border-box !important;\n}\n.settings__folder-items label[data-v-0485a0ea] {\n    font-style: normal;\n    font-weight: 500;\n    font-size: 15px;\n    line-height: 23px;\n    color: #666666;\n    padding-left: 15px;\n}\n.settings__folder-items .folder__name[data-v-0485a0ea] {\n    margin-right: 43px;\n    max-width: 160px;\n    width: 100%;\n}\n.settings__folder-items .folder__desc[data-v-0485a0ea] {\n    max-width: 218px;\n    width: 100%;\n    margin-right: 52px;\n}\n.settings__folder-items .folder__color[data-v-0485a0ea] {\n    max-width: 160px;\n    width: 100%;\n}\n.settings__folder-items .input-field > label:not(.label-icon).active[data-v-0485a0ea] {\n    transform: translate(-12px, -24px) scale(0.8);\n}\n.settings__folder-items input[type=text][data-v-0485a0ea]:not(.browser-default):focus:not([readonly]) {\n    box-shadow: none\n}\n.settings__folder-items input[type=text]:not(.browser-default):focus:not([readonly]) + label[data-v-0485a0ea] {\n    color: #666666;\n}\n.header[data-v-0485a0ea] {\n    width: 100%;\n    height: 68px;\n    margin-bottom: 48px;\n    color: #999999;\n    font-size: 18px;\n    font-weight: 700;\n    line-height: 90px;\n}\n.header-text[data-v-0485a0ea] {\n    margin: 0 auto;\n}\n\n", ""]);
+exports.push([module.i, "\n.settings__pagination[data-v-0485a0ea] {\n    margin-left: 65px;\n    font-style: normal;\n    font-weight: 500;\n    font-size: 13px;\n    text-align: right;\n    color: #666666;\n    display: flex;\n    align-items: center;\n}\n.settings__pagination span[data-v-0485a0ea] {\n    display: inline-block;\n    margin-left: 55px;\n    padding-top: 5px;\n    color: #D8D8D8\n}\n.settings__pagination span i[data-v-0485a0ea] {\n    cursor: pointer;\n}\n.settings__pagination span i[data-v-0485a0ea]:first-child {\n    margin-right: 15px;\n}\n.settings__row-numbers[data-v-0485a0ea] {\n    font-weight: 500;\n    font-size: 13px;\n    color: #666666;\n}\n.settings__row-numbers span[data-v-0485a0ea] {\n    margin-left: 70px;\n}\n.settings__folder-bottom[data-v-0485a0ea] {\n    display: flex;\n    align-items: center;\n    margin-bottom: 17px;\n}\n.setting__create-folder[data-v-0485a0ea] {\n    font-style: normal;\n    font-weight: 900;\n    font-size: 12px;\n    line-height: 50px;\n    text-align: center;\n    text-transform: uppercase;\n    color: #FFFFFF;\n    background: #1875F0;\n    max-width: 185px;\n    width: 100%;\n    border-radius: 4px;\n    cursor: pointer;\n    margin-right: 70px;\n}\n.settings__folder-title[data-v-0485a0ea] {\n    font-style: normal;\n    font-weight: 500;\n    font-size: 18px;\n    color: #666666;\n    margin-bottom: 5px;\n}\n.settings__folder-item[data-v-0485a0ea] {\n    display: flex;\n    position: relative;\n    padding-bottom: 53px;\n    margin-bottom: 30px;\n}\n.settings__folder-item[data-v-0485a0ea]:last-child {\n    margin-bottom: 15px;\n}\n.settings__folder-item[data-v-0485a0ea]::after {\n    content: '';\n    position: absolute;\n    left: -3%;\n    bottom: 0;\n    height: 2px;\n    width: 350px;\n    background: #F5F5F5;\n}\n.settings__folder-action[data-v-0485a0ea] {\n    display: flex;\n    position: absolute;\n    right: 0;\n    bottom: 25px;\n    font-style: normal;\n    font-weight: 500;\n    font-size: 13px;\n    line-height: 50px;\n    color: #B3B3B3;\n}\n.settings__folder-action div[data-v-0485a0ea] {\n    position: relative;\n}\n.settings__delete[data-v-0485a0ea] {\n    padding-left: 24px;\n    margin-left: 24px;\n    cursor: pointer\n}\n.settings__delete[data-v-0485a0ea]::before, .settings__delete[data-v-0485a0ea]::after {\n    content: '';\n    background: #F93F3F;\n    position: absolute;\n    width: 20px;\n    height: 2px;\n    left: -3px;\n    top: 48%;\n}\n.settings__delete[data-v-0485a0ea]::before {\n    transform: rotate(-45deg);\n}\n.settings__delete[data-v-0485a0ea]::after {\n    transform: rotate(45deg);\n}\n.settings__change-pass[data-v-0485a0ea] {\n    padding-left: 24px;\n    cursor: pointer;\n}\n.settings__change-pass[data-v-0485a0ea]::before {\n    content: '';\n    position: absolute;\n    background: url('/img/pen.svg');\n    width: 30px;\n    height: 30px;\n    left: -10px;\n    top: 50%;\n    margin-top: -15px;\n}\n.settings__folder-items input[data-v-0485a0ea] {\n    font-style: normal;\n    font-weight: bold;\n    font-size: 15px !important;\n    line-height: 40px;\n    padding-left: 30px !important;\n    color: #808080 !important;\n    border: 2px solid #F5F5F5 !important;\n    border-radius: 4px !important;\n    box-sizing: border-box !important;\n}\n.settings__folder-items label[data-v-0485a0ea] {\n    font-style: normal;\n    font-weight: 500;\n    font-size: 15px;\n    line-height: 23px;\n    color: #666666 !important;\n    padding-left: 15px;\n}\n.settings__folder-items .folder__name[data-v-0485a0ea] {\n    margin-right: 43px;\n    max-width: 160px;\n    width: 100%;\n}\n.settings__folder-items .folder__desc[data-v-0485a0ea] {\n    max-width: 218px;\n    width: 100%;\n    margin-right: 52px;\n}\n.settings__folder-items .folder__color[data-v-0485a0ea] {\n    max-width: 160px;\n    width: 100%;\n    position: relative;\n}\n.settings__folder-items .folder__color input[data-v-0485a0ea] {\n    cursor: pointer;\n}\n.folder__color[data-v-0485a0ea]:after {\n    content: '';\n    display: block;\n    position: absolute;\n    width: 0;\n    height: 0;\n    top: 44%;\n    transform: translate(50%, -50%) rotate(45deg);\n    right: 15px;\n    border-right: 3px solid #D8D8D8;\n    border-bottom: 3px solid #D8D8D8;\n    padding: 3px;\n}\n.settings__folder-items .input-field > label:not(.label-icon).active[data-v-0485a0ea] {\n    transform: translate(-12px, -24px) scale(0.8);\n}\n.settings__folder-items input[type=text][data-v-0485a0ea]:not(.browser-default):focus:not([readonly]) {\n    box-shadow: none\n}\n.settings__folder-items input[type=text]:not(.browser-default):focus:not([readonly]) + label[data-v-0485a0ea] {\n    color: #666666;\n}\n.color_picker[data-v-0485a0ea] {\n    display: flex;\n    width: 221px;\n    flex-wrap: wrap;\n    position: absolute;\n    right: -20px;\n    top: 60px;\n    background: #fff;\n    z-index: 2;\n}\n.color_picker div[data-v-0485a0ea] {\n    width: 21px;\n    height: 21px;\n    margin-right: 15px;\n    border-radius: 50%;\n    margin-bottom: 14px;\n    cursor: pointer;\n}\n\n\n", ""]);
 
 // exports
 
@@ -60532,7 +60650,12 @@ var render = function() {
               _c("input", {
                 staticClass: "validate",
                 attrs: { id: "folder_name" + index, type: "text" },
-                domProps: { value: folder.name }
+                domProps: { value: folder.name },
+                on: {
+                  keyup: function($event) {
+                    return _vm.update("name", $event, index)
+                  }
+                }
               }),
               _vm._v(" "),
               _c(
@@ -60551,7 +60674,12 @@ var render = function() {
               _c("input", {
                 staticClass: "validate",
                 attrs: { id: "folder_desc" + index, type: "text" },
-                domProps: { value: folder.description }
+                domProps: { value: folder.description },
+                on: {
+                  keyup: function($event) {
+                    return _vm.update("description", $event, index)
+                  }
+                }
               }),
               _vm._v(" "),
               _c(
@@ -60566,31 +60694,139 @@ var render = function() {
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "folder__color" }, [
-            _c("div", { staticClass: "input-field" }, [
-              _c("input", {
-                staticClass: "validate",
-                attrs: { id: "folder_color" + index, type: "text" },
-                domProps: { value: folder.color }
-              }),
-              _vm._v(" "),
-              _c(
-                "label",
-                {
-                  staticClass: "active",
-                  attrs: { for: "folder_color" + index }
-                },
-                [_vm._v("Цвет ярлыка")]
-              )
-            ])
+            _c(
+              "div",
+              { staticClass: "input-field", on: { click: _vm.folderColor } },
+              [
+                _c("input", {
+                  staticClass: "validate",
+                  attrs: {
+                    id: "folder_color" + index,
+                    disabled: "",
+                    type: "text"
+                  },
+                  domProps: { value: folder.color_name },
+                  on: {
+                    keyup: function($event) {
+                      return _vm.update("color", $event, index)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c(
+                  "label",
+                  {
+                    staticClass: "active",
+                    attrs: { for: "folder_color" + index }
+                  },
+                  [_vm._v("Цвет ярлыка")]
+                )
+              ]
+            ),
+            _vm._v(" "),
+            _vm.pickerOpen
+              ? _c(
+                  "div",
+                  { staticClass: "color_picker" },
+                  _vm._l(_vm.colors, function(color) {
+                    return _c(
+                      "div",
+                      {
+                        key: color.id,
+                        staticClass: "colorpicker_panel-item col s2"
+                      },
+                      [
+                        _c("div", {
+                          staticClass: "valign-wrapper",
+                          class: color.name,
+                          on: {
+                            click: function($event) {
+                              return _vm.setColorName(
+                                color.colorName,
+                                index,
+                                color.hex
+                              )
+                            }
+                          }
+                        })
+                      ]
+                    )
+                  }),
+                  0
+                )
+              : _vm._e()
           ]),
           _vm._v(" "),
-          _vm._m(0, true)
+          _c("div", { staticClass: "settings__folder-action" }, [
+            _c("div", { staticClass: "settings__change-pass" }, [
+              _vm._v("Изменить пароль")
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "settings__delete",
+                on: {
+                  click: function($event) {
+                    return _vm.deleteFolder(index)
+                  }
+                }
+              },
+              [_vm._v("Удалить из списка")]
+            )
+          ])
         ])
       }),
       0
     ),
     _vm._v(" "),
-    _vm._m(1)
+    _c("div", { staticClass: "settings__folder-bottom" }, [
+      _c("div", { staticClass: "setting__create-folder" }, [
+        _vm._v("\n            новая папка\n        ")
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "settings__row-numbers" }, [
+        _vm._v("\n            Строк:\n            "),
+        _c("span", [_vm._v(" " + _vm._s(_vm.pagination.perItem))])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "settings__pagination" }, [
+        _vm._v(
+          "\n            1-10 of " +
+            _vm._s(_vm.pagination.total) +
+            "\n            "
+        ),
+        _vm._m(0)
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "hor__line" }),
+    _vm._v(" "),
+    _c("div", { staticClass: "modal__buttons" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn_modal",
+          attrs: { type: "button" },
+          on: { click: _vm.save }
+        },
+        [_vm._v("Сохранить")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn_modal",
+          attrs: { type: "button" },
+          on: {
+            click: function($event) {
+              return _vm.close()
+            }
+          }
+        },
+        [_vm._v("Отменить")]
+      )
+    ])
   ])
 }
 var staticRenderFns = [
@@ -60598,43 +60834,13 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "settings__folder-action" }, [
-      _c("div", { staticClass: "settings__change-pass" }, [
-        _vm._v("Изменить пароль")
+    return _c("span", [
+      _c("i", { staticClass: "material-icons", attrs: { title: "Назад" } }, [
+        _vm._v("\n                    arrow_back\n                ")
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "settings__delete" }, [
-        _vm._v("Удалить из списка")
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "settings__folder-bottom" }, [
-      _c("div", { staticClass: "setting__create-folder" }, [
-        _vm._v("\n            новая папка\n        ")
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "settings__row-numbers" }, [
-        _vm._v("\n            Строк:\n            "),
-        _c("span", [_vm._v("3")])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "settings__pagination" }, [
-        _vm._v("\n            1-10 of 100\n            "),
-        _c("span", [
-          _c(
-            "i",
-            { staticClass: "material-icons", attrs: { title: "Назад" } },
-            [_vm._v("\n                    arrow_back\n                ")]
-          ),
-          _vm._v(" "),
-          _c("i", { staticClass: "material-icons" }, [
-            _vm._v("\n                    arrow_forward\n                ")
-          ])
-        ])
+      _c("i", { staticClass: "material-icons" }, [
+        _vm._v("\n                    arrow_forward\n                ")
       ])
     ])
   }
@@ -60840,33 +61046,7 @@ var render = function() {
           _c(
             "div",
             { staticClass: "integration-modal" },
-            [
-              _c(_vm.item, { tag: "component" }),
-              _vm._v(" "),
-              _c("div", { staticClass: "hor__line" }),
-              _vm._v(" "),
-              _c("div", { staticClass: "modal__buttons" }, [
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn_modal",
-                    attrs: { type: "button" },
-                    on: { click: _vm.close }
-                  },
-                  [_vm._v("Выйти")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "button",
-                  {
-                    staticClass: "btn_modal",
-                    attrs: { type: "button" },
-                    on: { click: _vm.close }
-                  },
-                  [_vm._v("Отменить")]
-                )
-              ])
-            ],
+            [_c(_vm.item, { tag: "component", on: { close: _vm.close } })],
             1
           )
         ])
