@@ -9,7 +9,7 @@
         </div>
         <ul class="row body">
           <li class="col s12 m6 nav-item" v-for="item in items" :key="item.id">
-            <ul class="row nav-item-link modal-trigger" @click="open_settings_item">
+            <ul class="row nav-item-link modal-trigger" @click="open_settings_item(item.modalName)">
                 <li class="col nav-icon-circle">
                   <span class="valign-wrapper center-align">
                     <i class="material-icons">{{ item.iconName }}</i>
@@ -26,7 +26,7 @@
         </ul>
       </div>
     </div>
-    <SettingsModal @close="modal = !modal" :modal="modal" ></SettingsModal>
+    <SettingsModal @close="modal = !modal" :modal="modal" :item="item" ></SettingsModal>
   </div>
 </template>
 
@@ -39,42 +39,45 @@ export default {
   data() {
     return {
       modal: false,
-      
+      item: null,
       items: [
         {
           iconName: "account_circle",
           navHelperText: "Иванов И И",
-          navTitleText: "Личные данные"
+          navTitleText: "Личные данные", 
+          modalName: "PersonalData" 
         },
         {
           iconName: "playlist_add",
           navHelperText: "Подписи к письмам",
-          navTitleText: "Подпись"
+          navTitleText: "Подпись",
+          modalName: "MailVisa"
         },
         {
           iconName: "drafts",
           navHelperText: "Список писем, их отправка",
-          navTitleText: "Работа с письмами"
+          navTitleText: "Работа с письмами", 
+          modalName: "MailWorks"
         },
         {
           iconName: "email",
           navHelperText: "Сбор почты",
-          navTitleText: "Почта с других ящиков"
+          navTitleText: "Почта с других ящиков", 
+          modalName: "MailFetch"
         },
         {
           iconName: "folder",
           navHelperText: "Управление папками",
-          navTitleText: "Папки"
+          navTitleText: "Папки",
+          modalName: "FolderWorks"
         }
       ]
     };
   },
   methods: {
-    open_settings_item(event) {
+    open_settings_item(item) {
       this.modal = true;
-      // this.current_item_name = event.target.name;
-      let item = event.target;
-      console.log(item);
+      this.item = item;
     }
   }
 };

@@ -5,7 +5,7 @@
       <div class="close" @click="close"></div>
       <div class="content">
         <div class="integration-modal">
-          <PersonalData v-if="show_personal_data"></PersonalData>
+          <component :is="item"></component>
           <div class="hor__line"></div>
           <div class="modal__buttons">
             <!-- <button v-if="show_personal_data" type="button" @click="close" class="btn_modal">Выйти</button> -->
@@ -21,21 +21,21 @@
 
 <script>
 import PersonalData from "../../Modal/Settings/SettingsItems/PersonalDataComponent";
-// import MailWorks from "../../Modal/Settings/SettingsItems/MailWorksComponent";
-// import MailVisa from "../../Modal/Settings/SettingsItems/MailVisaComponent";
-// import MailFetch from "../../Modal/Settings/SettingsItems/MailFetchComponent";
-// import FolderWorks from "../../Modal/Settings/SettingsItems/FolderWorksComponent";
+import MailWorks from "../../Modal/Settings/SettingsItems/MailWorksComponent";
+import MailVisa from "../../Modal/Settings/SettingsItems/MailVisaComponent";
+import MailFetch from "../../Modal/Settings/SettingsItems/MailFetchComponent";
+import FolderWorks from "../../Modal/Settings/SettingsItems/FolderWorksComponent";
 
 export default {
   name: "SettingsModal",
   components: {
     PersonalData,
-    // MailWorks,
-    // MailVisa,
-    // MailFetch,
-    // FolderWorks
+    MailWorks,
+    MailVisa,
+    MailFetch,
+    FolderWorks
   },
-  props: ["modal"],
+  props: ["modal", "item"],
   data() {
     return {
       show_personal_data: true,
