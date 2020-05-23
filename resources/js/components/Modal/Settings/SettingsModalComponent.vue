@@ -52,7 +52,7 @@ export default {
 <style lang="scss" scoped>
 .m_modal {
   position: relative;
-  width: 350px;
+  width: max-content;
   background-color: #fff;
   transition: transform 0.3s ease-out;
   transform: translate(0, -50px);
@@ -60,4 +60,4 @@ export default {
   padding: 30px 30px 25px 21px;
   border-radius: 5px;
 }
-</style> 
+</style>

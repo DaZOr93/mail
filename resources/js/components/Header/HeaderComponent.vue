@@ -74,8 +74,6 @@
                 document.body.classList.toggle('hidden');
                 nav.classList.toggle('mon_nav_open')
             },
-
-
         },
         created() {
             this.$store.dispatch('getUser')

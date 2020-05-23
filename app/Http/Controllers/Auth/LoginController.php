@@ -105,7 +105,7 @@ class LoginController extends Controller
             $Rres = Auth::login($dbuser);
         }
 
-         return response()->redirectTo('/');
+        return response()->redirectTo('/');
     }
 
 
@@ -115,7 +115,7 @@ class LoginController extends Controller
         $this->guard()->logout();
         Auth::logout();
 
-        return response()->json('ok' , 200);
+        return response()->json('ok', 200);
     }
 
     /**
