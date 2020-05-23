@@ -83,7 +83,7 @@
   display: flex;
 }
 
-.m_modal .modal__buttons button:first-child {
+.m_modal .modal__buttons button:nth-child(odd) {
   background: #1875F0;
   border: 2px solid #F5F5F5;
   border-radius: 4px;
@@ -98,7 +98,7 @@
   cursor: pointer;
 }
 
-.m_modal .modal__buttons button:last-child {
+.m_modal .modal__buttons button:nth-child(even) {
   background: #FFFFFF;
   border: 2px solid #F5F5F5;
   border-radius: 4px;

@@ -5,13 +5,12 @@
       <div class="close" @click="close"></div>
       <div class="content">
         <div class="integration-modal">
-          <NewFolderSettings v-if="show_settings"></NewFolderSettings>
-          <NewFolderPassword v-if="show_edit_password"></NewFolderPassword>
-          <ChangeFolderPassword v-if="show_change_password"></ChangeFolderPassword>
+          <component  @checked="check_password = !check_password" :check_password="check_password" :is="item"></component>
           <div class="hor__line"></div>
           <div class="modal__buttons">
-            <button type="button" @click="store" class="btn_modal">Продолжить</button>
-            <button type="button" @click="close" class="btn_modal">Отменить</button>
+            <button type="button" v-if="item!=='NewFolderPassword'" @click="store" class="btn_modal">Продолжить</button> 
+            <button type="button" v-if="item!=='NewFolderPassword'" @click="close" class="btn_modal">Отменить</button> 
+            <button type="button" v-if="item==='NewFolderPassword'" @click="add_password" class="btn_modal password_button">ОК</button>
           </div>
         </div>  
       </div>
@@ -22,19 +21,21 @@
 
 <script>
 import {eventBus} from "../../../app";
-import NewFolderSettings from "../NewFolder/NewFolderSettingsComponent";
-import NewFolderPassword from "../NewFolder/NewFolderPasswordComponent";
-import ChangeFolderPassword from "../NewFolder/ChangeFolderPasswordComponent";
+import NewFolderSettings from "../NewFolder/NewFolderItems/NewFolderSettingsComponent";
+import NewFolderPassword from "../NewFolder/NewFolderItems/NewFolderPasswordComponent";
 export default {
   
   name: "NewFolderComponent",
-  components: {NewFolderSettings, NewFolderPassword, ChangeFolderPassword},
+  components: {
+    NewFolderSettings,
+    NewFolderPassword,
+    },
   props: ['modal'],
   data() {
     return {
-      show_settings: true,
-      show_edit_password: false,
-      show_change_password: false,
+      item:'NewFolderSettings',
+      store_button_text: "Продолжить",
+      check_password: false,
     };
   },
   mounted() {
@@ -42,13 +43,22 @@ export default {
   },
   methods: {
     store() {
-      this.show_settings=false;
-      this.show_edit_password=false;
-      this.show_change_password=true;
+      let check_pass = this.check_password;
+      if(check_pass) {
+        this.item = 'NewFolderPassword';
+        this.store_button_text = 'Ok';
+      } else {
+          alert('folder created successfuly!');
+          this.$emit('close');
+        }
       },
     close() {
-      this.$emit('close')
+      this.$emit('close');
       },
+    add_password() {
+      alert('password saved successfuly!');
+      this.$emit('close');
+    }
   }
 };
 </script>
@@ -64,5 +74,15 @@ export default {
     margin: 100px auto auto;
     padding: 30px 30px 25px 21px;
     border-radius: 5px;
+}
+.m_modal .password_button {
+    width: 200px;
+    height: 50px;
+    color: #ffffff;
+    font-family: Roboto;
+    font-size: 12px;
+    font-weight: 900;
+    line-height: 50px;
+    text-transform: uppercase;
 }
 </style>

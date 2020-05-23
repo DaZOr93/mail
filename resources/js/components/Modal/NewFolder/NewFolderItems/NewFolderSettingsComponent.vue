@@ -6,7 +6,7 @@
           <div class="folder_name-block">
             <div class="input-field folder_name-input">
               <input id="folder_name" type="text" class="validate" />
-              <label class="active" for="folder_name">Имя папки</label>
+              <label for="folder_name">Имя папки</label>
             </div>
             <div class="input-field folder_description-input">
               <textarea id="description" class="materialize-textarea"></textarea>
@@ -29,7 +29,7 @@
           <form action="#" class="folder_password-block">
             <div>
               <label>
-                <input type="checkbox" class="folder_password-checkbox filled-in" />
+                <input @change="checked" type="checkbox" class="folder_password-checkbox filled-in" />
                 <span>Защитить папку паролем</span>
               </label>
             </div>
@@ -41,6 +41,7 @@
 <script>
 export default {
   name: "NewFolderSettings",
+  props: ['check_password'],
   data: function() {
     return {
       colors: [
@@ -71,9 +72,9 @@ export default {
     });
   },
   methods: {
-    close() {
-      this.$emit('close')
-      },
+    checked() {
+      this.$emit('checked')
+    },
     selectColor() {
 
     },
