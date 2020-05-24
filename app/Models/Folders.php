@@ -12,5 +12,10 @@ class Folders extends Model
         return $this->hasMany(Letter::class , 'folder_id');
     }
 
+    public function colors()
+    {
+        return $this->belongsTo(Colors::class , 'folder_id');
+    }
+
 }
 

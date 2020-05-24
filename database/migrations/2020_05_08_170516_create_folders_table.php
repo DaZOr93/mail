@@ -18,15 +18,16 @@ class CreateFoldersTable extends Migration
             $table->string('name');
             $table->string('slug');
             $table->text('description')->nullable();
-            $table->unsignedBigInteger('color_id')->default('1');
+            $table->string('color');
+            // $table->unsignedBigInteger('color_id')->default('0');
             $table->string('password')->nullable();
             $table->timestamps();
         });
-        Schema::table('folders', function (Blueprint $table) {
-          $table->foreignId('color_id')
-                ->constrained()
-                ->onUpdate('cascade');
-        });
+        // Schema::table('folders', function (Blueprint $table) {
+        //   $table->foreignId('color_id')
+        //         ->constrained()
+        //         ->onUpdate('cascade');
+        // });
     }
 
     /**

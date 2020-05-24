@@ -12,7 +12,7 @@ class ColorsSeeder extends Seeder
      */
     public function run()
     {
-      DB::table('colrs')->insert([
+      DB::table('colors')->insert([
         [ 
           'name' => "color_1", 
           'colorName' => "Белый", 
