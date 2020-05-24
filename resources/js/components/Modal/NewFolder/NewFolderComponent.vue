@@ -52,6 +52,8 @@ export default {
         }
       },
     close() {
+      this.item = 'NewFolderSettings';
+      this.check_password = false;
       this.$emit('close');
       },
     back() {

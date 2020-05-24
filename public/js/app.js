@@ -4366,6 +4366,8 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     close: function close() {
+      this.item = 'NewFolderSettings';
+      this.check_password = false;
       this.$emit('close');
     },
     back: function back() {
@@ -4392,6 +4394,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../app */ "./resources/js/app.js");
 //
 //
 //
@@ -4415,6 +4418,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "NewFolderSettings",
   data: function data() {
@@ -4442,6 +4446,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../app */ "./resources/js/app.js");
 //
 //
 //
@@ -4482,35 +4487,60 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "NewFolderSettings",
-  props: ['check_password'],
+  props: ["check_password"],
   data: function data() {
     return {
       colors: [{
-        name: "color_1"
+        name: "color_1",
+        colorName: "Белый",
+        hex: "#ececec"
       }, {
-        name: "color_2"
+        name: "color_2",
+        colorName: "Желтый",
+        hex: "#f1c928"
       }, {
-        name: "color_3"
+        name: "color_3",
+        colorName: "Синий",
+        hex: "#1441ec"
       }, {
-        name: "color_4"
+        name: "color_4",
+        colorName: "Оранжевый",
+        hex: "#eb631f"
       }, {
-        name: "color_5"
+        name: "color_5",
+        colorName: "Зеленый",
+        hex: "#74af39"
       }, {
-        name: "color_6"
+        name: "color_6",
+        colorName: "Голубой",
+        hex: "#1288bd"
       }, {
-        name: "color_7"
+        name: "color_7",
+        colorName: "Розовый",
+        hex: "#c82484"
       }, {
-        name: "color_8"
+        name: "color_8",
+        colorName: "Фиолетовый",
+        hex: "#874ba7"
       }, {
-        name: "color_9"
+        name: "color_9",
+        colorName: "Зеленый",
+        hex: "#56c4ab"
       }, {
-        name: "color_10"
+        name: "color_10",
+        colorName: "Коричневый",
+        hex: "#976c4c"
       }, {
-        name: "color_11"
+        name: "color_11",
+        colorName: "Желтый",
+        hex: "#f1e7c2"
       }, {
-        name: "color_12"
+        name: "color_12",
+        colorName: "Градиент",
+        hex: "#FF6376"
       }]
     };
   },
@@ -4527,7 +4557,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     checked: function checked() {
-      this.$emit('checked');
+      this.$emit("checked");
     },
     selectColor: function selectColor() {}
   }
@@ -9936,7 +9966,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../../node_module
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* переопределение переменных Materialize */\n\n/* Text inputs */\ninput[data-v-6623c213]:not([type]),\ninput[type=\"text\"][data-v-6623c213]:not(.browser-default),\ninput[type=\"password\"][data-v-6623c213]:not(.browser-default),\ntextarea.materialize-textarea[data-v-6623c213] {\n  border-bottom: none;\n}\ninput[data-v-6623c213]:not([type]):focus:not([readonly]),\ninput[type=\"text\"][data-v-6623c213]:not(.browser-default):focus:not([readonly]),\ninput[type=\"password\"][data-v-6623c213]:not(.browser-default):focus:not([readonly]),\ntextarea.materialize-textarea[data-v-6623c213]:focus:not([readonly]) {\n  border-bottom: none;\n  box-shadow: none;\n}\ninput:not([type]):focus:not([readonly]) + label[data-v-6623c213],\ninput[type=\"text\"]:not(.browser-default):focus:not([readonly]) + label[data-v-6623c213],\ninput[type=\"password\"]:not(.browser-default):focus:not([readonly]) + label[data-v-6623c213],\ntextarea.materialize-textarea:focus:not([readonly]) + label[data-v-6623c213] {\n  color: #666666;\n  border-bottom: none;\n}\n.input-field > label:not(.label-icon).active[data-v-6623c213] {\n  transform: translateY(-30px) scale(0.8);\n  transform-origin: 0 0;\n}\n.input-field .prefix[data-v-6623c213] {\n  margin-left: 5px;\n  font-size: 26px;\n  color: #b2b2b2;\n}\n.input-field .prefix.active[data-v-6623c213] {\n  font-size: 30px;\n  color: #666666;\n}\n  \n/* custom styles */\n.folder_password-block[data-v-6623c213] {\n  width: 282px;\n  margin-top: 70px;\n}\n.input-field[data-v-6623c213] {\n  width: 100%;\n  height: 50px;\n  border-radius: 4px;\n  border: 2px solid #f5f5f5;\n  background-color: #ffffff;\n}\n.folder_password-input[data-v-6623c213] {\n  margin-bottom: 55px;\n}\n.folder_password-block label[data-v-6623c213] {\n  margin-left: 20px;\n}\n.folder_password-block .validate[data-v-6623c213] {\n  padding-left: 20px;\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* переопределение переменных Materialize */\n\n/* Text inputs */\ninput[data-v-6623c213]:not([type]),\ninput[type=\"text\"][data-v-6623c213]:not(.browser-default),\ninput[type=\"password\"][data-v-6623c213]:not(.browser-default),\ntextarea.materialize-textarea[data-v-6623c213] {\n  border-bottom: none;\n}\ninput[data-v-6623c213]:not([type]):focus:not([readonly]),\ninput[type=\"text\"][data-v-6623c213]:not(.browser-default):focus:not([readonly]),\ninput[type=\"password\"][data-v-6623c213]:not(.browser-default):focus:not([readonly]),\ntextarea.materialize-textarea[data-v-6623c213]:focus:not([readonly]) {\n  border-bottom: none;\n  box-shadow: none;\n}\ninput:not([type]):focus:not([readonly]) + label[data-v-6623c213],\ninput[type=\"text\"]:not(.browser-default):focus:not([readonly]) + label[data-v-6623c213],\ninput[type=\"password\"]:not(.browser-default):focus:not([readonly]) + label[data-v-6623c213],\ntextarea.materialize-textarea:focus:not([readonly]) + label[data-v-6623c213] {\n  color: #666666;\n  border-bottom: none;\n}\n.input-field > label:not(.label-icon).active[data-v-6623c213] {\n  transform: translateY(-30px) scale(0.8);\n  transform-origin: 0 0;\n}\n.input-field .prefix[data-v-6623c213] {\n  margin-left: 5px;\n  font-size: 26px;\n  color: #b2b2b2;\n}\n.input-field .prefix.active[data-v-6623c213] {\n  font-size: 30px;\n  color: #666666;\n}\n  \n/* custom styles */\n.folder_password-block[data-v-6623c213] {\n  width: 282px;\n  margin-top: 70px;\n}\n.input-field[data-v-6623c213] {\n  width: 100%;\n  height: 50px;\n  border-radius: 4px;\n  border: 2px solid #f5f5f5;\n  background-color: #ffffff;\n}\n.folder_password-input[data-v-6623c213] {\n  margin-bottom: 55px;\n}\n.folder_password-block label[data-v-6623c213] {\n  margin-left: 20px;\n}\n.folder_password-block .validate[data-v-6623c213] {\n  padding-left: 20px;\n}\n", ""]);
 
 // exports
 
@@ -9955,7 +9985,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../../node_module
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* переопределение переменных Materialize */\n\n/* Text inputs */\ninput[data-v-5d3104ea]:not([type]),\ninput[type=\"text\"][data-v-5d3104ea]:not(.browser-default),\ntextarea.materialize-textarea[data-v-5d3104ea] {\n  border-bottom: none;\n}\ninput[data-v-5d3104ea]:not([type]):focus:not([readonly]),\ninput[type=\"text\"][data-v-5d3104ea]:not(.browser-default):focus:not([readonly]),\ntextarea.materialize-textarea[data-v-5d3104ea]:focus:not([readonly]) {\n  border-bottom: none;\n  box-shadow: none;\n}\ninput:not([type]):focus:not([readonly]) + label[data-v-5d3104ea],\ninput[type=\"text\"]:not(.browser-default):focus:not([readonly]) + label[data-v-5d3104ea],\ntextarea.materialize-textarea:focus:not([readonly]) + label[data-v-5d3104ea] {\n  color: #666666;\n  border-bottom: none;\n}\n.input-field > label:not(.label-icon).active[data-v-5d3104ea] {\n  transform: translateY(-30px) scale(0.8);\n  transform-origin: 0 0;\n}\n\n/* Checkbox */\n[type=\"checkbox\"].filled-in + span[data-v-5d3104ea]:not(.lever):after {\n  border-radius: 4px;\n}\n[type=\"checkbox\"].filled-in:not(:checked) + span[data-v-5d3104ea]:not(.lever):after {\n  height: 20px;\n  width: 20px;\n  background-color: transparent;\n  border: 2px solid #e6e6e6;\n  top: 0px;\n  z-index: 0;\n}\n[type=\"checkbox\"].filled-in:checked + span[data-v-5d3104ea]:not(.lever):after {\n  top: 0;\n  width: 20px;\n  height: 20px;\n  border: 2px solid #1875f0;\n  background-color: #1875f0;\n  z-index: 0;\n}\n\n/* custom styles */\n.m_modal[data-v-5d3104ea] {\n    position: relative;\n    width: 350px;\n    background-color: #fff;\n    transition: transform .3s ease-out;\n    transform: translate(0,-50px);\n    margin: 100px auto auto;\n    padding: 30px 30px 25px 21px;\n    border-radius: 5px;\n}\n.row .col .wrapper[data-v-5d3104ea] {\n  font-family: Roboto;\n  width: 350px;\n  padding: 0rem;\n}\n.card[data-v-5d3104ea] {\n  box-sizing: border-box;\n  font-family: Roboto;\n  width: 350px;\n  width: 100%;\n  height: 550px;\n  border-radius: 6px;\n  background-color: #ffffff;\n  margin: 0rem;\n}\n.card .card-content[data-v-5d3104ea] {\n  padding-top: 30px;\n  padding-left: 30px;\n}\n.close_button[data-v-5d3104ea] {\n  width: 26px;\n  height: 26px;\n}\n.close_button i[data-v-5d3104ea] {\n  font-size: 26px;\n  color: #dfdfdf;\n}\n.close_button i[data-v-5d3104ea]:hover,\n.close_button i[data-v-5d3104ea]:focus {\n  font-size: 30px;\n  color: #b8b8b8;\n  transform: rotate(360deg);\n  transition: all 0.9s ease-in-out 0s;\n}\n.card-title[data-v-5d3104ea] {\n  color: #666666;\n  font-family: Roboto;\n  font-size: 18px;\n  font-weight: 500;\n  line-height: 40px;\n}\n.folder_name-block[data-v-5d3104ea] {\n  width: 282px;\n  margin-top: 38px;\n}\n.input-field[data-v-5d3104ea] {\n  width: 100%;\n  height: 50px;\n  border-radius: 4px;\n  border: 2px solid #f5f5f5;\n  background-color: #ffffff;\n}\n.folder_name-input[data-v-5d3104ea] {\n  margin-bottom: 55px;\n}\n.folder_name-block label[data-v-5d3104ea] {\n  margin-left: 20px;\n}\n.folder_name-block .validate[data-v-5d3104ea],\n.folder_name-block .materialize-textarea[data-v-5d3104ea] {\n  padding-left: 20px;\n}\n.colorpicker_header[data-v-5d3104ea] {\n  height: 110px;\n  width: 220px;\n  margin-bottom: 5px;\n  padding: 0;\n}\n.colorpicker_panel-item[data-v-5d3104ea] {\n  padding: 0;\n}\n.colorpicker_title[data-v-5d3104ea] {\n  width: 105px;\n  height: 30px;\n  margin-right: 100px;\n  padding: 0;\n  color: #666666;\n  font-family: Roboto;\n  font-size: 14px;\n  font-weight: 500;\n  line-height: 30px;\n}\n.colorpicker_button[data-v-5d3104ea] {\n  width: 26px;\n  height: 26px;\n  color: #b2b2b2;\n}\n.colorpicker_panel[data-v-5d3104ea] {\n  padding: 5px;\n  min-height: 80px;\n  background: transparent;\n  border: none;\n  box-shadow: none;\n}\n.colorpicker_panel a[data-v-5d3104ea] {\n  padding: 3px;\n  margin-top: 15px;\n  height: 21px;\n  width: 21px;\n  border-radius: 50%;\n  border: transparent;\n}\n.color_1[data-v-5d3104ea] {\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\n  background-color: #ececec;\n}\n.color_2[data-v-5d3104ea] {\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\n  background-color: #f1c928;\n}\n.color_3[data-v-5d3104ea] {\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\n  background-color: #1441ec;\n}\n.color_4[data-v-5d3104ea] {\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\n  background-color: #eb631f;\n}\n.color_5[data-v-5d3104ea] {\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\n  background-color: #74af39;\n}\n.color_6[data-v-5d3104ea] {\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\n  background-color: #1288bd;\n}\n.color_7[data-v-5d3104ea] {\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\n  background-color: #c82484;\n}\n.color_8[data-v-5d3104ea] {\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\n  background-color: #874ba7;\n}\n.color_9[data-v-5d3104ea] {\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\n  background-color: #56c4ab;\n}\n.color_10[data-v-5d3104ea] {\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\n  background-color: #976c4c;\n}\n.color_11[data-v-5d3104ea] {\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\n  background-color: #f1e7c2;\n}\n.color_12[data-v-5d3104ea] {\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\n  background: rgb(131, 58, 180);\n  background: linear-gradient(\n    0deg,\n    rgba(131, 58, 180, 1) 0%,\n    rgba(253, 29, 29, 1) 50%,\n    rgba(252, 176, 69, 1) 100%\n  );\n}\n.colorpicker_panel_item-check_mark[data-v-5d3104ea] {\n  font-size: 14px;\n  font-weight: 1000;\n  color: transparent;\n}\n.color_1 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_1 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_2 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_2 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_11 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_11 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover {\n  color: #666666;\n}\n.color_3 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_3 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_4 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_4 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_5 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_5 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_6 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_6 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_7 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_7 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_8 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_8 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_9 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_9 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_10 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_10 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_12 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_12 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover {\n  color: #ffffff;\n}\n.folder_password-block[data-v-5d3104ea] {\n  height: 45px;\n  color: #b2b2b2;\n  font-size: 12px;\n  font-weight: 500;\n  line-height: 50px;\n}\n.folder_password-block .password-checkbox[data-v-5d3104ea] {\n  width: 20px;\n  height: 20px;\n  border-radius: 4px;\n  border: 2px solid #e6e6e6;\n  background-color: #ffffff;\n}\n.row .card-action[data-v-5d3104ea] {\n  padding-top: 24px;\n  margin-left: 0rem;\n  margin-right: 0rem;\n}\n.action_button-continue[data-v-5d3104ea],\n.action_button-cancel[data-v-5d3104ea] {\n  font-size: 10px;\n  font-weight: 900;\n  line-height: 40px;\n  color: #b2b2b2;\n  text-transform: uppercase;\n  width: 130px;\n  height: 40px;\n  border-radius: 4px;\n  border: 2px solid #f5f5f5;\n  background-color: #ffffff;\n  box-shadow: none;\n}\n.action_button-continue[data-v-5d3104ea]:focus,\n.action_button-continue[data-v-5d3104ea]:hover,\n.action_button-cancel[data-v-5d3104ea]:focus,\n.action_button-cancel[data-v-5d3104ea]:hover {\n  color: #ffffff;\n  border: 2px solid #1875f0;\n  background-color: #1875f0;\n  box-shadow: none;\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* переопределение переменных Materialize */\n\n/* Text inputs */\ninput[data-v-5d3104ea]:not([type]),\ninput[type=\"text\"][data-v-5d3104ea]:not(.browser-default),\ntextarea.materialize-textarea[data-v-5d3104ea] {\n  border-bottom: none;\n}\ninput[data-v-5d3104ea]:not([type]):focus:not([readonly]),\ninput[type=\"text\"][data-v-5d3104ea]:not(.browser-default):focus:not([readonly]),\ntextarea.materialize-textarea[data-v-5d3104ea]:focus:not([readonly]) {\n  border-bottom: none;\n  box-shadow: none;\n}\ninput:not([type]):focus:not([readonly]) + label[data-v-5d3104ea],\ninput[type=\"text\"]:not(.browser-default):focus:not([readonly]) + label[data-v-5d3104ea],\ntextarea.materialize-textarea:focus:not([readonly]) + label[data-v-5d3104ea] {\n  color: #666666;\n  border-bottom: none;\n}\n.input-field > label:not(.label-icon).active[data-v-5d3104ea] {\n  transform: translateY(-30px) scale(0.8);\n  transform-origin: 0 0;\n}\n\n/* Checkbox */\n[type=\"checkbox\"].filled-in + span[data-v-5d3104ea]:not(.lever):after {\n  border-radius: 4px;\n}\n[type=\"checkbox\"].filled-in:not(:checked) + span[data-v-5d3104ea]:not(.lever):after {\n  height: 20px;\n  width: 20px;\n  background-color: transparent;\n  border: 2px solid #e6e6e6;\n  top: 0px;\n  z-index: 0;\n}\n[type=\"checkbox\"].filled-in:checked + span[data-v-5d3104ea]:not(.lever):after {\n  top: 0;\n  width: 20px;\n  height: 20px;\n  border: 2px solid #1875f0;\n  background-color: #1875f0;\n  z-index: 0;\n}\n\n/* custom styles */\n.m_modal[data-v-5d3104ea] {\n  position: relative;\n  width: 350px;\n  background-color: #fff;\n  transition: transform 0.3s ease-out;\n  transform: translate(0, -50px);\n  margin: 100px auto auto;\n  padding: 30px 30px 25px 21px;\n  border-radius: 5px;\n}\n.row .col .wrapper[data-v-5d3104ea] {\n  font-family: Roboto;\n  width: 350px;\n  padding: 0rem;\n}\n.card[data-v-5d3104ea] {\n  box-sizing: border-box;\n  font-family: Roboto;\n  width: 350px;\n  width: 100%;\n  height: 550px;\n  border-radius: 6px;\n  background-color: #ffffff;\n  margin: 0rem;\n}\n.card .card-content[data-v-5d3104ea] {\n  padding-top: 30px;\n  padding-left: 30px;\n}\n.close_button[data-v-5d3104ea] {\n  width: 26px;\n  height: 26px;\n}\n.close_button i[data-v-5d3104ea] {\n  font-size: 26px;\n  color: #dfdfdf;\n}\n.close_button i[data-v-5d3104ea]:hover,\n.close_button i[data-v-5d3104ea]:focus {\n  font-size: 30px;\n  color: #b8b8b8;\n  transform: rotate(360deg);\n  transition: all 0.9s ease-in-out 0s;\n}\n.card-title[data-v-5d3104ea] {\n  color: #666666;\n  font-family: Roboto;\n  font-size: 18px;\n  font-weight: 500;\n  line-height: 40px;\n}\n.folder_name-block[data-v-5d3104ea] {\n  width: 282px;\n  margin-top: 38px;\n}\n.input-field[data-v-5d3104ea] {\n  width: 100%;\n  height: 50px;\n  border-radius: 4px;\n  border: 2px solid #f5f5f5;\n  background-color: #ffffff;\n}\n.folder_name-input[data-v-5d3104ea] {\n  margin-bottom: 55px;\n}\n.folder_name-block label[data-v-5d3104ea] {\n  margin-left: 20px;\n}\n.folder_name-block .validate[data-v-5d3104ea],\n.folder_name-block .materialize-textarea[data-v-5d3104ea] {\n  padding-left: 20px;\n}\n.colorpicker_header[data-v-5d3104ea] {\n  height: 110px;\n  width: 220px;\n  margin-bottom: 5px;\n  padding: 0;\n}\n.colorpicker_panel-item[data-v-5d3104ea] {\n  padding: 0;\n}\n.colorpicker_title[data-v-5d3104ea] {\n  width: 105px;\n  height: 30px;\n  margin-right: 100px;\n  padding: 0;\n  color: #666666;\n  font-family: Roboto;\n  font-size: 14px;\n  font-weight: 500;\n  line-height: 30px;\n}\n.colorpicker_button[data-v-5d3104ea] {\n  width: 26px;\n  height: 26px;\n  color: #b2b2b2;\n}\n.colorpicker_panel[data-v-5d3104ea] {\n  padding: 5px;\n  min-height: 80px;\n  background: transparent;\n  border: none;\n  box-shadow: none;\n}\n.colorpicker_panel a[data-v-5d3104ea] {\n  padding: 3px;\n  margin-top: 15px;\n  height: 21px;\n  width: 21px;\n  border-radius: 50%;\n  border: transparent;\n}\n.color_1[data-v-5d3104ea] {\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\n  background-color: #ececec;\n}\n.color_2[data-v-5d3104ea] {\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\n  background-color: #f1c928;\n}\n.color_3[data-v-5d3104ea] {\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\n  background-color: #1441ec;\n}\n.color_4[data-v-5d3104ea] {\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\n  background-color: #eb631f;\n}\n.color_5[data-v-5d3104ea] {\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\n  background-color: #74af39;\n}\n.color_6[data-v-5d3104ea] {\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\n  background-color: #1288bd;\n}\n.color_7[data-v-5d3104ea] {\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\n  background-color: #c82484;\n}\n.color_8[data-v-5d3104ea] {\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\n  background-color: #874ba7;\n}\n.color_9[data-v-5d3104ea] {\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\n  background-color: #56c4ab;\n}\n.color_10[data-v-5d3104ea] {\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\n  background-color: #976c4c;\n}\n.color_11[data-v-5d3104ea] {\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\n  background-color: #f1e7c2;\n}\n.color_12[data-v-5d3104ea] {\n  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);\n  background: rgb(131, 58, 180);\n  background: linear-gradient(\n    0deg,\n    rgba(131, 58, 180, 1) 0%,\n    rgba(253, 29, 29, 1) 50%,\n    rgba(252, 176, 69, 1) 100%\n  );\n}\n.colorpicker_panel_item-check_mark[data-v-5d3104ea] {\n  font-size: 14px;\n  font-weight: 1000;\n  color: transparent;\n}\n.color_1 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_1 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_2 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_2 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_11 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_11 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover {\n  color: #666666;\n}\n.color_3 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_3 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_4 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_4 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_5 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_5 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_6 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_6 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_7 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_7 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_8 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_8 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_9 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_9 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_10 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_10 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_12 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_12 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover {\n  color: #ffffff;\n}\n.folder_password-block[data-v-5d3104ea] {\n  height: 45px;\n  color: #b2b2b2;\n  font-size: 12px;\n  font-weight: 500;\n  line-height: 50px;\n}\n.folder_password-block .password-checkbox[data-v-5d3104ea] {\n  width: 20px;\n  height: 20px;\n  border-radius: 4px;\n  border: 2px solid #e6e6e6;\n  background-color: #ffffff;\n}\n.row .card-action[data-v-5d3104ea] {\n  padding-top: 24px;\n  margin-left: 0rem;\n  margin-right: 0rem;\n}\n.action_button-continue[data-v-5d3104ea],\n.action_button-cancel[data-v-5d3104ea] {\n  font-size: 10px;\n  font-weight: 900;\n  line-height: 40px;\n  color: #b2b2b2;\n  text-transform: uppercase;\n  width: 130px;\n  height: 40px;\n  border-radius: 4px;\n  border: 2px solid #f5f5f5;\n  background-color: #ffffff;\n  box-shadow: none;\n}\n.action_button-continue[data-v-5d3104ea]:focus,\n.action_button-continue[data-v-5d3104ea]:hover,\n.action_button-cancel[data-v-5d3104ea]:focus,\n.action_button-cancel[data-v-5d3104ea]:hover {\n  color: #ffffff;\n  border: 2px solid #1875f0;\n  background-color: #1875f0;\n  box-shadow: none;\n}\n", ""]);
 
 // exports
 
@@ -60170,7 +60200,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", {}, [
+  return _c("div", [
     _vm._m(0),
     _vm._v(" "),
     _vm._m(1),
@@ -81548,11 +81578,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _modules_newFolder__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/newFolder */ "./resources/js/store/modules/newFolder.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
 
 
 
@@ -81856,8 +81888,72 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
     countMessages: function countMessages(state) {
       return state.countMessages;
     }
+  },
+  modules: {
+    newFolder: _modules_newFolder__WEBPACK_IMPORTED_MODULE_3__["default"]
   }
 }));
+
+/***/ }),
+
+/***/ "./resources/js/store/modules/newFolder.js":
+/*!*************************************************!*\
+  !*** ./resources/js/store/modules/newFolder.js ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  state: {
+    toggleCheckPassword: false,
+    colors: [],
+    newFolder: {
+      name: '',
+      description: '',
+      color: '',
+      password: '',
+      confirm_password: ''
+    }
+  },
+  mutations: {
+    toggleCheckPassword: function toggleCheckPassword(state) {
+      state.toggleCheckPassword = !state.toggleCheckPassword;
+    },
+    createNewFolder: function createNewFolder(state, payload) {
+      state.newFolder = payload;
+    }
+  },
+  actions: {
+    colors: function colors(cnt) {
+      axios.get('/api/colors').then(function (r) {
+        return cnt.commit('colors', r.data);
+      });
+    },
+    createNewFolder: function createNewFolder(cnt) {}
+  },
+  getters: {
+    toggleCheckPassword: function toggleCheckPassword(state) {
+      return state.toggleCheckPassword;
+    },
+    colors: function colors(state) {
+      return state.colors;
+    },
+    folderName: function folderName(state) {
+      return state.newFolder.name;
+    },
+    folderDescription: function folderDescription(state) {
+      return state.newFolder.description;
+    },
+    folderColor: function folderColor(state) {
+      return state.newFolder.color;
+    },
+    folderPassword: function folderPassword(state) {
+      return state.newFolder.password;
+    }
+  }
+});
 
 /***/ }),
 

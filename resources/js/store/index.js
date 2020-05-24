@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import newFolder from './modules/newFolder'
 
 
 Vue.use(Vuex);
@@ -215,5 +216,8 @@ export default new Vuex.Store({
         countMessages(state) {
             return state.countMessages
         }
+    },
+    modules: {
+      newFolder,
     }
 })

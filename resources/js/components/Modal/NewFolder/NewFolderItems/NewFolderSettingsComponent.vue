@@ -1,62 +1,113 @@
 <template>
-  <div class="">
+  <div>
     <div class="col s10 card-title">
-            <span>Новая папка</span>
-          </div>
-          <div class="folder_name-block">
-            <div class="input-field folder_name-input">
-              <input id="folder_name" type="text" class="validate" />
-              <label for="folder_name">Имя папки</label>
-            </div>
-            <div class="input-field folder_description-input">
-              <textarea id="description" class="materialize-textarea"></textarea>
-              <label for="description">Описание</label>
-            </div>
-          </div>
-          <div class="colorpicker_header">
-            <a href="#" class="dropdown-trigger valign-wrapper" data-target="dropdown">
-              <span class="colorpicker_title">Цвет ярлыка</span>
-              <i class="material-icons colorpicker_button">expand_more</i>
-            </a>
-          </div>
-          <div class="row colorpicker_panel dropdown-content" id="dropdown">
-            <div v-for="color in colors" :key="color.id" class="colorpicker_panel-item col s2">
-              <a href="#" class="valign-wrapper" :class="color.name">
-                <i class="colorpicker_panel_item-check_mark material-icons">done</i>
-              </a>
-            </div>
-          </div>
-          <form action="#" class="folder_password-block">
-            <div>
-              <label>
-                <input @change="checked" type="checkbox" class="folder_password-checkbox filled-in" />
-                <span>Защитить папку паролем</span>
-              </label>
-            </div>
-          </form>      
+      <span>Новая папка</span>
+    </div>
+    <div class="folder_name-block">
+      <div class="input-field folder_name-input">
+        <input id="folder_name" type="text" class="validate" />
+        <label for="folder_name">Имя папки</label>
+      </div>
+      <div class="input-field folder_description-input">
+        <textarea id="description" class="materialize-textarea"></textarea>
+        <label for="description">Описание</label>
+      </div>
+    </div>
+    <div class="colorpicker_header">
+      <a href="#" class="dropdown-trigger valign-wrapper" data-target="dropdown">
+        <span class="colorpicker_title">Цвет ярлыка</span>
+        <i class="material-icons colorpicker_button">expand_more</i>
+      </a>
+    </div>
+    <div class="row colorpicker_panel dropdown-content" id="dropdown">
+      <div v-for="color in colors" :key="color.id" class="colorpicker_panel-item col s2">
+        <a href="#" class="valign-wrapper" :class="color.name">
+          <i class="colorpicker_panel_item-check_mark material-icons">done</i>
+        </a>
+      </div>
+    </div>
+    <form action="#" class="folder_password-block">
+      <div>
+        <label>
+          <input @change="checked" type="checkbox" class="folder_password-checkbox filled-in" />
+          <span>Защитить папку паролем</span>
+        </label>
+      </div>
+    </form>
   </div>
 </template>
 
 
 <script>
+import { eventBus } from "../../../../app";
+
 export default {
   name: "NewFolderSettings",
-  props: ['check_password'],
+  props: ["check_password"],
   data: function() {
     return {
       colors: [
-        { name: "color_1" },
-        { name: "color_2" },
-        { name: "color_3" },
-        { name: "color_4" },
-        { name: "color_5" },
-        { name: "color_6" },
-        { name: "color_7" },
-        { name: "color_8" },
-        { name: "color_9" },
-        { name: "color_10" },
-        { name: "color_11" },
-        { name: "color_12" }
+        {
+          name: "color_1",
+          colorName: "Белый",
+          hex: "#ececec"
+        },
+        {
+          name: "color_2",
+          colorName: "Желтый",
+          hex: "#f1c928"
+        },
+        {
+          name: "color_3",
+          colorName: "Синий",
+          hex: "#1441ec"
+        },
+        {
+          name: "color_4",
+          colorName: "Оранжевый",
+          hex: "#eb631f"
+        },
+        {
+          name: "color_5",
+          colorName: "Зеленый",
+          hex: "#74af39"
+        },
+        {
+          name: "color_6",
+          colorName: "Голубой",
+          hex: "#1288bd"
+        },
+        {
+          name: "color_7",
+          colorName: "Розовый",
+          hex: "#c82484"
+        },
+        {
+          name: "color_8",
+          colorName: "Фиолетовый",
+          hex: "#874ba7"
+        },
+        {
+          name: "color_9",
+          colorName: "Зеленый",
+          hex: "#56c4ab"
+        },
+        {
+          name: "color_10",
+          colorName: "Коричневый",
+          hex: "#976c4c"
+        },
+        {
+          name: "color_11",
+          colorName: "Желтый",
+          hex: "#f1e7c2"
+        },
+
+        {
+          name: "color_12",
+          colorName: "Градиент",
+          hex: "#FF6376"
+        }
       ]
     };
   },
@@ -73,11 +124,9 @@ export default {
   },
   methods: {
     checked() {
-      this.$emit('checked')
+      this.$emit("checked");
     },
-    selectColor() {
-
-    },
+    selectColor() {}
   }
 };
 </script>
@@ -137,14 +186,14 @@ textarea.materialize-textarea:focus:not([readonly]) + label {
 
 /* custom styles */
 .m_modal {
-    position: relative;
-    width: 350px;
-    background-color: #fff;
-    transition: transform .3s ease-out;
-    transform: translate(0,-50px);
-    margin: 100px auto auto;
-    padding: 30px 30px 25px 21px;
-    border-radius: 5px;
+  position: relative;
+  width: 350px;
+  background-color: #fff;
+  transition: transform 0.3s ease-out;
+  transform: translate(0, -50px);
+  margin: 100px auto auto;
+  padding: 30px 30px 25px 21px;
+  border-radius: 5px;
 }
 .row .col .wrapper {
   font-family: Roboto;

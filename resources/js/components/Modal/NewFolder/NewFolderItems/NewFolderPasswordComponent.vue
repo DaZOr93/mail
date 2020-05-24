@@ -22,6 +22,8 @@
 
 
 <script>
+import {eventBus} from "../../../../app";
+
 export default {
   name: "NewFolderSettings",
   data: function() {
