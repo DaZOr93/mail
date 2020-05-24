@@ -10,11 +10,20 @@
         <label for="folder_password">Ваш пароль</label>
       </div>
     </div>
+    <div class="folder_password-block">
+      <div class="input-field folder_password-input">
+        <i class="material-icons prefix">lock</i>
+        <input id="confirm_folder_password" type="password" class="validate" />
+        <label for="confirm_folder_password">Повторите пароль</label>
+      </div>
+    </div>
   </div>
 </template>
 
 
 <script>
+import {eventBus} from "../../../../app";
+
 export default {
   name: "NewFolderSettings",
   data: function() {
