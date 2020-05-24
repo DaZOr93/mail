@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Folders;
 use App\Models\Letter;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -18,6 +17,15 @@ class FoldersController extends Controller
 
         return response()->json(Folders::where('user_id' , $user_id)->get());
     }
+
+
+    public function getForSettings($limit)
+    {
+        $user_id =  Auth::user()->id;
+
+        return response()->json(Folders::where('user_id' , $user_id)->paginate($limit));
+    }
+
 
     public function update(Request $request)
     {

@@ -32,7 +32,6 @@ class MessagesController extends Controller
     /**
      * Показать сообщение по uid
      * @param $uid
-     *
      * @return JsonResponseAlias
      */
     public function show($uid)

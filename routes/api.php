@@ -43,6 +43,7 @@ Route::get('/favorite/{method}/{message_id}/{uid}', 'Api\MessagesController@favo
 
 //user-folders
 Route::get('/user/folders', 'Api\FoldersController@index');
+Route::get('/user/settings/folder/{limit}', 'Api\FoldersController@getForSettings');
 Route::post('/user/update', 'Api\FoldersController@update');
 Route::post('/user/delete', 'Api\FoldersController@delete');
 
