@@ -15,7 +15,16 @@ class CreateColorsTable extends Migration
     {
         Schema::create('colors', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('folder_id')->nullable();
+            $table->string('name');
+            $table->string('colorName');
+            $table->string('hex');
             $table->timestamps();
+        });
+        Schema::table('colors', function (Blueprint $table) {
+          $table->foreignId('folder_id')
+                ->constrained()
+                ->onUpdate('cascade');
         });
     }
 

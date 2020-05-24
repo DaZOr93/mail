@@ -13,5 +13,6 @@ class DatabaseSeeder extends Seeder
     {
          $this->call(PickersSeeder::class);
          $this->call(FoldersSeeder::class);
+         $this->call(ColorsSeeder::class);
     }
 }
