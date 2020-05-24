@@ -8,7 +8,7 @@ use App\Models\Folders;
 use App\Models\Letter;
 use Illuminate\Support\Carbon;
 
-class MessageService extends ConnectServices
+class MessageService extends ConnectServices implements MessageServiceInterface
 {
 
     public function index($servicesFolder)
@@ -66,14 +66,13 @@ class MessageService extends ConnectServices
         return $data;
     }
 
-
     public function delete($uid, $message_id)
     {
         $letter = Letter::where('message_id', $message_id)->with('attachments')->first();
-        if($letter->deleted == 1){
+        if ($letter->deleted == 1) {
             if ($letter->attachments) $this->deleteAttach($letter->attachments, $letter->id);
             $letter->delete();
-        } else{
+        } else {
             $letter->sending = 0;
             $letter->inbox = 0;
             $letter->draft = 0;

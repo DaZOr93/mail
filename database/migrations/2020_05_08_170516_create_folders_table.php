@@ -18,10 +18,10 @@ class CreateFoldersTable extends Migration
             $table->unsignedBigInteger('user_id')->nullable();
             $table->string('name');
             $table->string('slug');
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->string('password')->nullable();
-            $table->string('color');
-            $table->string('color_name');
+            $table->string('color')->default('#0E2AE3');
+            $table->string('color_name')->default('Синий');
             $table->timestamps();
         });
     }

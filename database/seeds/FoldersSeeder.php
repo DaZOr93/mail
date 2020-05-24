@@ -17,19 +17,22 @@ class FoldersSeeder extends Seeder
                 'name' => 'Работа',
                 'slug' => 'rabota',
                 'description' => 'Для работы',
-                'color' => '#d0a2ff'
+                'color' => '#d0a2ff',
+                'color_name' => 'красный',
             ],
             [
                 'name' => 'Учеба',
                 'slug' => 'ucheba',
                 'description' => 'Для учебы',
-                'color' => '#cc0000'
+                'color' => '#cc0000',
+                'color_name' => 'красный',
             ],
             [
                 'name' => 'Личное',
                 'slug' => 'lichnoe',
                 'description' => 'личное',
-                'color' => '#16537e'
+                'color' => '#16537e',
+                'color_name' => 'красный',
             ],
         ]);
     }

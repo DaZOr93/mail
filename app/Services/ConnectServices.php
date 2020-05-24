@@ -10,7 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Webklex\IMAP\Facades\Client;
 
-class ConnectServices
+class ConnectServices implements ConnectServicesInterface
 {
     /**
      * Подключение к аккануту

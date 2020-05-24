@@ -9,7 +9,7 @@ use App\Models\Letter;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Mail;
 
-class SendEmailService
+class SendEmailService implements SendEmailServiceInterface
 {
     /**
      * @param array $data

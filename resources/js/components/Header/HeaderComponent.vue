@@ -11,7 +11,7 @@
                 <div class="logo-wrap ">
                     <div class="logo-inner" :class="{ compactBar: toggleBol }">
                         <div class="logo">
-                            <router-link tag="a" to="/it/home">
+                            <router-link tag="a" to="/">
                                 <img src="/img/main_logo.png" alt="main-logo">
                             </router-link>
                         </div>

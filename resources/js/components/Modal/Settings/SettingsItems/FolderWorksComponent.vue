@@ -8,6 +8,7 @@
                 <div class="folder__name">
                     <div class="input-field">
                         <input
+                            :data-index="index"
                             :id="'folder_name' + index"
                             type="text" class="validate"
                             :value="folder.name"
@@ -60,8 +61,8 @@
                 Строк:
                 <select name="" id="" v-model="perItem">
                     <option value="1">1</option>
+                    <option value="2">2</option>
                     <option value="3">3</option>
-                    <option value="5">5</option>
                 </select>
 
             </div>
@@ -107,6 +108,7 @@
                 deleteStatus: false,
                 pickerOpen: false,
                 deleteItems: [],
+                errors: [],
                 modal: false,
                 perItem: 3,
                 colors: [
@@ -190,16 +192,41 @@
                 }
             },
             save() {
-                console.log(this.deleteStatus);
-                axios.post('/api/user/update', this.folders.data);
+                if (this.errors.length > 0) {
+                    Vue.$toast.open({
+                        message: `Заполните поля`,
+                        type: "error",
+                        position: "top",
+                        duration: 2000
+                    });
+                } else {
+                    axios.post('/api/user/update', this.folders.data);
+                    Vue.$toast.open({
+                        message: `Сохранено!`,
+                        type: "success",
+                        position: "top",
+                        duration: 2000
+                    });
+                    this.$emit('close')
+                }
 
-                console.log(this.deleteStatus);
                 if (this.deleteStatus) {
                     axios.post('api/user/delete', this.deleteItems)
                 }
-                this.$emit('close')
             },
             update(name, event, index) {
+                let element = document.querySelectorAll('[data-index]');
+                if (event.target.value.length < 1) {
+                    this.errors.push(index);
+                    element[index].classList.add('errors');
+                } else {
+                    for (let i = 0; i < this.errors.length; i++) {
+                        if (this.errors[i] == index)  {
+                            this.errors.splice(i, 1)
+                            element[index].classList.remove('errors');
+                        }
+                    }
+                }
                 this.folders.data[index][name] = event.target.value;
             },
             deleteFolder(index) {
@@ -218,6 +245,12 @@
 
             },
             close() {
+                axios.get('/api/user/settings/folder/' + this.perItem + '?page=' + 1)
+                    .then(r => {
+                        this.folders = r.data;
+                    });
+                this.deleteStatus = false;
+                this.deleteItems = {};
                 this.$emit('close')
             },
             getFolders(page = 1) {
@@ -517,5 +550,8 @@
 
     select:focus {
         outline: none;
+    }
+    .settings__folder-items .errors {
+        border: 1px solid red!important;
     }
 </style>

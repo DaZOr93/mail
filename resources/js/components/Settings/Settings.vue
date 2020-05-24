@@ -44,8 +44,8 @@ export default {
         {
           iconName: "account_circle",
           navHelperText: "Иванов И И",
-          navTitleText: "Личные данные", 
-          modalName: "PersonalData" 
+          navTitleText: "Личные данные",
+          modalName: "PersonalData"
         },
         {
           iconName: "playlist_add",
@@ -56,13 +56,13 @@ export default {
         {
           iconName: "drafts",
           navHelperText: "Список писем, их отправка",
-          navTitleText: "Работа с письмами", 
+          navTitleText: "Работа с письмами",
           modalName: "MailWorks"
         },
         {
           iconName: "email",
           navHelperText: "Сбор почты",
-          navTitleText: "Почта с других ящиков", 
+          navTitleText: "Почта с других ящиков",
           modalName: "MailFetch"
         },
         {
@@ -119,6 +119,9 @@ export default {
 .nav-item {
   margin-bottom: 50px;
 }
+.nav-item {
+    cursor: pointer;
+}
 .nav-icon-circle {
   width: 60px;
   height: 60px;
@@ -171,4 +174,4 @@ export default {
   background: rgba(24, 117, 240, 0.16);
   transition: hover 0.5s;
 }
-</style> 
+</style>

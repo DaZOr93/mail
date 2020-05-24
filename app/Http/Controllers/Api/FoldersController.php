@@ -3,55 +3,75 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\Folders;
-use App\Models\Letter;
+use App\Services\FolderServices;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
+
 
 class FoldersController extends Controller
 {
+    /**
+     * @var FolderServices
+     */
+    private $folderServices;
+
+    /**
+     * FoldersController constructor.
+     * @param FolderServices $folderServices
+     */
+    public function __construct(FolderServices $folderServices)
+    {
+        $this->folderServices = $folderServices;
+    }
+
+    /**
+     * Получить все папки
+     * @return JsonResponse
+     */
     public function index()
     {
-        $user_id =  Auth::user()->id;
-
-        return response()->json(Folders::where('user_id' , $user_id)->get());
+        return response()->json($this->folderServices->index(), 200);
     }
 
 
+    /**
+     * Получить папки для настроек
+     * @param $limit
+     * @return JsonResponse
+     */
     public function getForSettings($limit)
     {
-        $user_id =  Auth::user()->id;
-
-        return response()->json(Folders::where('user_id' , $user_id)->paginate($limit));
+        return response()->json($this->folderServices->getForSettings($limit), 200);
     }
 
 
+    /**
+     * Редактирлвать папку
+     * @param Request $request
+     * @return JsonResponse
+     */
     public function update(Request $request)
     {
-        foreach ($request->all() as $item) {
-           $folder = Folders::find($item['id']);
-           $folder->name = $item['name'];
-           $folder->slug = Str::slug($item['name']);
-           $folder->description = $item['description'];
-           $folder->color = $item['color'];
-           $folder->color_name = $item['color_name'];
-           $folder->save();
-        }
-
-        return response()->json('updated');
+        return response()->json($this->folderServices->update($request), 200);
     }
 
-    public function delete(Request $request){
-       $userAuth = Auth::user()->id;
-       $folders = Folders::where('user_id' , $userAuth)->get();
+    /**
+     * Удалить папку
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function delete(Request $request)
+    {
+        return response()->json($this->folderServices->delete($request), 200);
+    }
 
-       foreach ($folders as $folder) {
-           if(in_array($folder->id, $request->all())) {
-               Letter::where('folder_id', $folder->id)->update(['folder_id' => null]);
-               $folder->delete();
-           };
-       }
-       return response()->json('deleted');
+    /**
+     * Удалить папку
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function store(Request $request)
+    {
+        return response()->json($this->folderServices->store($request), 200);
     }
 }

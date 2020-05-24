@@ -5,15 +5,8 @@
       <div class="close" @click="close"></div>
       <div class="content">
         <div class="integration-modal">
-          <component  @checked="check_password = !check_password" :check_password="check_password" :is="item"></component>
-          <div class="hor__line"></div>
-          <div class="modal__buttons">
-            <button type="button" v-if="item==='NewFolderSettings'" @click="store" class="btn_modal">Продолжить</button> 
-            <button type="button" v-if="item==='NewFolderSettings'" @click="close" class="btn_modal">Отменить</button> 
-            <button type="button" v-if="item==='NewFolderPassword'" @click="add_password" class="btn_modal">ОК</button>
-            <button type="button" v-if="item==='NewFolderPassword'" @click="back" class="btn_modal">Назад</button>
-          </div>
-        </div>  
+          <component  @checked="check_password = !check_password" @close="close" :check_password="check_password" :is="item"></component>
+        </div>
       </div>
     </div>
   </div>
@@ -25,7 +18,7 @@ import {eventBus} from "../../../app";
 import NewFolderSettings from "../NewFolder/NewFolderItems/NewFolderSettingsComponent";
 import NewFolderPassword from "../NewFolder/NewFolderItems/NewFolderPasswordComponent";
 export default {
-  
+
   name: "NewFolderComponent",
   components: {
     NewFolderSettings,
@@ -39,33 +32,13 @@ export default {
     };
   },
   mounted() {
-    
+
   },
   methods: {
-    store() {
-      let check_pass = this.check_password;
-      if(check_pass) {
-        this.item = 'NewFolderPassword';
-      } else {
-          alert('folder created successfuly!');
-          this.$emit('close');
-        }
-      },
-    close() {
-      this.item = 'NewFolderSettings';
-      this.check_password = false;
-      this.$emit('close');
-      },
-    back() {
-      this.item = 'NewFolderSettings';
-      this.check_password = false;
-    },
-    add_password() {
-      alert('password saved successfuly!');
-      this.item = 'NewFolderSettings';
-      this.check_password = false;
-      this.$emit('close');
-    }
+      close(){
+          this.$emit('close')
+      }
+
   }
 };
 </script>

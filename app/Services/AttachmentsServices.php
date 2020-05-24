@@ -6,7 +6,7 @@ namespace App\Services;
 
 use App\Models\Attachments;
 
-class AttachmentsServices
+class AttachmentsServices implements AttachmentsServicesInterface
 {
 
 
