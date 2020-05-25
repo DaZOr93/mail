@@ -9,7 +9,7 @@ use App\Models\Letter;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Mail;
 
-class SendEmailService implements SendEmailServiceInterface
+class SendEmailService
 {
     /**
      * @param array $data
@@ -30,6 +30,7 @@ class SendEmailService implements SendEmailServiceInterface
         $letter->sending = 1;
         $letter->to = $data['to'];
         $letter->subject = $data['subject'] ?? '';
+        $letter->html = $data['editorData'] ?? '';
         $letter->attach = ( count($data['attach']) > 0 ) ? 1 : 0;
         $letter->save();
 

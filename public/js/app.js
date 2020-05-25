@@ -4015,6 +4015,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       _this4.filesFinish = [];
       _this4.filesFinishData = [];
       _this4.draft = false;
+      _this4.draftId = 0;
     });
 
     if (this.$route.params.replayMessage) {
@@ -4979,31 +4980,56 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "PersonalData",
   data: function data() {
-    return {
-      items: [{
-        iconName: "person",
-        navHelperText: "Ф И О",
-        navTitleText: "Иванов И Р"
-      }, {
-        iconName: "cake",
-        navHelperText: "Дата рождения",
-        navTitleText: "22 Aug 1993"
-      }, {
-        iconName: "school",
-        navHelperText: "Образование",
-        navTitleText: "ДДМА"
-      }, {
-        iconName: "work",
-        navHelperText: "Место работы",
-        navTitleText: "It2.0"
-      }]
-    };
+    return {};
   },
-  mounted: function mounted() {},
-  methods: {}
+  computed: {
+    user: function user() {
+      return this.$store.getters.getUser;
+    }
+  },
+  created: function created() {
+    this.$store.dispatch('getUser');
+  },
+  methods: {
+    logout: function logout() {
+      axios.get('/auth/logout');
+      axios.get('https://team1-group-project.azurewebsites.net/api/client_logout', {
+        headers: {
+          Authorization: "Bearer " + "".concat(this.user.token)
+        }
+      }).then(function (r) {
+        return location.href = r.data;
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -9853,7 +9879,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../../node_module
 
 
 // module
-exports.push([module.i, ".header[data-v-3a136d22] {\n  width: 100%;\n  height: 68px;\n  margin-bottom: 48px;\n  color: #999999;\n  font-size: 18px;\n  font-weight: 700;\n  line-height: 90px;\n  border-bottom: 3px solid #f5f5f5;\n}\n.header-text[data-v-3a136d22] {\n  margin: 0 auto;\n}\n.col .row.body[data-v-3a136d22] {\n  margin-left: 0rem;\n  margin-right: 0rem;\n}\n.body li.nav-item[data-v-3a136d22] {\n  margin-bottom: 15px;\n  margin-left: 80px;\n}\n.nav-icon[data-v-3a136d22] {\n  width: 45px;\n  height: 45px;\n  /* border: 2px solid #f5f5f5;\n  border-radius: 50%; */\n  background-color: #ffffff;\n}\n.nav-item li span[data-v-3a136d22] {\n  height: 100%;\n  width: 100%;\n}\n.nav-item i[data-v-3a136d22] {\n  font-size: 26px;\n  color: #d8d8d8;\n  margin: 0 auto;\n}\n.nav-helper[data-v-3a136d22] {\n  height: 15px;\n  color: #cccccc;\n  font-family: Roboto;\n  font-size: 11px;\n  font-weight: 500;\n  line-height: 15px;\n}\n.nav-title[data-v-3a136d22] {\n  height: 30px;\n  color: #808080;\n  font-family: Roboto;\n  font-size: 13px;\n  font-weight: 500;\n  line-height: 30px;\n}", ""]);
+exports.push([module.i, ".personal_header[data-v-3a136d22] {\n  font-weight: 500;\n  font-size: 18px;\n  color: #808080;\n  padding-bottom: 15px;\n}\n.hor-lin[data-v-3a136d22] {\n  background: #F5F5F5;\n  position: absolute;\n  width: 100%;\n  height: 2px;\n  left: 0;\n}\n.personal_wrap[data-v-3a136d22] {\n  min-width: 380px;\n}\n.personal_items[data-v-3a136d22] {\n  margin-top: 15px;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.personal_item[data-v-3a136d22] {\n  display: flex;\n  margin-bottom: 15px;\n  width: 120px;\n  cursor: default;\n}\n.wrap[data-v-3a136d22] {\n  display: flex;\n  justify-content: center;\n}\n.item__icon[data-v-3a136d22] {\n  margin-right: 15px;\n}\n.item-text[data-v-3a136d22] {\n  font-style: normal;\n  font-weight: 500;\n  font-size: 13px;\n  color: #808080;\n  padding-bottom: 5px;\n}\n.item-dop[data-v-3a136d22] {\n  font-style: normal;\n  font-weight: 500;\n  font-size: 11px;\n  color: #CCCCCC;\n}\n.personal_item:nth-child(1) i[data-v-3a136d22] {\n  color: #5553CE;\n}\n.personal_item:nth-child(2) i[data-v-3a136d22] {\n  color: #F9AD3D;\n}\n.personal_item:nth-child(3) i[data-v-3a136d22] {\n  color: #1875F0;\n}\n.personal_item:nth-child(4) i[data-v-3a136d22] {\n  color: #34CB49;\n}\n.logout[data-v-3a136d22] {\n  font-style: normal;\n  font-weight: 900;\n  font-size: 12px;\n  line-height: 50px;\n  text-align: center;\n  text-transform: uppercase;\n  color: #FFFFFF;\n  background: #1875F0;\n  max-width: 200px;\n  margin: auto;\n  border-radius: 5px;\n  margin-top: 15px;\n  cursor: pointer;\n}", ""]);
 
 // exports
 
@@ -10177,7 +10203,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n.m_modal[data-v-5c37fa06] {\n    position: relative;\n    width: 350px;\n    background-color: #fff;\n    transition: transform .3s ease-out;\n    transform: translate(0,-50px);\n    margin: 100px auto auto;\n    padding: 30px 30px 25px 21px;\n    border-radius: 5px;\n}\n/* .m_modal .password_button {\n    width: 200px;\n    height: 50px;\n    color: #ffffff;\n    font-family: Roboto;\n    font-size: 12px;\n    font-weight: 900;\n    line-height: 50px;\n    text-transform: uppercase;\n} */\n", ""]);
+exports.push([module.i, "\n.m_modal[data-v-5c37fa06] {\r\n    position: relative;\r\n    width: 350px;\r\n    background-color: #fff;\r\n    transition: transform .3s ease-out;\r\n    transform: translate(0,-50px);\r\n    margin: 100px auto auto;\r\n    padding: 30px 30px 25px 21px;\r\n    border-radius: 5px;\n}\r\n/* .m_modal .password_button {\r\n    width: 200px;\r\n    height: 50px;\r\n    color: #ffffff;\r\n    font-family: Roboto;\r\n    font-size: 12px;\r\n    font-weight: 900;\r\n    line-height: 50px;\r\n    text-transform: uppercase;\r\n} */\r\n", ""]);
 
 // exports
 
@@ -10215,7 +10241,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../../node_module
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* переопределение переменных Materialize */\n\n/* Text inputs */\ninput[data-v-5d3104ea]:not([type]),\ninput[type=\"text\"][data-v-5d3104ea]:not(.browser-default),\ntextarea.materialize-textarea[data-v-5d3104ea] {\n    border-bottom: none !important;\n}\ninput[data-v-5d3104ea]:not([type]):focus:not([readonly]),\ninput[type=\"text\"][data-v-5d3104ea]:not(.browser-default):focus:not([readonly]),\ntextarea.materialize-textarea[data-v-5d3104ea]:focus:not([readonly]) {\n    border-bottom: none;\n    box-shadow: none;\n}\ninput:not([type]):focus:not([readonly]) + label[data-v-5d3104ea],\ninput[type=\"text\"]:not(.browser-default):focus:not([readonly]) + label[data-v-5d3104ea],\ntextarea.materialize-textarea:focus:not([readonly]) + label[data-v-5d3104ea] {\n    color: #666666;\n    border-bottom: none;\n}\n.input-field > label:not(.label-icon).active[data-v-5d3104ea] {\n    transform: translateY(-30px) scale(0.8);\n    transform-origin: 0 0;\n}\n\n/* Checkbox */\n[type=\"checkbox\"].filled-in + span[data-v-5d3104ea]:not(.lever):after {\n    border-radius: 4px;\n}\n[type=\"checkbox\"].filled-in:not(:checked) + span[data-v-5d3104ea]:not(.lever):after {\n    height: 20px;\n    width: 20px;\n    background-color: transparent;\n    border: 2px solid #e6e6e6;\n    top: 0px;\n    z-index: 0;\n}\n[type=\"checkbox\"].filled-in:checked + span[data-v-5d3104ea]:not(.lever):after {\n    top: 0;\n    width: 20px;\n    height: 20px;\n    border: 2px solid #1875f0;\n    background-color: #1875f0;\n    z-index: 0;\n}\n\n/* custom styles */\n.m_modal[data-v-5d3104ea] {\n    position: relative;\n    width: 350px;\n    background-color: #fff;\n    transition: transform .3s ease-out;\n    transform: translate(0, -50px);\n    margin: 100px auto auto;\n    padding: 30px 30px 25px 21px;\n    border-radius: 5px;\n}\n.row .col .wrapper[data-v-5d3104ea] {\n    font-family: Roboto;\n    width: 350px;\n    padding: 0rem;\n}\n.card[data-v-5d3104ea] {\n    box-sizing: border-box;\n    font-family: Roboto;\n    width: 350px;\n    width: 100%;\n    height: 550px;\n    border-radius: 6px;\n    background-color: #ffffff;\n    margin: 0rem;\n}\n.input.valid[type=text][data-v-5d3104ea]:not(.browser-default) {\n    border-bottom: none !important\n}\n.card .card-content[data-v-5d3104ea] {\n    padding-top: 30px;\n    padding-left: 30px;\n}\n.close_button[data-v-5d3104ea] {\n    width: 26px;\n    height: 26px;\n}\n.close_button i[data-v-5d3104ea] {\n    font-size: 26px;\n    color: #dfdfdf;\n}\n.close_button i[data-v-5d3104ea]:hover,\n.close_button i[data-v-5d3104ea]:focus {\n    font-size: 30px;\n    color: #b8b8b8;\n    transform: rotate(360deg);\n    transition: all 0.9s ease-in-out 0s;\n}\n.card-title[data-v-5d3104ea] {\n    color: #666666;\n    font-family: Roboto;\n    font-size: 18px;\n    font-weight: 500;\n    line-height: 40px;\n}\n.folder_name-block[data-v-5d3104ea] {\n    width: 282px;\n    margin-top: 38px;\n}\n.input-field[data-v-5d3104ea] {\n    width: 100%;\n    height: 50px;\n    border-radius: 4px;\n    border: 2px solid #f5f5f5;\n    background-color: #ffffff;\n}\n.folder_name-input[data-v-5d3104ea] {\n    margin-bottom: 55px;\n}\n.folder_name-block label[data-v-5d3104ea] {\n    margin-left: 20px;\n}\n.folder_name-block .validate[data-v-5d3104ea],\n.folder_name-block .materialize-textarea[data-v-5d3104ea] {\n    padding-left: 20px;\n}\n.colorpicker_header[data-v-5d3104ea] {\n    height: 110px;\n    width: 220px;\n    margin-bottom: 5px;\n    padding: 0;\n    margin-left: 5px;\n}\n.colorpicker_panel-item[data-v-5d3104ea] {\n    padding: 0;\n}\n.colorpicker_title[data-v-5d3104ea] {\n    width: 105px;\n    height: 30px;\n    margin-right: 100px;\n    padding: 0;\n    color: #666666;\n    font-family: Roboto;\n    font-size: 14px;\n    font-weight: 500;\n    line-height: 30px;\n}\n.colorpicker_button[data-v-5d3104ea] {\n    width: 26px;\n    height: 26px;\n    color: #b2b2b2;\n}\n.colorpicker_panel[data-v-5d3104ea] {\n    padding: 5px;\n    min-height: 80px;\n    background: transparent;\n    border: none;\n    box-shadow: none;\n}\n.colorpicker_panel a[data-v-5d3104ea] {\n    padding: 3px;\n    margin-top: 15px;\n    height: 21px;\n    width: 21px;\n    border-radius: 50%;\n    border: transparent;\n    display: flex;\n    justify-content: center;\n}\n.colorpicker_panel a[data-v-5d3104ea] {\n    pointer-events: none;\n}\n.colorpicker_panel-item[data-v-5d3104ea] {\n    outline: none;\n    cursor: pointer;\n}\n.colorpicker_panel-item a[data-v-5d3104ea] {\n    pointer-events: none;\n}\n.colorpicker_panel_item-check_mark[data-v-5d3104ea] {\n    font-size: 14px;\n    font-weight: 1000;\n    color: transparent;\n}\n.color_1 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_1 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_2 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_2 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_11 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_11 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover {\n    color: #666666;\n}\n.color_3 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_3 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_4 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_4 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_5 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_5 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_6 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_6 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_7 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_7 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_8 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_8 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_9 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_9 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_10 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_10 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_12 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_12 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover {\n    color: #ffffff;\n}\n.folder_password-block[data-v-5d3104ea] {\n    height: 45px;\n    color: #b2b2b2;\n    font-size: 12px;\n    font-weight: 500;\n    line-height: 50px;\n}\n.folder_password-block .password-checkbox[data-v-5d3104ea] {\n    width: 20px;\n    height: 20px;\n    border-radius: 4px;\n    border: 2px solid #e6e6e6;\n    background-color: #ffffff;\n}\n.row .card-action[data-v-5d3104ea] {\n    padding-top: 24px;\n    margin-left: 0rem;\n    margin-right: 0rem;\n}\n.action_button-continue[data-v-5d3104ea],\n.action_button-cancel[data-v-5d3104ea] {\n    font-size: 10px;\n    font-weight: 900;\n    line-height: 40px;\n    color: #b2b2b2;\n    text-transform: uppercase;\n    width: 130px;\n    height: 40px;\n    border-radius: 4px;\n    border: 2px solid #f5f5f5;\n    background-color: #ffffff;\n    box-shadow: none;\n}\n.action_button-continue[data-v-5d3104ea]:focus,\n.action_button-continue[data-v-5d3104ea]:hover,\n.action_button-cancel[data-v-5d3104ea]:focus,\n.action_button-cancel[data-v-5d3104ea]:hover {\n    color: #ffffff;\n    border: 2px solid #1875f0;\n    background-color: #1875f0;\n    box-shadow: none;\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* переопределение переменных Materialize */\n\n/* Text inputs */\ninput[data-v-5d3104ea]:not([type]),\ninput[type=\"text\"][data-v-5d3104ea]:not(.browser-default),\ntextarea.materialize-textarea[data-v-5d3104ea] {\n    border-bottom: none !important;\n}\ninput[data-v-5d3104ea]:not([type]):focus:not([readonly]),\ninput[type=\"text\"][data-v-5d3104ea]:not(.browser-default):focus:not([readonly]),\ntextarea.materialize-textarea[data-v-5d3104ea]:focus:not([readonly]) {\n    border-bottom: none;\n    box-shadow: none;\n}\ninput:not([type]):focus:not([readonly]) + label[data-v-5d3104ea],\ninput[type=\"text\"]:not(.browser-default):focus:not([readonly]) + label[data-v-5d3104ea],\ntextarea.materialize-textarea:focus:not([readonly]) + label[data-v-5d3104ea] {\n    color: #666666;\n    border-bottom: none;\n}\n.input-field > label:not(.label-icon).active[data-v-5d3104ea] {\n    transform: translate(-18px,-31px) scale(0.8);\n    transform-origin: 0 0;\n}\n\n/* Checkbox */\n[type=\"checkbox\"].filled-in + span[data-v-5d3104ea]:not(.lever):after {\n    border-radius: 4px;\n}\n[type=\"checkbox\"].filled-in:not(:checked) + span[data-v-5d3104ea]:not(.lever):after {\n    height: 20px;\n    width: 20px;\n    background-color: transparent;\n    border: 2px solid #e6e6e6;\n    top: 0px;\n    z-index: 0;\n}\n[type=\"checkbox\"].filled-in:checked + span[data-v-5d3104ea]:not(.lever):after {\n    top: 0;\n    width: 20px;\n    height: 20px;\n    border: 2px solid #1875f0;\n    background-color: #1875f0;\n    z-index: 0;\n}\n\n/* custom styles */\n.m_modal[data-v-5d3104ea] {\n    position: relative;\n    width: 350px;\n    background-color: #fff;\n    transition: transform .3s ease-out;\n    transform: translate(0, -50px);\n    margin: 100px auto auto;\n    padding: 30px 30px 25px 21px;\n    border-radius: 5px;\n}\n.row .col .wrapper[data-v-5d3104ea] {\n    font-family: Roboto;\n    width: 350px;\n    padding: 0rem;\n}\n.card[data-v-5d3104ea] {\n    box-sizing: border-box;\n    font-family: Roboto;\n    width: 350px;\n    width: 100%;\n    height: 550px;\n    border-radius: 6px;\n    background-color: #ffffff;\n    margin: 0rem;\n}\n.input.valid[type=text][data-v-5d3104ea]:not(.browser-default) {\n    border-bottom: none !important\n}\n.card .card-content[data-v-5d3104ea] {\n    padding-top: 30px;\n    padding-left: 30px;\n}\n.close_button[data-v-5d3104ea] {\n    width: 26px;\n    height: 26px;\n}\n.close_button i[data-v-5d3104ea] {\n    font-size: 26px;\n    color: #dfdfdf;\n}\n.close_button i[data-v-5d3104ea]:hover,\n.close_button i[data-v-5d3104ea]:focus {\n    font-size: 30px;\n    color: #b8b8b8;\n    transform: rotate(360deg);\n    transition: all 0.9s ease-in-out 0s;\n}\n.card-title[data-v-5d3104ea] {\n    color: #666666;\n    font-family: Roboto;\n    font-size: 18px;\n    font-weight: 500;\n    line-height: 40px;\n}\n.folder_name-block[data-v-5d3104ea] {\n    width: 282px;\n    margin-top: 38px;\n}\n.input-field[data-v-5d3104ea] {\n    width: 100%;\n    height: 50px;\n    border-radius: 4px;\n    border: 2px solid #f5f5f5;\n    background-color: #ffffff;\n}\n.folder_name-input[data-v-5d3104ea] {\n    margin-bottom: 55px;\n}\n.folder_name-block label[data-v-5d3104ea] {\n    margin-left: 20px;\n}\n.folder_name-block .validate[data-v-5d3104ea],\n.folder_name-block .materialize-textarea[data-v-5d3104ea] {\n    padding-left: 20px;\n}\n.colorpicker_header[data-v-5d3104ea] {\n    height: 110px;\n    width: 220px;\n    margin-bottom: 5px;\n    padding: 0;\n    margin-left: 5px;\n}\n.colorpicker_panel-item[data-v-5d3104ea] {\n    padding: 0;\n}\n.colorpicker_title[data-v-5d3104ea] {\n    width: 105px;\n    height: 30px;\n    margin-right: 100px;\n    padding: 0;\n    color: #666666;\n    font-family: Roboto;\n    font-size: 14px;\n    font-weight: 500;\n    line-height: 30px;\n}\n.colorpicker_button[data-v-5d3104ea] {\n    width: 26px;\n    height: 26px;\n    color: #b2b2b2;\n}\n.colorpicker_panel[data-v-5d3104ea] {\n    padding: 5px;\n    min-height: 80px;\n    background: transparent;\n    border: none;\n    box-shadow: none;\n}\n.colorpicker_panel a[data-v-5d3104ea] {\n    padding: 3px;\n    margin-top: 15px;\n    height: 21px;\n    width: 21px;\n    border-radius: 50%;\n    border: transparent;\n    display: flex;\n    justify-content: center;\n}\n.colorpicker_panel a[data-v-5d3104ea] {\n    pointer-events: none;\n}\n.colorpicker_panel-item[data-v-5d3104ea] {\n    outline: none;\n    cursor: pointer;\n}\n.colorpicker_panel-item a[data-v-5d3104ea] {\n    pointer-events: none;\n}\n.colorpicker_panel_item-check_mark[data-v-5d3104ea] {\n    font-size: 14px;\n    font-weight: 1000;\n    color: transparent;\n}\n.color_1 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_1 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_2 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_2 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_11 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_11 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover {\n    color: #666666;\n}\n.color_3 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_3 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_4 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_4 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_5 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_5 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_6 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_6 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_7 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_7 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_8 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_8 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_9 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_9 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_10 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_10 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_12 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_12 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover {\n    color: #ffffff;\n}\n.folder_password-block[data-v-5d3104ea] {\n    height: 45px;\n    color: #b2b2b2;\n    font-size: 12px;\n    font-weight: 500;\n    line-height: 50px;\n}\n.folder_password-block .password-checkbox[data-v-5d3104ea] {\n    width: 20px;\n    height: 20px;\n    border-radius: 4px;\n    border: 2px solid #e6e6e6;\n    background-color: #ffffff;\n}\n.row .card-action[data-v-5d3104ea] {\n    padding-top: 24px;\n    margin-left: 0rem;\n    margin-right: 0rem;\n}\n.action_button-continue[data-v-5d3104ea],\n.action_button-cancel[data-v-5d3104ea] {\n    font-size: 10px;\n    font-weight: 900;\n    line-height: 40px;\n    color: #b2b2b2;\n    text-transform: uppercase;\n    width: 130px;\n    height: 40px;\n    border-radius: 4px;\n    border: 2px solid #f5f5f5;\n    background-color: #ffffff;\n    box-shadow: none;\n}\n.action_button-continue[data-v-5d3104ea]:focus,\n.action_button-continue[data-v-5d3104ea]:hover,\n.action_button-cancel[data-v-5d3104ea]:focus,\n.action_button-cancel[data-v-5d3104ea]:hover {\n    color: #ffffff;\n    border: 2px solid #1875f0;\n    background-color: #1875f0;\n    box-shadow: none;\n}\n", ""]);
 
 // exports
 
@@ -57296,7 +57322,9 @@ var render = function() {
                         _c("div", { staticClass: "item__text" }, [
                           _vm._v(
                             "\n                            " +
-                              _vm._s(message.text == 0 ? " " : message.text) +
+                              _vm._s(
+                                _vm._f("shortText")(message.text, 30, "...")
+                              ) +
                               "\n                        "
                           )
                         ])
@@ -57839,7 +57867,9 @@ var render = function() {
                         _c("div", { staticClass: "item__text" }, [
                           _vm._v(
                             "\n                            " +
-                              _vm._s(message.text == 0 ? " " : message.text) +
+                              _vm._s(
+                                _vm._f("shortText")(message.text, 30, "...")
+                              ) +
                               "\n                        "
                           )
                         ])
@@ -58658,7 +58688,9 @@ var render = function() {
                         _c("div", { staticClass: "item__text" }, [
                           _vm._v(
                             "\n                            " +
-                              _vm._s(message.text == 0 ? " " : message.text) +
+                              _vm._s(
+                                _vm._f("shortText")(message.text, 30, "...")
+                              ) +
                               "\n                        "
                           )
                         ])
@@ -58853,11 +58885,7 @@ var render = function() {
                         [
                           _vm._v(
                             "\n                            " +
-                              _vm._s(
-                                !message.to_name
-                                  ? message.to[0]
-                                  : message.to_name[0]
-                              ) +
+                              _vm._s(message.to[0]) +
                               "\n                        "
                           )
                         ]
@@ -58866,10 +58894,8 @@ var render = function() {
                     _vm._v(" "),
                     _c("div", { staticClass: "email__driver" }, [
                       _vm._v(
-                        "\n                        " +
-                          _vm._s(
-                            !message.to_name ? message.to : message.to_name
-                          ) +
+                        "\n                       " +
+                          _vm._s(message.to) +
                           "\n                    "
                       )
                     ])
@@ -59216,7 +59242,9 @@ var render = function() {
                         _c("div", { staticClass: "item__text" }, [
                           _vm._v(
                             "\n                            " +
-                              _vm._s(message.text == 0 ? " " : message.text) +
+                              _vm._s(
+                                _vm._f("shortText")(message.text, 30, "...")
+                              ) +
                               "\n                        "
                           )
                         ])
@@ -60426,7 +60454,7 @@ var render = function() {
         }),
         _vm._v(" "),
         _c("label", { staticClass: "active", attrs: { for: "folder_name" } }, [
-          _vm._v("Имя папки")
+          _vm._v("Название папки")
         ])
       ]),
       _vm._v(" "),
@@ -60453,7 +60481,9 @@ var render = function() {
           }
         }),
         _vm._v(" "),
-        _c("label", { attrs: { for: "description" } }, [_vm._v("Описание")])
+        _c("label", { attrs: { for: "description" } }, [
+          _vm._v("Описание папки")
+        ])
       ])
     ]),
     _vm._v(" "),
@@ -61003,35 +61033,16 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "row card-wrapper" }, [
+  return _c("div", { staticClass: "personal_wrap" }, [
+    _c("div", { staticClass: "personal_header" }, [_vm._v("Личные данные")]),
+    _vm._v(" "),
+    _c("div", { staticClass: "hor-lin" }),
+    _vm._v(" "),
     _vm._m(0),
     _vm._v(" "),
-    _c(
-      "ul",
-      { staticClass: "row body" },
-      _vm._l(_vm.items, function(item) {
-        return _c("li", { key: item.id, staticClass: "col s12 nav-item" }, [
-          _c("ul", { staticClass: "row" }, [
-            _c("li", { staticClass: "col nav-icon" }, [
-              _c("span", { staticClass: "valign-wrapper center-align" }, [
-                _c("i", { staticClass: "material-icons" }, [
-                  _vm._v(_vm._s(item.iconName))
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("li", { staticClass: "col s9 valign-wrapper nav-title" }, [
-              _c("span", {}, [_vm._v(_vm._s(item.navTitleText))])
-            ]),
-            _vm._v(" "),
-            _c("li", { staticClass: "col s9 valign-wrapper nav-helper" }, [
-              _c("span", {}, [_vm._v(_vm._s(item.navHelperText))])
-            ])
-          ])
-        ])
-      }),
-      0
-    )
+    _c("div", { staticClass: "logout", on: { click: _vm.logout } }, [
+      _vm._v("\n        ВЫЙТИ\n    ")
+    ])
   ])
 }
 var staticRenderFns = [
@@ -61039,8 +61050,56 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col s10 card-title header" }, [
-      _c("span", [_vm._v("Личные данные")])
+    return _c("div", { staticClass: "wrap" }, [
+      _c("div", { staticClass: "personal_items" }, [
+        _c("div", { staticClass: "personal_item" }, [
+          _c("div", { staticClass: "item__icon" }, [
+            _c("i", { staticClass: "material-icons" }, [_vm._v("person")])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "item__text-wrap" }, [
+            _c("div", { staticClass: "item-text" }, [_vm._v("Иванов И Р")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "item-dop" }, [_vm._v(" Ф И О")])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "personal_item" }, [
+          _c("div", { staticClass: "item__icon" }, [
+            _c("i", { staticClass: "material-icons" }, [_vm._v("cake")])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "item__text-wrap" }, [
+            _c("div", { staticClass: "item-text" }, [_vm._v("22 Aug 1993")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "item-dop" }, [_vm._v(" Дата рождения")])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "personal_item" }, [
+          _c("div", { staticClass: "item__icon" }, [
+            _c("i", { staticClass: "material-icons" }, [_vm._v("school")])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "item__text-wrap" }, [
+            _c("div", { staticClass: "item-text" }, [_vm._v(" ДДМА")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "item-dop" }, [_vm._v(" Образование")])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "personal_item" }, [
+          _c("div", { staticClass: "item__icon" }, [
+            _c("i", { staticClass: "material-icons" }, [_vm._v("work")])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "item__text-wrap" }, [
+            _c("div", { staticClass: "item-text" }, [_vm._v("It2.0")]),
+            _vm._v(" "),
+            _c("div", { staticClass: "item-dop" }, [_vm._v(" Место работы")])
+          ])
+        ])
+      ])
     ])
   }
 ]
@@ -61302,7 +61361,13 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("ul", { staticClass: "ul" }, [
-      _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("Главная")])]),
+      _c("li", [
+        _c(
+          "a",
+          { attrs: { href: "https://team1-group-project.azurewebsites.net/" } },
+          [_vm._v("Главная")]
+        )
+      ]),
       _vm._v(" "),
       _c("li", [
         _c(
@@ -61345,12 +61410,16 @@ var staticRenderFns = [
       ]),
       _vm._v(" "),
       _c("li", [
-        _c("a", { staticClass: "active", attrs: { href: "#" } }, [
+        _c("a", { staticClass: "active", attrs: { href: "/" } }, [
           _vm._v("Почта")
         ])
       ]),
       _vm._v(" "),
-      _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("Календарь")])]),
+      _c("li", [
+        _c("a", { attrs: { href: "http://laravelproject.s-host.net" } }, [
+          _vm._v("Календарь")
+        ])
+      ]),
       _vm._v(" "),
       _c("li", [
         _c(
@@ -61365,14 +61434,23 @@ var staticRenderFns = [
       ]),
       _vm._v(" "),
       _c("li", [
-        _c(
-          "a",
-          { attrs: { href: "https://contactmodule.azurewebsites.net" } },
-          [_vm._v("Контакты")]
-        )
+        _c("a", { attrs: { href: "https://contacts.s-host.net" } }, [
+          _vm._v("Контакты")
+        ])
       ]),
       _vm._v(" "),
-      _c("li", [_c("a", { attrs: { href: "#" } }, [_vm._v("Управление ")])])
+      _c("li", [
+        _c(
+          "a",
+          {
+            attrs: {
+              href:
+                "https://team1-group-project.azurewebsites.net/dashboard/departments"
+            }
+          },
+          [_vm._v("Управление ")]
+        )
+      ])
     ])
   }
 ]
@@ -79225,6 +79303,12 @@ __webpack_require__.r(__webpack_exports__);
       }
     }
   },
+  filters: {
+    shortText: function shortText(txt, limit, val) {
+      if (txt == 0) return ' ';
+      return txt.slice(0, limit) + val;
+    }
+  },
   watch: {
     selectAllMes: function selectAllMes() {
       var _this2 = this;
@@ -79343,7 +79427,26 @@ vue__WEBPACK_IMPORTED_MODULE_0___default.a.use(_ckeditor_ckeditor5_vue__WEBPACK_
  //Vue.config.devtools = false;
 //Vue.config.debug = false;
 //Vue.config.silent = true;
-//paginate
+
+var token = "";
+
+function test() {
+  axios.get('/api/user').then(function (r) {
+    axios.get('https://team1-group-project.azurewebsites.net/api/user', {
+      headers: {
+        Authorization: "Bearer " + r.data.token
+      }
+    }).then(function (r) {
+      return console.log(r);
+    });
+  });
+} //
+
+
+_routes__WEBPACK_IMPORTED_MODULE_3__["default"].beforeEach(function (to, from, next) {
+  //test();
+  next();
+}); //paginate
 
 vue__WEBPACK_IMPORTED_MODULE_0___default.a.component('pagination', __webpack_require__(/*! laravel-vue-pagination */ "./node_modules/laravel-vue-pagination/dist/laravel-vue-pagination.common.js"));
  //toaster

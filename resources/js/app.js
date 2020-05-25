@@ -7,7 +7,7 @@ import store from './store'
 import VueToast from 'vue-toast-notification';
 import CKEditor from '@ckeditor/ckeditor5-vue';
 
-Vue.use( CKEditor );
+Vue.use(CKEditor);
 
 //css
 import 'materialize-css';
@@ -22,6 +22,21 @@ import 'materialize-css/dist/js/materialize.js';
 //Vue.config.silent = true;
 
 
+let token = "";
+
+function test() {
+    axios.get('/api/user')
+        .then(r => {
+            axios.get('https://team1-group-project.azurewebsites.net/api/user', {headers: {Authorization: "Bearer " + r.data.token}})
+                .then(r => console.log(r))
+        });
+}
+
+//
+router.beforeEach((to, from, next) => {
+    //test();
+    next();
+});
 //paginate
 Vue.component('pagination', require('laravel-vue-pagination'));
 
@@ -29,6 +44,7 @@ import styles from 'vue-pure-lightbox/dist/VuePureLightbox.css'
 
 //toaster
 import 'vue-toast-notification/dist/theme-sugar.css';
+
 Vue.use(VueToast);
 
 //

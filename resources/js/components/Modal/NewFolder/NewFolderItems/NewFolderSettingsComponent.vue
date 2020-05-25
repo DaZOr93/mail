@@ -6,11 +6,11 @@
         <div class="folder_name-block">
             <div class="input-field folder_name-input">
                 <input id="folder_name" type="text" v-model="folder.name" class="validate"/>
-                <label class="active" for="folder_name">Имя папки</label>
+                <label class="active" for="folder_name">Название папки</label>
             </div>
             <div class="input-field folder_description-input">
                 <textarea v-model="folder.description" id="description" class="materialize-textarea"></textarea>
-                <label for="description">Описание</label>
+                <label for="description">Описание папки</label>
             </div>
         </div>
         <div class="colorpicker_header">
@@ -188,8 +188,7 @@
     }
 
     .input-field > label:not(.label-icon).active {
-        -webkit-transform: translateY(-30px) scale(0.8);
-        transform: translateY(-30px) scale(0.8);
+        transform: translate(-18px,-31px) scale(0.8);
         -webkit-transform-origin: 0 0;
         transform-origin: 0 0;
     }

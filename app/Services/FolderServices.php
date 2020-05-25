@@ -9,7 +9,7 @@ use App\Models\Letter;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
-class FolderServices implements FolderServicesInterface
+class FolderServices
 {
 
     public function index()

@@ -111,6 +111,13 @@ export default {
             }
         }
     },
+    filters: {
+        shortText(txt , limit ,val){
+            if(txt == 0) return ' '
+
+            return txt.slice(0 , limit) + val
+        }
+    },
     watch: {
         selectAllMes() {
             this.action = true;

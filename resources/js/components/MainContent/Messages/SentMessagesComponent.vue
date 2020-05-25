@@ -54,7 +54,7 @@
                                 <span>Sub:&nbsp;</span> {{ (message.subject) ? message.subject : '( без темы )' }}
                             </div>
                             <div class="item__text">
-                                {{ (message.text == 0) ? ' ' : message.text }}
+                                {{  message.text | shortText(30 , '...') }}
                             </div>
                         </div>
                         <div class="item__time">
@@ -146,11 +146,11 @@
                                 class="email__name"
                                 :class="'bg_' + index"
                             >
-                                {{ ( !message.to_name ) ? message.to[0] : message.to_name[0]}}
+                                {{ message.to[0] }}
                             </div>
                         </div>
                         <div class="email__driver">
-                            {{ ( !message.to_name ) ? message.to : message.to_name}}
+                           {{  message.to }}
                         </div>
                     </div>
                 </td>

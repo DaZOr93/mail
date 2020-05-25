@@ -264,6 +264,7 @@
                 this.filesFinish = [];
                 this.filesFinishData = [];
                 this.draft = false;
+                this.draftId = 0;
             });
             if (this.$route.params.replayMessage) {
                 this.message = {

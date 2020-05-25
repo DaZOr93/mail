@@ -8,7 +8,7 @@ use App\Models\Folders;
 use App\Models\Letter;
 use Illuminate\Support\Carbon;
 
-class MessageService extends ConnectServices implements MessageServiceInterface
+class MessageService extends ConnectServices
 {
 
     public function index($servicesFolder)

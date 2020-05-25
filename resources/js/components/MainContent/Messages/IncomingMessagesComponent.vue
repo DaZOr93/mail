@@ -58,7 +58,7 @@
                                 <span>Sub:&nbsp;</span> {{ (message.subject) ? message.subject : '( без темы )' }}
                             </div>
                             <div class="item__text">
-                                {{ (message.text == 0) ? ' ' : message.text }}
+                                {{  message.text | shortText(30 , '...') }}
                             </div>
                         </div>
                         <div class="item__time">
