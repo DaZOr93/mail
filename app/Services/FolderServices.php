@@ -72,4 +72,18 @@ class FolderServices
         return 'stored';
     }
 
+    public function count()
+    {
+        $countMessages = [];
+        $user_id = Auth::user()->id;
+        $folders = Folders::where('user_id' , $user_id)->with('messages')->get();
+
+        foreach ($folders as $folder) {
+            $countMessages[] = $folder->messages->count();
+        }
+
+        return $countMessages;
+    }
+
+
 }

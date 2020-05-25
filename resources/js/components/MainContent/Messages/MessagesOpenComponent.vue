@@ -7,9 +7,9 @@
                 </router-link>
             </div>
             <div class="email__actions">
-                <i class="material-icons">report</i>
+                <i @click="actions('spam')" class="material-icons">report</i>
                 <i @click="deleteMess" class="material-icons">delete</i>
-                <i class="material-icons">archive</i>
+                <i @click="storeDraft" class="material-icons">archive</i>
                 <router-link tag="i" :to="{name: 'newEmail', params: {replayMessage: message}}" class="material-icons">
                     call_missed_outgoing
                 </router-link>
@@ -19,7 +19,8 @@
             </div>
             <div class="email__search w100">
                 <div class="input-field">
-                    <input v-model="search" @keyup="mySearch(message.html , 'html')" id="last_name" type="text" class="validate">
+                    <input v-model="search" @keyup="mySearch(message.html , 'html')" id="last_name" type="text"
+                           class="validate">
                     <label for="last_name">Поиск</label>
                     <i class="material-icons">search</i>
                 </div>
@@ -88,6 +89,7 @@
         </div>
         <deleteModal @close="deleteModal = !deleteModal" :deleteModal="deleteModal" :message_id="message.message_id"
                      :uid="message.uid"></deleteModal>
+        <spamModal @close="spamModal = !spamModal" :msgOpen="true" :modal_spam="spamModal" :messages="[message]"></spamModal>
     </div>
 </template>
 
@@ -95,16 +97,18 @@
     import VuePureLightbox from 'vue-pure-lightbox'
     import deleteModal from '../../Modal/DeleteModalComponent'
     import searchMixin from '../../../Mixins/Search'
+    import spamModal from '../../../components/Modal/SpamModalComponent'
 
     export default {
         name: "MessagesOpenComponent",
-        components: {deleteModal, VuePureLightbox},
+        components: {deleteModal, VuePureLightbox ,spamModal},
         mixins: [searchMixin],
         data() {
             return {
                 uid: this.$route.params.uid,
                 deleteModal: false,
                 search: "",
+                spamModal: false
             }
         },
         computed: {
@@ -130,10 +134,23 @@
                 window.location = '/download?path=' + path.replace(/\\/g, "/") + '&name=' + name;
             },
             print() {
-                let  windowForPrint = window.open("","","width=1000px,height=1000px");
+                let windowForPrint = window.open("", "", "width=1000px,height=1000px");
                 let message = this.message.html;
                 windowForPrint.document.write(message);
                 windowForPrint.print();
+            },
+            storeDraft() {
+                axios.post('/api/storeDraftIncoming', this.message);
+                this.$store.dispatch('countMessages');
+                Vue.$toast.open({
+                    message: `Сохранил`,
+                    type: 'success',
+                    position: 'top',
+                    duration: 2000
+                });
+            },
+            actions() {
+                this.spamModal = true;
             }
         },
         filters: {

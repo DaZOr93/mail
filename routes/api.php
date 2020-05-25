@@ -34,6 +34,7 @@ Route::delete('/delete/attachments/sending/{path}', 'Api\AttachmentsController@d
 Route::get('/search/messages/{value}', 'Api\MessagesController@search');
 Route::get('/getSearch/messages/{value}', 'Api\MessagesController@getSearch');
 Route::post('/storeDraft', 'Api\MessagesController@storeDraft');
+Route::post('/storeDraftIncoming', 'Api\MessagesController@storeDraftIncoming');
 Route::post('/updateDraft', 'Api\MessagesController@updateDraft');
 Route::get('/store/messages', 'Api\StoreMessagesController');
 
@@ -47,6 +48,7 @@ Route::get('/user/settings/folder/{limit}', 'Api\FoldersController@getForSetting
 Route::post('/user/store', 'Api\FoldersController@store');
 Route::post('/user/update', 'Api\FoldersController@update');
 Route::post('/user/delete', 'Api\FoldersController@delete');
+Route::get('/user/folder/count', 'Api\FoldersController@count');
 
 Route::get('/sentMessage/{uid}', 'Api\MessagesController@show'); //??????????????нужно создать SentMessagesController@show ?????????????
 Route::get('/sentMessage/sending/{uid}', 'Api\MessagesController@sending'); //??????????????нужно создать SentMessagesController@show ?????????????

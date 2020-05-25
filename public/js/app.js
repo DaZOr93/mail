@@ -2953,6 +2953,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_pure_lightbox__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_pure_lightbox__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _Modal_DeleteModalComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../Modal/DeleteModalComponent */ "./resources/js/components/Modal/DeleteModalComponent.vue");
 /* harmony import */ var _Mixins_Search__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../Mixins/Search */ "./resources/js/Mixins/Search.js");
+/* harmony import */ var _components_Modal_SpamModalComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../components/Modal/SpamModalComponent */ "./resources/js/components/Modal/SpamModalComponent.vue");
 //
 //
 //
@@ -3046,6 +3047,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+
 
 
 
@@ -3053,14 +3057,16 @@ __webpack_require__.r(__webpack_exports__);
   name: "MessagesOpenComponent",
   components: {
     deleteModal: _Modal_DeleteModalComponent__WEBPACK_IMPORTED_MODULE_1__["default"],
-    VuePureLightbox: vue_pure_lightbox__WEBPACK_IMPORTED_MODULE_0___default.a
+    VuePureLightbox: vue_pure_lightbox__WEBPACK_IMPORTED_MODULE_0___default.a,
+    spamModal: _components_Modal_SpamModalComponent__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   mixins: [_Mixins_Search__WEBPACK_IMPORTED_MODULE_2__["default"]],
   data: function data() {
     return {
       uid: this.$route.params.uid,
       deleteModal: false,
-      search: ""
+      search: "",
+      spamModal: false
     };
   },
   computed: {
@@ -3088,6 +3094,19 @@ __webpack_require__.r(__webpack_exports__);
       var message = this.message.html;
       windowForPrint.document.write(message);
       windowForPrint.print();
+    },
+    storeDraft: function storeDraft() {
+      axios.post('/api/storeDraftIncoming', this.message);
+      this.$store.dispatch('countMessages');
+      Vue.$toast.open({
+        message: "\u0421\u043E\u0445\u0440\u0430\u043D\u0438\u043B",
+        type: 'success',
+        position: 'top',
+        duration: 2000
+      });
+    },
+    actions: function actions() {
+      this.spamModal = true;
     }
   },
   filters: {
@@ -3522,7 +3541,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "spamMessagesComponent",
-  mixins: [_Mixins_Messages__WEBPACK_IMPORTED_MODULE_0__["default"]]
+  mixins: [_Mixins_Messages__WEBPACK_IMPORTED_MODULE_0__["default"]],
+  created: function created() {
+    this.$store.dispatch('countMessages');
+  }
 });
 
 /***/ }),
@@ -3538,6 +3560,8 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../app */ "./resources/js/app.js");
 /* harmony import */ var _Modal_NewFolder_NewFolderComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../Modal/NewFolder/NewFolderComponent */ "./resources/js/components/Modal/NewFolder/NewFolderComponent.vue");
+//
+//
 //
 //
 //
@@ -3617,6 +3641,9 @@ __webpack_require__.r(__webpack_exports__);
     },
     countMessages: function countMessages() {
       return this.$store.getters.countMessages;
+    },
+    countFolderMessages: function countFolderMessages() {
+      return this.$store.getters.countFolderMessages;
     }
   },
   methods: {
@@ -3659,6 +3686,7 @@ __webpack_require__.r(__webpack_exports__);
   created: function created() {
     this.$store.dispatch("userFolders");
     this.$store.dispatch("countMessages");
+    this.$store.dispatch("countFolderMessages");
   }
 });
 
@@ -4269,7 +4297,6 @@ __webpack_require__.r(__webpack_exports__);
       });
 
       if (folder) {
-        console.log(this.messages);
         var folder_slug = folder.getAttribute('data-folder');
         this.$store.dispatch('update_messages', {
           slug: folder_slug,
@@ -4278,11 +4305,12 @@ __webpack_require__.r(__webpack_exports__);
         });
         this.$emit('close');
         Vue.$toast.open({
-          message: "\u0414\u043E\u0430\u0432\u0438\u043B",
+          message: "\u0414\u043E\u0431\u0430\u0432\u0438\u043B",
           type: 'success',
           position: 'top',
           duration: 2000
         });
+        this.$store.dispatch('countFolderMessages');
       } else {
         Vue.$toast.open({
           message: "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u043F\u0430\u043F\u043A\u0443",
@@ -4549,6 +4577,7 @@ __webpack_require__.r(__webpack_exports__);
           position: "top",
           duration: 2000
         });
+        this.$store.dispatch("userFolders");
         this.folder = {};
         this.$emit('close');
       }
@@ -5124,7 +5153,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "SpamModalComponent",
-  props: ['modal_spam', 'messages', 'msg'],
+  props: ['modal_spam', 'messages', 'msg', 'msgOpen'],
   methods: {
     close: function close() {
       this.$emit('close');
@@ -5141,6 +5170,11 @@ __webpack_require__.r(__webpack_exports__);
         position: 'top',
         duration: 2000
       });
+
+      if (this.msgOpen) {
+        return this.$router.go(-1);
+      }
+
       return window.location.reload();
     }
   }
@@ -10127,7 +10161,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n.nav-menu li {\n    position: relative;\n}\n.nav-menu span {\n    font-weight: 900;\n    font-size: 9px;\n    letter-spacing: 1.125px;\n    text-transform: uppercase;\n    color: #b3b3b3;\n    position: absolute;\n    margin-top: -10px;\n    top: 50%;\n    right: 10px;\n    width: 20px;\n    height: 20px;\n    display: flex;\n    background: #f7f7f7;\n    border-radius: 4px;\n    justify-content: center;\n    align-items: center;\n}\n.modal-overlay {\n    position: fixed;\n    z-index: 999;\n    top: -25%;\n    left: 0;\n    bottom: 0;\n    right: 0;\n    height: 125%;\n    width: 100%;\n    background: #000;\n    display: none;\n    will-change: opacity;\n}\n.modal {\n    display: none;\n    position: fixed;\n    left: 0;\n    right: 0;\n    background-color: transparent;\n    padding: 0;\n    height: 550px;\n    width: 350px;\n    margin: auto;\n    overflow-y: visible;\n    border-radius: 2px;\n    will-change: top, opacity;\n}\n.modal .modal-content {\n    padding: 0px;\n}\n.work-labels::-webkit-scrollbar {\n    width: 5px;\n}\n.work-labels::-webkit-scrollbar-track {\n    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);\n    border-radius: 10px;\n}\n.work-labels::-webkit-scrollbar-thumb {\n    border-radius: 10px;\n    -webkit-box-shadow: inset 0 0 5px rgba(137, 137, 137, 0.5);\n}\n.work-labels {\n    max-height: 120px;\n    overflow: auto;\n}\n", ""]);
+exports.push([module.i, "\n.nav-menu li {\n    position: relative;\n}\na.folder_active {\n    color: #000;\n    font-weight: 800;\n}\n.nav-menu span {\n    font-weight: 900;\n    font-size: 9px;\n    letter-spacing: 1.125px;\n    text-transform: uppercase;\n    color: #b3b3b3;\n    position: absolute;\n    margin-top: -10px;\n    top: 50%;\n    right: 10px;\n    width: 20px;\n    height: 20px;\n    display: flex;\n    background: #f7f7f7;\n    border-radius: 4px;\n    justify-content: center;\n    align-items: center;\n}\n.modal-overlay {\n    position: fixed;\n    z-index: 999;\n    top: -25%;\n    left: 0;\n    bottom: 0;\n    right: 0;\n    height: 125%;\n    width: 100%;\n    background: #000;\n    display: none;\n    will-change: opacity;\n}\n.modal {\n    display: none;\n    position: fixed;\n    left: 0;\n    right: 0;\n    background-color: transparent;\n    padding: 0;\n    height: 550px;\n    width: 350px;\n    margin: auto;\n    overflow-y: visible;\n    border-radius: 2px;\n    will-change: top, opacity;\n}\n.modal .modal-content {\n    padding: 0px;\n}\n.work-labels::-webkit-scrollbar {\n    width: 5px;\n}\n.work-labels::-webkit-scrollbar-track {\n    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);\n    border-radius: 10px;\n}\n.nav-wrap .work-labels li {\n    position: relative;\n}\n.nav-wrap .work-labels li span {\n    position: absolute;\n    top: 50%;\n    transform: translateY(-50%);\n    right: 20px;\n    background: #f7f7f7;\n    width: 20px;\n    height: 20px;\n    display: flex;\n    justify-content: center;\n    font-size: 9px;\n    align-items: center;\n    color: #b5b3b3;\n}\n.work-labels::-webkit-scrollbar-thumb {\n    border-radius: 10px;\n    -webkit-box-shadow: inset 0 0 5px rgba(137, 137, 137, 0.5);\n}\n.work-labels {\n    max-height: 120px;\n    overflow: auto;\n}\n", ""]);
 
 // exports
 
@@ -10241,7 +10275,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../../node_module
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* переопределение переменных Materialize */\n\n/* Text inputs */\ninput[data-v-5d3104ea]:not([type]),\ninput[type=\"text\"][data-v-5d3104ea]:not(.browser-default),\ntextarea.materialize-textarea[data-v-5d3104ea] {\n    border-bottom: none !important;\n}\ninput[data-v-5d3104ea]:not([type]):focus:not([readonly]),\ninput[type=\"text\"][data-v-5d3104ea]:not(.browser-default):focus:not([readonly]),\ntextarea.materialize-textarea[data-v-5d3104ea]:focus:not([readonly]) {\n    border-bottom: none;\n    box-shadow: none;\n}\ninput:not([type]):focus:not([readonly]) + label[data-v-5d3104ea],\ninput[type=\"text\"]:not(.browser-default):focus:not([readonly]) + label[data-v-5d3104ea],\ntextarea.materialize-textarea:focus:not([readonly]) + label[data-v-5d3104ea] {\n    color: #666666;\n    border-bottom: none;\n}\n.input-field > label:not(.label-icon).active[data-v-5d3104ea] {\n    transform: translate(-18px,-31px) scale(0.8);\n    transform-origin: 0 0;\n}\n\n/* Checkbox */\n[type=\"checkbox\"].filled-in + span[data-v-5d3104ea]:not(.lever):after {\n    border-radius: 4px;\n}\n[type=\"checkbox\"].filled-in:not(:checked) + span[data-v-5d3104ea]:not(.lever):after {\n    height: 20px;\n    width: 20px;\n    background-color: transparent;\n    border: 2px solid #e6e6e6;\n    top: 0px;\n    z-index: 0;\n}\n[type=\"checkbox\"].filled-in:checked + span[data-v-5d3104ea]:not(.lever):after {\n    top: 0;\n    width: 20px;\n    height: 20px;\n    border: 2px solid #1875f0;\n    background-color: #1875f0;\n    z-index: 0;\n}\n\n/* custom styles */\n.m_modal[data-v-5d3104ea] {\n    position: relative;\n    width: 350px;\n    background-color: #fff;\n    transition: transform .3s ease-out;\n    transform: translate(0, -50px);\n    margin: 100px auto auto;\n    padding: 30px 30px 25px 21px;\n    border-radius: 5px;\n}\n.row .col .wrapper[data-v-5d3104ea] {\n    font-family: Roboto;\n    width: 350px;\n    padding: 0rem;\n}\n.card[data-v-5d3104ea] {\n    box-sizing: border-box;\n    font-family: Roboto;\n    width: 350px;\n    width: 100%;\n    height: 550px;\n    border-radius: 6px;\n    background-color: #ffffff;\n    margin: 0rem;\n}\n.input.valid[type=text][data-v-5d3104ea]:not(.browser-default) {\n    border-bottom: none !important\n}\n.card .card-content[data-v-5d3104ea] {\n    padding-top: 30px;\n    padding-left: 30px;\n}\n.close_button[data-v-5d3104ea] {\n    width: 26px;\n    height: 26px;\n}\n.close_button i[data-v-5d3104ea] {\n    font-size: 26px;\n    color: #dfdfdf;\n}\n.close_button i[data-v-5d3104ea]:hover,\n.close_button i[data-v-5d3104ea]:focus {\n    font-size: 30px;\n    color: #b8b8b8;\n    transform: rotate(360deg);\n    transition: all 0.9s ease-in-out 0s;\n}\n.card-title[data-v-5d3104ea] {\n    color: #666666;\n    font-family: Roboto;\n    font-size: 18px;\n    font-weight: 500;\n    line-height: 40px;\n}\n.folder_name-block[data-v-5d3104ea] {\n    width: 282px;\n    margin-top: 38px;\n}\n.input-field[data-v-5d3104ea] {\n    width: 100%;\n    height: 50px;\n    border-radius: 4px;\n    border: 2px solid #f5f5f5;\n    background-color: #ffffff;\n}\n.folder_name-input[data-v-5d3104ea] {\n    margin-bottom: 55px;\n}\n.folder_name-block label[data-v-5d3104ea] {\n    margin-left: 20px;\n}\n.folder_name-block .validate[data-v-5d3104ea],\n.folder_name-block .materialize-textarea[data-v-5d3104ea] {\n    padding-left: 20px;\n}\n.colorpicker_header[data-v-5d3104ea] {\n    height: 110px;\n    width: 220px;\n    margin-bottom: 5px;\n    padding: 0;\n    margin-left: 5px;\n}\n.colorpicker_panel-item[data-v-5d3104ea] {\n    padding: 0;\n}\n.colorpicker_title[data-v-5d3104ea] {\n    width: 105px;\n    height: 30px;\n    margin-right: 100px;\n    padding: 0;\n    color: #666666;\n    font-family: Roboto;\n    font-size: 14px;\n    font-weight: 500;\n    line-height: 30px;\n}\n.colorpicker_button[data-v-5d3104ea] {\n    width: 26px;\n    height: 26px;\n    color: #b2b2b2;\n}\n.colorpicker_panel[data-v-5d3104ea] {\n    padding: 5px;\n    min-height: 80px;\n    background: transparent;\n    border: none;\n    box-shadow: none;\n}\n.colorpicker_panel a[data-v-5d3104ea] {\n    padding: 3px;\n    margin-top: 15px;\n    height: 21px;\n    width: 21px;\n    border-radius: 50%;\n    border: transparent;\n    display: flex;\n    justify-content: center;\n}\n.colorpicker_panel a[data-v-5d3104ea] {\n    pointer-events: none;\n}\n.colorpicker_panel-item[data-v-5d3104ea] {\n    outline: none;\n    cursor: pointer;\n}\n.colorpicker_panel-item a[data-v-5d3104ea] {\n    pointer-events: none;\n}\n.colorpicker_panel_item-check_mark[data-v-5d3104ea] {\n    font-size: 14px;\n    font-weight: 1000;\n    color: transparent;\n}\n.color_1 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_1 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_2 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_2 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_11 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_11 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover {\n    color: #666666;\n}\n.color_3 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_3 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_4 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_4 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_5 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_5 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_6 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_6 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_7 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_7 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_8 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_8 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_9 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_9 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_10 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_10 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_12 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_12 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover {\n    color: #ffffff;\n}\n.folder_password-block[data-v-5d3104ea] {\n    height: 45px;\n    color: #b2b2b2;\n    font-size: 12px;\n    font-weight: 500;\n    line-height: 50px;\n}\n.folder_password-block .password-checkbox[data-v-5d3104ea] {\n    width: 20px;\n    height: 20px;\n    border-radius: 4px;\n    border: 2px solid #e6e6e6;\n    background-color: #ffffff;\n}\n.row .card-action[data-v-5d3104ea] {\n    padding-top: 24px;\n    margin-left: 0rem;\n    margin-right: 0rem;\n}\n.action_button-continue[data-v-5d3104ea],\n.action_button-cancel[data-v-5d3104ea] {\n    font-size: 10px;\n    font-weight: 900;\n    line-height: 40px;\n    color: #b2b2b2;\n    text-transform: uppercase;\n    width: 130px;\n    height: 40px;\n    border-radius: 4px;\n    border: 2px solid #f5f5f5;\n    background-color: #ffffff;\n    box-shadow: none;\n}\n.action_button-continue[data-v-5d3104ea]:focus,\n.action_button-continue[data-v-5d3104ea]:hover,\n.action_button-cancel[data-v-5d3104ea]:focus,\n.action_button-cancel[data-v-5d3104ea]:hover {\n    color: #ffffff;\n    border: 2px solid #1875f0;\n    background-color: #1875f0;\n    box-shadow: none;\n}\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* переопределение переменных Materialize */\n\n/* Text inputs */\ninput[data-v-5d3104ea]:not([type]),\ninput[type=\"text\"][data-v-5d3104ea]:not(.browser-default),\ntextarea.materialize-textarea[data-v-5d3104ea] {\n    border-bottom: none !important;\n}\ninput[data-v-5d3104ea]:not([type]):focus:not([readonly]),\ninput[type=\"text\"][data-v-5d3104ea]:not(.browser-default):focus:not([readonly]),\ntextarea.materialize-textarea[data-v-5d3104ea]:focus:not([readonly]) {\n    border-bottom: none;\n    box-shadow: none;\n}\ninput:not([type]):focus:not([readonly]) + label[data-v-5d3104ea],\ninput[type=\"text\"]:not(.browser-default):focus:not([readonly]) + label[data-v-5d3104ea],\ntextarea.materialize-textarea:focus:not([readonly]) + label[data-v-5d3104ea] {\n    color: #666666;\n    border-bottom: none;\n}\n.input-field > label:not(.label-icon).active[data-v-5d3104ea] {\n    transform: translate(-18px,-31px) scale(0.8);\n    transform-origin: 0 0;\n}\n\n/* Checkbox */\n[type=\"checkbox\"].filled-in + span[data-v-5d3104ea]:not(.lever):after {\n    border-radius: 4px;\n}\n[type=\"checkbox\"].filled-in:not(:checked) + span[data-v-5d3104ea]:not(.lever):after {\n    height: 20px;\n    width: 20px;\n    background-color: transparent;\n    border: 2px solid #e6e6e6;\n    top: 0px;\n    z-index: 0;\n}\n[type=\"checkbox\"].filled-in:checked + span[data-v-5d3104ea]:not(.lever):after {\n    top: 0;\n    width: 20px;\n    height: 20px;\n    border: 2px solid #1875f0;\n    background-color: #1875f0;\n    z-index: 0;\n}\n\n/* custom styles */\n.m_modal[data-v-5d3104ea] {\n    position: relative;\n    width: 350px;\n    background-color: #fff;\n    transition: transform .3s ease-out;\n    transform: translate(0, -50px);\n    margin: 100px auto auto;\n    padding: 30px 30px 25px 21px;\n    border-radius: 5px;\n}\n.row .col .wrapper[data-v-5d3104ea] {\n    font-family: Roboto;\n    width: 350px;\n    padding: 0rem;\n}\n.card[data-v-5d3104ea] {\n    box-sizing: border-box;\n    font-family: Roboto;\n    width: 350px;\n    width: 100%;\n    height: 550px;\n    border-radius: 6px;\n    background-color: #ffffff;\n    margin: 0rem;\n}\n.input.valid[type=text][data-v-5d3104ea]:not(.browser-default) {\n    border-bottom: none !important\n}\n.card .card-content[data-v-5d3104ea] {\n    padding-top: 30px;\n    padding-left: 30px;\n}\n.close_button[data-v-5d3104ea] {\n    width: 26px;\n    height: 26px;\n}\n.close_button i[data-v-5d3104ea] {\n    font-size: 26px;\n    color: #dfdfdf;\n}\n.close_button i[data-v-5d3104ea]:hover,\n.close_button i[data-v-5d3104ea]:focus {\n    font-size: 30px;\n    color: #b8b8b8;\n    transform: rotate(360deg);\n    transition: all 0.9s ease-in-out 0s;\n}\n.card-title[data-v-5d3104ea] {\n    color: #666666;\n    font-family: Roboto;\n    font-size: 18px;\n    font-weight: 500;\n    line-height: 40px;\n}\n.folder_name-block[data-v-5d3104ea] {\n    width: 282px;\n    margin-top: 38px;\n}\n.input-field[data-v-5d3104ea] {\n    width: 100%;\n    height: 50px;\n    border-radius: 4px;\n    border: 2px solid #f5f5f5;\n    background-color: #ffffff;\n}\n.folder_name-input[data-v-5d3104ea] {\n    margin-bottom: 55px;\n}\n.folder_name-block label[data-v-5d3104ea] {\n    margin-left: 20px;\n}\n.folder_name-block .validate[data-v-5d3104ea],\n.folder_name-block .materialize-textarea[data-v-5d3104ea] {\n    padding-left: 20px;\n}\n.colorpicker_header[data-v-5d3104ea] {\n    height: 110px;\n    width: 220px;\n    margin-bottom: 5px;\n    padding: 0;\n    margin-left: 5px;\n}\n.colorpicker_panel-item[data-v-5d3104ea] {\n    padding: 0;\n}\n.colorpicker_title[data-v-5d3104ea] {\n    width: 105px;\n    height: 30px;\n    margin-right: 100px;\n    padding: 0;\n    color: #666666;\n    font-family: Roboto;\n    font-size: 14px;\n    font-weight: 500;\n    line-height: 30px;\n}\n.colorpicker_button[data-v-5d3104ea] {\n    width: 26px;\n    height: 26px;\n    color: #b2b2b2;\n}\n.colorpicker_panel[data-v-5d3104ea] {\n    padding: 5px;\n    min-height: 80px;\n    background: transparent;\n    border: none;\n    box-shadow: none;\n}\n.colorpicker_panel a[data-v-5d3104ea] {\n    padding: 3px;\n    margin-top: 15px;\n    height: 21px;\n    width: 21px;\n    border-radius: 50%;\n    border: transparent;\n    display: flex;\n    justify-content: center;\n}\n.colorpicker_panel a[data-v-5d3104ea] {\n    pointer-events: none;\n}\n.colorpicker_panel-item[data-v-5d3104ea] {\n    outline: none;\n    cursor: pointer;\n}\n.colorpicker_panel-item a[data-v-5d3104ea] {\n    pointer-events: none;\n}\n.colorpicker_panel_item-check_mark[data-v-5d3104ea] {\n    font-size: 14px;\n    font-weight: 1000;\n    color: transparent;\n}\n.color_1 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_1 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_2 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_2 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_11 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_11 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover {\n    color: #666666;\n}\n.color_3 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_3 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_4 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_4 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_5 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_5 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_6 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_6 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_7 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_7 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_8 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_8 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_9 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_9 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_10 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_10 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover,\n.color_12 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:focus,\n.color_12 .colorpicker_panel_item-check_mark[data-v-5d3104ea]:hover {\n    color: #ffffff;\n}\n.folder_password-block[data-v-5d3104ea] {\n    height: 45px;\n    color: #b2b2b2;\n    font-size: 12px;\n    font-weight: 500;\n    line-height: 50px;\n}\n.folder_password-block .password-checkbox[data-v-5d3104ea] {\n    width: 20px;\n    height: 20px;\n    border-radius: 4px;\n    border: 2px solid #e6e6e6;\n    background-color: #ffffff;\n}\n.row .card-action[data-v-5d3104ea] {\n    padding-top: 24px;\n    margin-left: 0rem;\n    margin-right: 0rem;\n}\n.action_button-continue[data-v-5d3104ea],\n.action_button-cancel[data-v-5d3104ea] {\n    font-size: 10px;\n    font-weight: 900;\n    line-height: 40px;\n    color: #b2b2b2;\n    text-transform: uppercase;\n    width: 130px;\n    height: 40px;\n    border-radius: 4px;\n    border: 2px solid #f5f5f5;\n    background-color: #ffffff;\n    box-shadow: none;\n}\n.action_button-continue[data-v-5d3104ea]:focus,\n.action_button-continue[data-v-5d3104ea]:hover,\n.action_button-cancel[data-v-5d3104ea]:focus,\n.action_button-cancel[data-v-5d3104ea]:hover {\n    color: #ffffff;\n    border: 2px solid #1875f0;\n    background-color: #1875f0;\n    box-shadow: none;\n}\n", ""]);
 
 // exports
 
@@ -57702,7 +57736,7 @@ var render = function() {
                 "i",
                 {
                   staticClass: "reloadMess material-icons ",
-                  attrs: { title: "обновить" },
+                  attrs: { title: "Обновить" },
                   on: { click: _vm.reloadMess }
                 },
                 [_vm._v("refresh")]
@@ -58233,7 +58267,18 @@ var render = function() {
           "div",
           { staticClass: "email__actions" },
           [
-            _c("i", { staticClass: "material-icons" }, [_vm._v("report")]),
+            _c(
+              "i",
+              {
+                staticClass: "material-icons",
+                on: {
+                  click: function($event) {
+                    return _vm.actions("spam")
+                  }
+                }
+              },
+              [_vm._v("report")]
+            ),
             _vm._v(" "),
             _c(
               "i",
@@ -58241,7 +58286,11 @@ var render = function() {
               [_vm._v("delete")]
             ),
             _vm._v(" "),
-            _c("i", { staticClass: "material-icons" }, [_vm._v("archive")]),
+            _c(
+              "i",
+              { staticClass: "material-icons", on: { click: _vm.storeDraft } },
+              [_vm._v("archive")]
+            ),
             _vm._v(" "),
             _c(
               "router-link",
@@ -58428,6 +58477,19 @@ var render = function() {
         on: {
           close: function($event) {
             _vm.deleteModal = !_vm.deleteModal
+          }
+        }
+      }),
+      _vm._v(" "),
+      _c("spamModal", {
+        attrs: {
+          msgOpen: true,
+          modal_spam: _vm.spamModal,
+          messages: [_vm.message]
+        },
+        on: {
+          close: function($event) {
+            _vm.spamModal = !_vm.spamModal
           }
         }
       })
@@ -59724,21 +59786,26 @@ var render = function() {
       _c("div", { staticClass: "work-labels" }, [
         _c(
           "ul",
-          _vm._l(_vm.getFolders, function(folder) {
+          _vm._l(_vm.getFolders, function(folder, index) {
             return _c(
               "li",
-              { style: { color: folder.color } },
+              { key: index, style: { color: folder.color } },
               [
                 _c(
                   "router-link",
                   {
                     attrs: {
+                      "active-class": "folder_active",
                       to: { name: "folder", params: { slug: folder.slug } },
                       tag: "a"
                     }
                   },
                   [_vm._v(_vm._s(folder.name) + "\n                ")]
-                )
+                ),
+                _vm._v(" "),
+                _vm.countFolderMessages[index] !== 0
+                  ? _c("span", [_vm._v(_vm._s(_vm.countFolderMessages[index]))])
+                  : _vm._e()
               ],
               1
             )
@@ -82215,7 +82282,8 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
     message: {},
     getFolders: [],
     selectAll: false,
-    preloader: false
+    preloader: false,
+    countFolderMessages: []
   },
   actions: {
     getUser: function getUser(cnt) {
@@ -82395,9 +82463,17 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
       axios.get('/api/count/messages').then(function (r) {
         return cnt.commit('countMessages', r.data);
       });
+    },
+    countFolderMessages: function countFolderMessages(cnt) {
+      axios.get('/api/user/folder/count').then(function (r) {
+        return cnt.commit('countFolderMessages', r.data);
+      });
     }
   },
   mutations: {
+    countFolderMessages: function countFolderMessages(state, payload) {
+      state.countFolderMessages = payload;
+    },
     getFolderMessagesReset: function getFolderMessagesReset(state) {
       state.getFolderMessages = [];
     },
@@ -82488,6 +82564,9 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
     },
     countMessages: function countMessages(state) {
       return state.countMessages;
+    },
+    countFolderMessages: function countFolderMessages(state) {
+      return state.countFolderMessages;
     }
   },
   modules: {

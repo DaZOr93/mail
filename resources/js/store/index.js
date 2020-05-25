@@ -30,7 +30,8 @@ export default new Vuex.Store({
         message: {},
         getFolders: [],
         selectAll: false,
-        preloader: false
+        preloader: false,
+        countFolderMessages: [],
     },
 
     actions: {
@@ -120,11 +121,18 @@ export default new Vuex.Store({
         countMessages(cnt){
             axios.get('/api/count/messages')
                 .then( r => cnt.commit('countMessages' , r.data))
+        },
+        countFolderMessages(cnt) {
+            axios.get('/api/user/folder/count')
+                .then( r => cnt.commit('countFolderMessages' , r.data))
         }
 
     },
 
     mutations: {
+        countFolderMessages(state , payload){
+            state.countFolderMessages = payload;
+        },
         getFolderMessagesReset(state) {
             state.getFolderMessages = []
         },
@@ -215,6 +223,9 @@ export default new Vuex.Store({
         },
         countMessages(state) {
             return state.countMessages
+        },
+        countFolderMessages(state){
+            return state.countFolderMessages
         }
     },
     modules: {

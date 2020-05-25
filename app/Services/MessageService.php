@@ -7,6 +7,7 @@ use App\Models\Attachments;
 use App\Models\Folders;
 use App\Models\Letter;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class MessageService extends ConnectServices
 {
@@ -120,6 +121,17 @@ class MessageService extends ConnectServices
         $letter->save();
 
         return $letter->id;
+    }
+
+    public function storeDraftIncoming($request)
+    {
+        $letter = Letter::find($request->id);
+        $draftLetter = $letter->replicate();
+        $draftLetter->inbox = 0;
+        $draftLetter->draft = 1;
+        $draftLetter->push();
+
+        return;
     }
 
     public function updateDraft($request)

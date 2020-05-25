@@ -74,4 +74,13 @@ class FoldersController extends Controller
     {
         return response()->json($this->folderServices->store($request), 200);
     }
+
+    /**
+     * Посчитаь кол-во писем в папках
+     * @return JsonResponse
+     */
+    public function count()
+    {
+        return response()->json($this->folderServices->count(), 200);
+    }
 }

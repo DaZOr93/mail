@@ -22,7 +22,7 @@
 <script>
     export default {
         name: "SpamModalComponent",
-        props: ['modal_spam', 'messages' , 'msg'],
+        props: ['modal_spam', 'messages' , 'msg' , 'msgOpen'],
         methods: {
             close() {
                 this.$emit('close');
@@ -37,7 +37,12 @@
                     duration: 2000
                 });
 
+                if(this.msgOpen) {
+                   return this.$router.go(-1);
+                }
+
                 return window.location.reload()
+
             }
         },
     }

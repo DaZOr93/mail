@@ -20,8 +20,8 @@ class CreateFoldersTable extends Migration
             $table->string('slug');
             $table->text('description')->nullable();
             $table->string('password')->nullable();
-            $table->string('color')->default('#0E2AE3');
-            $table->string('color_name')->default('Синий');
+            $table->string('color')->nullable()->default('#0E2AE3');
+            $table->string('color_name')->nullable()->default('Синий');
             $table->timestamps();
         });
     }

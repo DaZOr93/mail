@@ -38,9 +38,11 @@
         </div>
         <div class="work-labels">
             <ul>
-                <li v-for="folder in getFolders" :style="{'color':folder.color}">
-                    <router-link :to="{name: 'folder', params: {slug: folder.slug}}" tag="a">{{folder.name }}
+                <li v-for="(folder, index) in getFolders" :key="index" :style="{'color':folder.color}">
+                    <router-link active-class="folder_active" :to="{name: 'folder', params: {slug: folder.slug}}"
+                                 tag="a">{{folder.name }}
                     </router-link>
+                    <span v-if="countFolderMessages[index] !== 0">{{ countFolderMessages[index]}}</span>
                 </li>
             </ul>
         </div>
@@ -77,6 +79,9 @@
             },
             countMessages() {
                 return this.$store.getters.countMessages;
+            },
+            countFolderMessages() {
+                return this.$store.getters.countFolderMessages
             }
         },
         methods: {
@@ -116,6 +121,7 @@
         created() {
             this.$store.dispatch("userFolders");
             this.$store.dispatch("countMessages");
+            this.$store.dispatch("countFolderMessages");
         }
     };
 </script>
@@ -123,6 +129,11 @@
 <style>
     .nav-menu li {
         position: relative;
+    }
+
+    a.folder_active {
+        color: #000;
+        font-weight: 800;
     }
 
     .nav-menu span {
@@ -180,14 +191,37 @@
     .work-labels::-webkit-scrollbar {
         width: 5px;
     }
+
     .work-labels::-webkit-scrollbar-track {
-        -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+        -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
         border-radius: 10px;
     }
+
+    .nav-wrap .work-labels li {
+        position: relative;
+    }
+
+    .nav-wrap .work-labels li span {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 20px;
+        background: #f7f7f7;
+        width: 20px;
+        height: 20px;
+        display: flex;
+        justify-content: center;
+        font-size: 9px;
+        align-items: center;
+        color: #b5b3b3;
+    }
+
+
     .work-labels::-webkit-scrollbar-thumb {
         border-radius: 10px;
         -webkit-box-shadow: inset 0 0 5px rgba(137, 137, 137, 0.5);
     }
+
     .work-labels {
         max-height: 120px;
         overflow: auto;

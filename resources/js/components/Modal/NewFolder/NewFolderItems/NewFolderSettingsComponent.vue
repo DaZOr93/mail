@@ -144,6 +144,7 @@
                         position: "top",
                         duration: 2000
                     });
+                    this.$store.dispatch("userFolders");
                     this.folder = {};
                     this.$emit('close')
                 }

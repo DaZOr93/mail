@@ -69,6 +69,15 @@ class MessagesController extends Controller
     {
         return response()->json($this->messageService->storeDraft($request), 200);
     }
+    /**
+     * Сохронить черновик из входящего пиьсма
+     * @param Request $request
+     * @return JsonResponseAlias
+     */
+    public function storeDraftIncoming(Request $request)
+    {
+        return response()->json($this->messageService->storeDraftIncoming($request), 200);
+    }
 
     /**
      * Обновить черновик

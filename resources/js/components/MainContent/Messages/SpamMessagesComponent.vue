@@ -197,7 +197,10 @@
 
     export default {
         name: "spamMessagesComponent",
-        mixins: [MessagesMixin]
+        mixins: [MessagesMixin],
+        created() {
+            this.$store.dispatch('countMessages');
+        }
     }
 </script>
 

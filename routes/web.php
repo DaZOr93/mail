@@ -22,6 +22,7 @@ Route::get('/{any}', 'Api\HomeController@index')
 Route::get('/auth/redirect' , 'Auth\LoginController@redirect')->name('auth');
 Route::get('/auth/callback' , 'Auth\LoginController@callback');
 Route::get('/auth/logout' , 'Auth\LoginController@logout');
+Route::get('/auth/authByToken' , 'Auth\LoginController@authByToken');
 
 Route::get('/download' , 'Api\MessagesController@download');
 

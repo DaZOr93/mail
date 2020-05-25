@@ -9,7 +9,7 @@
                     </label>
                 </div>
                 <div class="action__group">
-                    <i @click="reloadMess" title="обновить" class="reloadMess material-icons ">refresh</i>
+                    <i @click="reloadMess" title="Обновить" class="reloadMess material-icons ">refresh</i>
                 </div>
                 <div class="action__group">
                     <i @click="actions('spam')" title="В спам!" class="material-icons">report</i>

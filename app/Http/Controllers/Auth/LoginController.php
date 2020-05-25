@@ -118,6 +118,48 @@ class LoginController extends Controller
         return response()->json('ok', 200);
     }
 
+    public function authByToken(Request $request)
+    {
+        $access_token = $request->access_token;
+
+        if(empty($access_token)){
+            return response()->redirectTo('/');
+        }
+
+        // use above token to make further api calls in this session or until the access token expires
+        $ch = curl_init();
+        $url = 'http://team1-group-project.azurewebsites.net/api/user';
+        $header = array(
+            'Authorization: Bearer '. $access_token
+        );
+
+
+        curl_setopt($ch,CURLOPT_URL, $url );
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, $header);
+        $result = curl_exec($ch);
+        curl_close($ch);
+
+        $response = json_decode($result, true);//данные о user
+        $dbuser = User::query()->where('email', $response['email'])->first();
+
+        if (!$dbuser) {
+            $user = User::firstOrCreate([
+                'email' => $response['email'],
+                'name' => $response['name'],
+                'surname' => $response['surname'],
+                'avatar_url' => $response['avatar_url'],
+                'password' => Hash::make('gfhjkm'),
+                'token' => $access->access_token
+            ]);
+            $Rres = Auth::login($user);
+
+            return response()->redirectTo('/');
+        }
+        $Rres = Auth::login($dbuser);
+
+        return response()->redirectTo('/');
+    }
     /**
      * Create a new controller instance.
      *

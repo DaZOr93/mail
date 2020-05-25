@@ -38,16 +38,16 @@
             store() {
                 let folder = this.$refs.folders.find(folder => folder.checked === true);
                 if (folder) {
-                    console.log(this.messages)
                     let folder_slug = folder.getAttribute('data-folder');
                     this.$store.dispatch('update_messages', {slug: folder_slug, action: 'folder' ,  messages: this.messages});
                     this.$emit('close');
                     Vue.$toast.open({
-                        message: `Доавил`,
+                        message: `Добавил`,
                         type: 'success',
                         position: 'top',
                         duration: 2000
                     });
+                    this.$store.dispatch('countFolderMessages');
                 } else {
                     Vue.$toast.open({
                         message: `Выберите папку`,
