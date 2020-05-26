@@ -30,7 +30,7 @@ class SentEmail extends Mailable
      */
     public function build()
     {
-        $email = $this->view('email')->subject($this->email->subjcet)->from($this->email->to);
+        $email = $this->view('email')->subject($this->email->subjcet)->from('it3Team@gmail.com');
 
         foreach ($this->email->attach as $attach) {
             $email->attach('storage/app/' . $attach['path'] , [

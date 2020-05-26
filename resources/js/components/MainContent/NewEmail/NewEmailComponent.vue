@@ -45,8 +45,20 @@
                     <div class="email__to">
                         <span>Кому</span>
                         <div class="input-field">
+                            <div class="email_to_list" v-if="message.emails.length > 0">
+                                <b v-for="(email, index) in message.emails" :key="index">
+                                    <
+                                    <i
+                                        @keydown.enter.prevent
+                                        @keydown.space.prevent
+                                        contenteditable @input="update(index, $event)">{{ email }}
+                                    </i>
+                                    >
+                                </b>
+                            </div>
                             <input
                                 id="to"
+                                @keydown.space="getEmails"
                                 v-model="message.to"
                                 type="text"
                                 class="validate"
@@ -54,13 +66,6 @@
                             >
                         </div>
                     </div>
-                    <!--                    <div class="switch new__email-switch">-->
-                    <!--                        <label>-->
-                    <!--                            <input type="checkbox">-->
-                    <!--                            <span class="lever"></span>-->
-                    <!--                            Запрос ответа-->
-                    <!--                        </label>-->
-                    <!--                    </div>-->
                 </div>
             </div>
             <div class="new__email-body">
@@ -77,13 +82,6 @@
                             >
                         </div>
                     </div>
-                    <!--                    <div class="switch new__email-switch">-->
-                    <!--                        <label>-->
-                    <!--                            <input type="checkbox" v-model="message.deliveryRequest">-->
-                    <!--                            <span class="lever"></span>-->
-                    <!--                            Уведомить о доставке-->
-                    <!--                        </label>-->
-                    <!--                    </div>-->
                 </div>
             </div>
             <div id="editor">
@@ -120,6 +118,7 @@
     import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
     import VuePureLightbox from 'vue-pure-lightbox'
     import {eventBus} from "../../../app"
+
     export default {
         name: 'app',
         components: {VuePureLightbox},
@@ -130,7 +129,8 @@
                     'editorData': 'Введите сообщение',
                     'attach': [],
                     'attachBol': 0,
-                    'subject': ""
+                    'subject': "",
+                    'emails': []
                 },
                 editorConfig: {
                     toolbar: [
@@ -142,6 +142,7 @@
                         'Blockquote',
                     ]
                 },
+                emails: [],
                 filesFinish: [],
                 fileProgress: 0,
                 filesFinishData: [],
@@ -194,17 +195,26 @@
                     })
             },
             print() {
-                let  windowForPrint = window.open("","","width=1000px,height=1000px");
+                let windowForPrint = window.open("", "", "width=1000px,height=1000px");
                 let message = this.message.editorData;
                 windowForPrint.document.write(message);
                 windowForPrint.print();
             },
-            saveMessage(){
-                if ( this.draftId < 1) {
+            saveMessage() {
+                if (this.draftId < 1) {
                     return this.toast('Нечего сохронять', 'warning')
                 }
-                axios.post('/api/updateDraft' , { message: this.message , id: this.draftId});
+                axios.post('/api/updateDraft', {message: this.message, id: this.draftId});
                 return this.toast('Cохранил', 'success')
+            },
+            getEmails() {
+                let reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+                if (reg.test(this.message.to) === false) return;
+                if (this.message.to.length > 1) this.message.emails.push(this.message.to);
+                this.message.to = ""
+            },
+            update: function (index, event) {
+                this.message.emails[index] = event.target.innerText.trim();
             },
             toast(msg, type) {
                 Vue.$toast.open({
@@ -227,7 +237,7 @@
                 this.draft = true;
                 this.$store.state.newMessage = this.message
             },
-            'message.to'(){
+            'message.to'() {
                 this.draft = true;
                 this.$store.state.newMessage = this.message
             },
@@ -247,10 +257,10 @@
                 return value.slice(0, 4) + '...' + mime_type;
             },
         },
-        beforeRouteLeave(to, from, next){
-            if(this.filesFinishData.length > 0) this.message.attachBol = 1;
-            if(this.draft) {
-                axios.post('/api/updateDraft' , { message: this.message , id: this.draftId});
+        beforeRouteLeave(to, from, next) {
+            if (this.filesFinishData.length > 0) this.message.attachBol = 1;
+            if (this.draft) {
+                axios.post('/api/updateDraft', {message: this.message, id: this.draftId});
             }
             next();
         },
@@ -259,7 +269,8 @@
                 this.message = {
                     'editorData': 'Введите сообщение',
                     'attach': [],
-                    'attachBol': 0
+                    'attachBol': 0,
+                    'emails': []
                 };
                 this.filesFinish = [];
                 this.filesFinishData = [];
@@ -269,40 +280,69 @@
             if (this.$route.params.replayMessage) {
                 this.message = {
                     'editorData': '<blockquote>' + this.$route.params.replayMessage.html + '/<blockquote>',
-                    'to': this.$route.params.replayMessage.to,
+                    'to': (!this.$route.params.replayMessage.to.split(' ')) ? this.$route.params.replayMessage.to : '',
                     'subject': 'Re:' + ' ' + this.$route.params.replayMessage.subject,
                     'deliveryRequest': true,
                     'attach': [],
+                    'emails': (this.$route.params.replayMessage.to.split(' ')) ? this.$route.params.replayMessage.to.split(' ') : [],
                     'attachBol': this.$route.params.replayMessage.attach
                 };
                 this.draft = true;
             }
-            if (this.$route.params.draftMessage){
+            if (this.$route.params.draftMessage) {
                 this.message = {
                     'editorData': this.$route.params.draftMessage.html,
                     'to': this.$route.params.draftMessage.to,
                     'subject': this.$route.params.draftMessage.subject,
                     'deliveryRequest': true,
                     'attach': [],
+                    'emails': this.$route.params.draftMessage.to.split(' '),
                     'attachBol': this.$route.params.draftMessage.attach
                 };
                 this.message.attach = this.$route.params.draftMessage.attachments;
                 this.draft = true;
                 this.draftId = this.$route.params.draftMessage.id
-                axios.get('/api/index/attachments/' +  this.$route.params.draftMessage.id)
-                    .then( r => this.filesFinishData = r.data)
+                axios.get('/api/index/attachments/' + this.$route.params.draftMessage.id)
+                    .then(r => this.filesFinishData = r.data)
             }
         }
     }
 </script>
 
 <style scoped>
+    .email_to_list {
+        display: flex;
+        align-items: center;
+        border-top: 2px solid #F5F5F5;
+        border-bottom: 2px solid #F5F5F5;
+        font-style: normal;
+        font-size: 11px;
+        color: #999999;
+        padding-left: 35px;
+    }
+
+    .email_to_list b {
+        display: flex;
+        font-weight: 500;
+        margin-right: 5px;
+    }
+
+    .email_to_list i {
+        font-style: normal;
+    }
+
+    .email__to .input-field {
+        display: flex;
+    }
+
     .new__email-wrap .messages__attachments li {
         position: relative;
     }
+
     .new__email-inner {
         position: relative;
     }
+
     .new__email-wrap .messages__attachments li:hover::after,
     .new__email-wrap .messages__attachments li:hover::before {
         content: '';
@@ -316,53 +356,66 @@
         margin-left: -27px;
         cursor: pointer;
     }
+
     .new__email-wrap .messages__attachments li:hover::before {
         transform: rotate(-45deg);
     }
+
     .new__email-wrap .messages__attachments li:hover::after {
         transform: rotate(45deg);
     }
+
     #fileUpload {
         display: none;
     }
+
     #fileUpload + label {
         display: block;
     }
+
     .progress {
         top: -12px;
         left: 3px;
         position: absolute;
     }
+
     .messages__attachments {
         top: 35%;
         width: 100%;
     }
+
     .new__email-body {
         margin-bottom: 10px;
     }
+
     .new__email-wrap {
         background: #fff;
         padding-top: 10px;
         height: 609px;
         position: relative
     }
+
     .input-field {
         margin: 0;
     }
+
     .email__header-box .input-field {
         max-width: 585px;
         width: 100%;
     }
+
     .email__header-box {
         display: flex;
         padding-right: 17px;
         padding-left: 31px;
     }
+
     .email__to, .email__subject {
         display: flex;
         max-width: 690px;
         width: 100%;
     }
+
     .email__to input, .email__subject input {
         margin: 0 !important;
         border: 2px solid #F5F5F5 !important;
@@ -375,37 +428,46 @@
         padding-left: 35px !important;
         max-width: 690px;
     }
+
     .new__email-switch {
         display: flex;
         align-items: center;
     }
+
     .switch label .lever {
         width: 40px;
         height: 25px;
         border: 2px solid #F0F0F0;
         background-color: transparent;
     }
+
     .switch label .lever:before, .switch label .lever:after {
         width: 15px;
         height: 15px;
         left: 5px;
         top: 2px;
     }
+
     .switch label input[type=checkbox]:checked + .lever {
         background-color: #1875F0;
     }
+
     .switch label input[type=checkbox]:checked + .lever:after {
         background-color: #FFFFFF
     }
+
     .switch label .lever:after {
         background-color: #E6E6E6;
     }
+
     .email__to input:focus, .email__subject input:focus {
         box-shadow: none !important;
     }
+
     .validate, .valid {
         box-shadow: none !important;
     }
+
     .email__to span, .email__subject span {
         font-style: normal;
         font-weight: 900;
@@ -417,6 +479,7 @@
         border-radius: 4px 0px 0px 4px;
         color: #B3B3B3;
     }
+
     .new__email-bar {
         display: flex;
         align-items: center;
@@ -427,58 +490,73 @@
         font-weight: 500;
         font-size: 12px;
     }
+
     .new__email-bar i {
         width: 26px;
         height: 26px;
     }
+
     .email__actions {
         display: flex;
         border-right: 2px solid #F5F5F5;
     }
+
     .email__actions .action_group {
         padding: 20px 22px;
         text-align: center;
     }
+
     .email__search-wrap {
         padding: 21px 25px 21px 30px;
         border-right: 2px solid #F5F5F5;
     }
+
     .email__search div {
         display: flex;
         align-items: center;
     }
+
     .email__search i {
         position: relative;
         z-index: 222;
         cursor: pointer;
     }
+
     .email__arrows {
         padding: 32px 30px 30px 32px;
         display: flex;
         border-right: 2px solid #F5F5F5;
     }
+
     .email__actions .action_text {
         color: #CCCCCC;
     }
+
     .new__email-bar input {
         border-bottom: none !important;
         margin-bottom: 0 !important;
     }
+
     .new__email-bar label.active {
         color: #D8D8D8 !important;
     }
+
     .new__email-bar input:focus {
         box-shadow: none !important
     }
+
     .email-dop {
         display: flex
     }
+
     .email-dop div {
         padding: 29px 15px;
     }
+
     .email__arrows, .action_group, .email-dop div {
         cursor: pointer;
     }
+
     .email__arrows:hover, .action_group:hover, .email-dop div:hover {
         background: rgba(24, 117, 240, 0.16);
     }

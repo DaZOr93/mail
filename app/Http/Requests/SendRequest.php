@@ -25,21 +25,11 @@ class SendRequest extends FormRequest
     {
         return [
             'subject' => 'string|nullable',
-            'to' => 'required|email:rfc',
             'editorData' => 'string|nullable',
             'attach' => 'array',
             'letterId' => 'integer',
-        ];
-    }
-
-    /**
-     * @return array
-     */
-    public function messages()
-    {
-        return [
-            'to.email' => 'Не верный формат email',
-            'to.required' => 'Введите получателя'
+            'emails' => 'array',
+            'to' => 'nullable',
         ];
     }
 

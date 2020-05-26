@@ -3830,8 +3830,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
 
 
 
@@ -3847,11 +3845,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         'editorData': 'Введите сообщение',
         'attach': [],
         'attachBol': 0,
-        'subject': ""
+        'subject': "",
+        'emails': []
       },
       editorConfig: {
         toolbar: ['bold', 'italic', 'link', 'BulletedList', 'NumberedList', 'Blockquote']
       },
+      emails: [],
       filesFinish: [],
       fileProgress: 0,
       filesFinishData: [],
@@ -3975,6 +3975,15 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       });
       return this.toast('Cохранил', 'success');
     },
+    getEmails: function getEmails() {
+      var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+      if (reg.test(this.message.to) === false) return;
+      if (this.message.to.length > 1) this.message.emails.push(this.message.to);
+      this.message.to = "";
+    },
+    update: function update(index, event) {
+      this.message.emails[index] = event.target.innerText.trim();
+    },
     toast: function toast(msg, type) {
       Vue.$toast.open({
         message: msg,
@@ -4038,7 +4047,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       _this4.message = {
         'editorData': 'Введите сообщение',
         'attach': [],
-        'attachBol': 0
+        'attachBol': 0,
+        'emails': []
       };
       _this4.filesFinish = [];
       _this4.filesFinishData = [];
@@ -4049,10 +4059,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     if (this.$route.params.replayMessage) {
       this.message = {
         'editorData': '<blockquote>' + this.$route.params.replayMessage.html + '/<blockquote>',
-        'to': this.$route.params.replayMessage.to,
+        'to': !this.$route.params.replayMessage.to.split(' ') ? this.$route.params.replayMessage.to : '',
         'subject': 'Re:' + ' ' + this.$route.params.replayMessage.subject,
         'deliveryRequest': true,
         'attach': [],
+        'emails': this.$route.params.replayMessage.to.split(' ') ? this.$route.params.replayMessage.to.split(' ') : [],
         'attachBol': this.$route.params.replayMessage.attach
       };
       this.draft = true;
@@ -4065,6 +4076,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         'subject': this.$route.params.draftMessage.subject,
         'deliveryRequest': true,
         'attach': [],
+        'emails': this.$route.params.draftMessage.to.split(' '),
         'attachBol': this.$route.params.draftMessage.attach
       };
       this.message.attach = this.$route.params.draftMessage.attachments;
@@ -10180,7 +10192,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n.new__email-wrap .messages__attachments li[data-v-4e583fa8] {\n    position: relative;\n}\n.new__email-inner[data-v-4e583fa8] {\n    position: relative;\n}\n.new__email-wrap .messages__attachments li[data-v-4e583fa8]:hover::after,\n.new__email-wrap .messages__attachments li[data-v-4e583fa8]:hover::before {\n    content: '';\n    position: absolute;\n    width: 44px;\n    height: 4px;\n    background: #ff5d5d;\n    left: 50%;\n    top: 50%;\n    margin-top: 12px;\n    margin-left: -27px;\n    cursor: pointer;\n}\n.new__email-wrap .messages__attachments li[data-v-4e583fa8]:hover::before {\n    transform: rotate(-45deg);\n}\n.new__email-wrap .messages__attachments li[data-v-4e583fa8]:hover::after {\n    transform: rotate(45deg);\n}\n#fileUpload[data-v-4e583fa8] {\n    display: none;\n}\n#fileUpload + label[data-v-4e583fa8] {\n    display: block;\n}\n.progress[data-v-4e583fa8] {\n    top: -12px;\n    left: 3px;\n    position: absolute;\n}\n.messages__attachments[data-v-4e583fa8] {\n    top: 35%;\n    width: 100%;\n}\n.new__email-body[data-v-4e583fa8] {\n    margin-bottom: 10px;\n}\n.new__email-wrap[data-v-4e583fa8] {\n    background: #fff;\n    padding-top: 10px;\n    height: 609px;\n    position: relative\n}\n.input-field[data-v-4e583fa8] {\n    margin: 0;\n}\n.email__header-box .input-field[data-v-4e583fa8] {\n    max-width: 585px;\n    width: 100%;\n}\n.email__header-box[data-v-4e583fa8] {\n    display: flex;\n    padding-right: 17px;\n    padding-left: 31px;\n}\n.email__to[data-v-4e583fa8], .email__subject[data-v-4e583fa8] {\n    display: flex;\n    max-width: 690px;\n    width: 100%;\n}\n.email__to input[data-v-4e583fa8], .email__subject input[data-v-4e583fa8] {\n    margin: 0 !important;\n    border: 2px solid #F5F5F5 !important;\n    border-radius: 0px 4px 4px 0px !important;\n    border-left: none !important;\n    font-weight: bold;\n    font-size: 12px !important;\n    line-height: 40px;\n    color: #999999;\n    padding-left: 35px !important;\n    max-width: 690px;\n}\n.new__email-switch[data-v-4e583fa8] {\n    display: flex;\n    align-items: center;\n}\n.switch label .lever[data-v-4e583fa8] {\n    width: 40px;\n    height: 25px;\n    border: 2px solid #F0F0F0;\n    background-color: transparent;\n}\n.switch label .lever[data-v-4e583fa8]:before, .switch label .lever[data-v-4e583fa8]:after {\n    width: 15px;\n    height: 15px;\n    left: 5px;\n    top: 2px;\n}\n.switch label input[type=checkbox]:checked + .lever[data-v-4e583fa8] {\n    background-color: #1875F0;\n}\n.switch label input[type=checkbox]:checked + .lever[data-v-4e583fa8]:after {\n    background-color: #FFFFFF\n}\n.switch label .lever[data-v-4e583fa8]:after {\n    background-color: #E6E6E6;\n}\n.email__to input[data-v-4e583fa8]:focus, .email__subject input[data-v-4e583fa8]:focus {\n    box-shadow: none !important;\n}\n.validate[data-v-4e583fa8], .valid[data-v-4e583fa8] {\n    box-shadow: none !important;\n}\n.email__to span[data-v-4e583fa8], .email__subject span[data-v-4e583fa8] {\n    font-style: normal;\n    font-weight: 900;\n    font-size: 10px;\n    line-height: 45px;\n    letter-spacing: 1.25px;\n    padding: 0 17px;\n    border: 2px solid #F5F5F5;\n    border-radius: 4px 0px 0px 4px;\n    color: #B3B3B3;\n}\n.new__email-bar[data-v-4e583fa8] {\n    display: flex;\n    align-items: center;\n    background: #fff;\n    border-bottom: 2px solid #F5F5F5;\n    color: #D8D8D8;\n    font-style: normal;\n    font-weight: 500;\n    font-size: 12px;\n}\n.new__email-bar i[data-v-4e583fa8] {\n    width: 26px;\n    height: 26px;\n}\n.email__actions[data-v-4e583fa8] {\n    display: flex;\n    border-right: 2px solid #F5F5F5;\n}\n.email__actions .action_group[data-v-4e583fa8] {\n    padding: 20px 22px;\n    text-align: center;\n}\n.email__search-wrap[data-v-4e583fa8] {\n    padding: 21px 25px 21px 30px;\n    border-right: 2px solid #F5F5F5;\n}\n.email__search div[data-v-4e583fa8] {\n    display: flex;\n    align-items: center;\n}\n.email__search i[data-v-4e583fa8] {\n    position: relative;\n    z-index: 222;\n    cursor: pointer;\n}\n.email__arrows[data-v-4e583fa8] {\n    padding: 32px 30px 30px 32px;\n    display: flex;\n    border-right: 2px solid #F5F5F5;\n}\n.email__actions .action_text[data-v-4e583fa8] {\n    color: #CCCCCC;\n}\n.new__email-bar input[data-v-4e583fa8] {\n    border-bottom: none !important;\n    margin-bottom: 0 !important;\n}\n.new__email-bar label.active[data-v-4e583fa8] {\n    color: #D8D8D8 !important;\n}\n.new__email-bar input[data-v-4e583fa8]:focus {\n    box-shadow: none !important\n}\n.email-dop[data-v-4e583fa8] {\n    display: flex\n}\n.email-dop div[data-v-4e583fa8] {\n    padding: 29px 15px;\n}\n.email__arrows[data-v-4e583fa8], .action_group[data-v-4e583fa8], .email-dop div[data-v-4e583fa8] {\n    cursor: pointer;\n}\n.email__arrows[data-v-4e583fa8]:hover, .action_group[data-v-4e583fa8]:hover, .email-dop div[data-v-4e583fa8]:hover {\n    background: rgba(24, 117, 240, 0.16);\n}\n", ""]);
+exports.push([module.i, "\n.email_to_list[data-v-4e583fa8] {\n    display: flex;\n    align-items: center;\n    border-top: 2px solid #F5F5F5;\n    border-bottom: 2px solid #F5F5F5;\n    font-style: normal;\n    font-size: 11px;\n    color: #999999;\n    padding-left: 35px;\n}\n.email_to_list b[data-v-4e583fa8] {\n    display: flex;\n    font-weight: 500;\n    margin-right: 5px;\n}\n.email_to_list i[data-v-4e583fa8] {\n    font-style: normal;\n}\n.email__to .input-field[data-v-4e583fa8] {\n    display: flex;\n}\n.new__email-wrap .messages__attachments li[data-v-4e583fa8] {\n    position: relative;\n}\n.new__email-inner[data-v-4e583fa8] {\n    position: relative;\n}\n.new__email-wrap .messages__attachments li[data-v-4e583fa8]:hover::after,\n.new__email-wrap .messages__attachments li[data-v-4e583fa8]:hover::before {\n    content: '';\n    position: absolute;\n    width: 44px;\n    height: 4px;\n    background: #ff5d5d;\n    left: 50%;\n    top: 50%;\n    margin-top: 12px;\n    margin-left: -27px;\n    cursor: pointer;\n}\n.new__email-wrap .messages__attachments li[data-v-4e583fa8]:hover::before {\n    transform: rotate(-45deg);\n}\n.new__email-wrap .messages__attachments li[data-v-4e583fa8]:hover::after {\n    transform: rotate(45deg);\n}\n#fileUpload[data-v-4e583fa8] {\n    display: none;\n}\n#fileUpload + label[data-v-4e583fa8] {\n    display: block;\n}\n.progress[data-v-4e583fa8] {\n    top: -12px;\n    left: 3px;\n    position: absolute;\n}\n.messages__attachments[data-v-4e583fa8] {\n    top: 35%;\n    width: 100%;\n}\n.new__email-body[data-v-4e583fa8] {\n    margin-bottom: 10px;\n}\n.new__email-wrap[data-v-4e583fa8] {\n    background: #fff;\n    padding-top: 10px;\n    height: 609px;\n    position: relative\n}\n.input-field[data-v-4e583fa8] {\n    margin: 0;\n}\n.email__header-box .input-field[data-v-4e583fa8] {\n    max-width: 585px;\n    width: 100%;\n}\n.email__header-box[data-v-4e583fa8] {\n    display: flex;\n    padding-right: 17px;\n    padding-left: 31px;\n}\n.email__to[data-v-4e583fa8], .email__subject[data-v-4e583fa8] {\n    display: flex;\n    max-width: 690px;\n    width: 100%;\n}\n.email__to input[data-v-4e583fa8], .email__subject input[data-v-4e583fa8] {\n    margin: 0 !important;\n    border: 2px solid #F5F5F5 !important;\n    border-radius: 0px 4px 4px 0px !important;\n    border-left: none !important;\n    font-weight: bold;\n    font-size: 12px !important;\n    line-height: 40px;\n    color: #999999;\n    padding-left: 35px !important;\n    max-width: 690px;\n}\n.new__email-switch[data-v-4e583fa8] {\n    display: flex;\n    align-items: center;\n}\n.switch label .lever[data-v-4e583fa8] {\n    width: 40px;\n    height: 25px;\n    border: 2px solid #F0F0F0;\n    background-color: transparent;\n}\n.switch label .lever[data-v-4e583fa8]:before, .switch label .lever[data-v-4e583fa8]:after {\n    width: 15px;\n    height: 15px;\n    left: 5px;\n    top: 2px;\n}\n.switch label input[type=checkbox]:checked + .lever[data-v-4e583fa8] {\n    background-color: #1875F0;\n}\n.switch label input[type=checkbox]:checked + .lever[data-v-4e583fa8]:after {\n    background-color: #FFFFFF\n}\n.switch label .lever[data-v-4e583fa8]:after {\n    background-color: #E6E6E6;\n}\n.email__to input[data-v-4e583fa8]:focus, .email__subject input[data-v-4e583fa8]:focus {\n    box-shadow: none !important;\n}\n.validate[data-v-4e583fa8], .valid[data-v-4e583fa8] {\n    box-shadow: none !important;\n}\n.email__to span[data-v-4e583fa8], .email__subject span[data-v-4e583fa8] {\n    font-style: normal;\n    font-weight: 900;\n    font-size: 10px;\n    line-height: 45px;\n    letter-spacing: 1.25px;\n    padding: 0 17px;\n    border: 2px solid #F5F5F5;\n    border-radius: 4px 0px 0px 4px;\n    color: #B3B3B3;\n}\n.new__email-bar[data-v-4e583fa8] {\n    display: flex;\n    align-items: center;\n    background: #fff;\n    border-bottom: 2px solid #F5F5F5;\n    color: #D8D8D8;\n    font-style: normal;\n    font-weight: 500;\n    font-size: 12px;\n}\n.new__email-bar i[data-v-4e583fa8] {\n    width: 26px;\n    height: 26px;\n}\n.email__actions[data-v-4e583fa8] {\n    display: flex;\n    border-right: 2px solid #F5F5F5;\n}\n.email__actions .action_group[data-v-4e583fa8] {\n    padding: 20px 22px;\n    text-align: center;\n}\n.email__search-wrap[data-v-4e583fa8] {\n    padding: 21px 25px 21px 30px;\n    border-right: 2px solid #F5F5F5;\n}\n.email__search div[data-v-4e583fa8] {\n    display: flex;\n    align-items: center;\n}\n.email__search i[data-v-4e583fa8] {\n    position: relative;\n    z-index: 222;\n    cursor: pointer;\n}\n.email__arrows[data-v-4e583fa8] {\n    padding: 32px 30px 30px 32px;\n    display: flex;\n    border-right: 2px solid #F5F5F5;\n}\n.email__actions .action_text[data-v-4e583fa8] {\n    color: #CCCCCC;\n}\n.new__email-bar input[data-v-4e583fa8] {\n    border-bottom: none !important;\n    margin-bottom: 0 !important;\n}\n.new__email-bar label.active[data-v-4e583fa8] {\n    color: #D8D8D8 !important;\n}\n.new__email-bar input[data-v-4e583fa8]:focus {\n    box-shadow: none !important\n}\n.email-dop[data-v-4e583fa8] {\n    display: flex\n}\n.email-dop div[data-v-4e583fa8] {\n    padding: 29px 15px;\n}\n.email__arrows[data-v-4e583fa8], .action_group[data-v-4e583fa8], .email-dop div[data-v-4e583fa8] {\n    cursor: pointer;\n}\n.email__arrows[data-v-4e583fa8]:hover, .action_group[data-v-4e583fa8]:hover, .email-dop div[data-v-4e583fa8]:hover {\n    background: rgba(24, 117, 240, 0.16);\n}\n", ""]);
 
 // exports
 
@@ -59944,6 +59956,73 @@ var render = function() {
             _c("span", [_vm._v("Кому")]),
             _vm._v(" "),
             _c("div", { staticClass: "input-field" }, [
+              _vm.message.emails.length > 0
+                ? _c(
+                    "div",
+                    { staticClass: "email_to_list" },
+                    _vm._l(_vm.message.emails, function(email, index) {
+                      return _c("b", { key: index }, [
+                        _vm._v(
+                          "\n                                <\n                                "
+                        ),
+                        _c(
+                          "i",
+                          {
+                            attrs: { contenteditable: "" },
+                            on: {
+                              keydown: [
+                                function($event) {
+                                  if (
+                                    !$event.type.indexOf("key") &&
+                                    _vm._k(
+                                      $event.keyCode,
+                                      "enter",
+                                      13,
+                                      $event.key,
+                                      "Enter"
+                                    )
+                                  ) {
+                                    return null
+                                  }
+                                  $event.preventDefault()
+                                },
+                                function($event) {
+                                  if (
+                                    !$event.type.indexOf("key") &&
+                                    _vm._k(
+                                      $event.keyCode,
+                                      "space",
+                                      32,
+                                      $event.key,
+                                      [" ", "Spacebar"]
+                                    )
+                                  ) {
+                                    return null
+                                  }
+                                  $event.preventDefault()
+                                }
+                              ],
+                              input: function($event) {
+                                return _vm.update(index, $event)
+                              }
+                            }
+                          },
+                          [
+                            _vm._v(
+                              _vm._s(email) +
+                                "\n                                "
+                            )
+                          ]
+                        ),
+                        _vm._v(
+                          "\n                                >\n                            "
+                        )
+                      ])
+                    }),
+                    0
+                  )
+                : _vm._e(),
+              _vm._v(" "),
               _c("input", {
                 directives: [
                   {
@@ -59957,6 +60036,18 @@ var render = function() {
                 attrs: { id: "to", type: "text", placeholder: "Введите email" },
                 domProps: { value: _vm.message.to },
                 on: {
+                  keydown: function($event) {
+                    if (
+                      !$event.type.indexOf("key") &&
+                      _vm._k($event.keyCode, "space", 32, $event.key, [
+                        " ",
+                        "Spacebar"
+                      ])
+                    ) {
+                      return null
+                    }
+                    return _vm.getEmails($event)
+                  },
                   input: function($event) {
                     if ($event.target.composing) {
                       return
