@@ -18,6 +18,8 @@ export default new Vuex.Store({
             subject: '',
             to: '',
             editorData: '',
+            emails: [],
+            attach: [],
             deliveryRequest: false,
         },
         countMessages: {},

@@ -140,7 +140,7 @@ class MessageService extends ConnectServices
         $letter->html = $request->message['editorData'] ?? '';
         $letter->attach = $request->message['attachBol'];
         $letter->subject = $request->message['subject'] ?? '';
-        $letter->to = $request->message['to'] ?? '';
+        $letter->to = $request->message['to'] ?? implode(' ' , $request->message['emails']) ?? '';
 
         return $letter->save();
     }

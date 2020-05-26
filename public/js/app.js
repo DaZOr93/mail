@@ -3654,6 +3654,24 @@ __webpack_require__.r(__webpack_exports__);
     send: function send() {
       var _this = this;
 
+      var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+
+      if (this.newMessage.emails.length < 1 && this.newMessage.to.length < 1) {
+        return Vue.$toast.open({
+          message: "\u0412\u0432\u0435\u0434\u0438\u0442\u0435 \u043F\u043E\u043B\u0443\u0447\u0430\u0442\u0435\u043B\u044F",
+          type: "error",
+          position: "top",
+          duration: 2000
+        });
+      } else if (this.newMessage.emails.length < 1 && reg.test(this.newMessage.to) === false) {
+        return Vue.$toast.open({
+          message: "\u041D\u0435 \u043A\u043E\u0440\u0435\u043A\u0442\u043D\u044B\u0439 Email",
+          type: "error",
+          position: "top",
+          duration: 2000
+        });
+      }
+
       this.$store.dispatch("sendEmail", this.newMessage);
       setTimeout(function () {
         if (Object.keys(_this.getErrors).length > 0) {
@@ -4076,7 +4094,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         'subject': this.$route.params.draftMessage.subject,
         'deliveryRequest': true,
         'attach': [],
-        'emails': this.$route.params.draftMessage.to.split(' '),
+        'emails': [],
         'attachBol': this.$route.params.draftMessage.attach
       };
       this.message.attach = this.$route.params.draftMessage.attachments;
@@ -60046,6 +60064,7 @@ var render = function() {
                     ) {
                       return null
                     }
+                    $event.preventDefault()
                     return _vm.getEmails($event)
                   },
                   input: function($event) {
@@ -82361,6 +82380,8 @@ vue__WEBPACK_IMPORTED_MODULE_1___default.a.use(vuex__WEBPACK_IMPORTED_MODULE_2__
       subject: '',
       to: '',
       editorData: '',
+      emails: [],
+      attach: [],
       deliveryRequest: false
     },
     countMessages: {},

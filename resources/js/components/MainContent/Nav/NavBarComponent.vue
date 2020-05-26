@@ -90,6 +90,22 @@
                 nav.classList.toggle("nav-wrap__open");
             },
             send() {
+                let reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+                if(this.newMessage.emails.length < 1 && this.newMessage.to.length < 1) {
+                    return  Vue.$toast.open({
+                        message: `Введите получателя`,
+                        type: "error",
+                        position: "top",
+                        duration: 2000
+                    });
+                }else if(this.newMessage.emails.length < 1 && reg.test(this.newMessage.to) === false) {
+                    return  Vue.$toast.open({
+                        message: `Не коректный Email`,
+                        type: "error",
+                        position: "top",
+                        duration: 2000
+                    });
+                }
                 this.$store.dispatch("sendEmail", this.newMessage);
                 setTimeout(() => {
                     if (Object.keys(this.getErrors).length > 0) {
