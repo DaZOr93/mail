@@ -18,7 +18,7 @@ class SignaturesService
     {
         $user_id = 1;
 
-        return Signature::where('user_id', $user_id)->get();
+        return Signature::where('user_id', $user_id)->orderBy('id', 'desc')->get();
 
     }
 
@@ -28,12 +28,15 @@ class SignaturesService
 
 
         foreach ($signatures->all() as $signature) {
-            if($signature['id']){
+            if($signature['id'] =='default'){
+                $signature['id'];
+                $idDefault =  $signature['idDefault'];
+            }
+            if(($signature['id']) && ($signature['id'] !='default')){
                 $oldSignature = Signature::find($signature['id']);
-                if(($oldSignature->name != $signature['name']) || ($oldSignature->text != $signature['text']) || ($oldSignature->default != $signature['default']) ){
+                if(($oldSignature->name != $signature['name']) || ($oldSignature->text != $signature['text']) ){
                     $oldSignature->name = $signature['name'];
                     $oldSignature->text = $signature['text'];
-                    $oldSignature->default = $signature['default'];
                     $oldSignature->update();
 
 
@@ -46,13 +49,24 @@ class SignaturesService
                 $sign->name = $signature['name'];
                 $sign->text = $signature['text'];
                 $sign->user_id = $user_id;
-                $sign->save();
+                if($idDefault == $signature['name'].$signature['text'] ){
+                    $sign->save();
+                    $idDefault= $sign->id;
+                }
+                else{
+                    $sign->save();
+                }
+
                 $id[ ]= $sign->id;
             }
-
         }
 
-        $signq = Signature::whereNotIn('id', $id)->Where('user_id',$user_id)->delete();
+        Signature::whereNotIn('id', $id)->Where('user_id',$user_id)->delete();
+        Signature::Where('id', $idDefault)->update(['default' => 1]);
+        Signature::where('id', '!=', $idDefault)->Where('user_id',$user_id)->update(['default' => 0]);
+
+
+
 
 
     }

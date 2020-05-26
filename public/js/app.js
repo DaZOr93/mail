@@ -4540,13 +4540,80 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['modal'],
   name: "SignatureComponent",
   data: function data() {
     return {
-      signatures: []
+      signatures: [],
+      pageNumber: 0,
+      sizeList: 3,
+      signaturesLength: ''
     };
+  },
+  computed: {
+    pageFrom: function pageFrom() {
+      return this.sizeList * this.pageNumber + 1;
+    },
+    pageTo: function pageTo() {
+      if (this.pageCount - 1 !== this.PageNumber) {
+        return this.sizeList * this.pageNumber + this.sizeList;
+      } else {
+        this.signatures.length;
+      }
+    },
+    pageCount: function pageCount() {
+      var l = this.signatures.length,
+          s = this.sizeList;
+      return Math.ceil(l / s);
+    },
+    paginatedData: function paginatedData() {
+      var start = this.pageNumber * this.sizeList,
+          end = start + this.sizeList;
+      return this.signatures.slice(start, end);
+    }
   },
   created: function created() {
     var _this = this;
@@ -4556,6 +4623,21 @@ __webpack_require__.r(__webpack_exports__);
     });
   },
   methods: {
+    upSizeList: function upSizeList() {
+      if (this.signatures.length > this.sizeList) {
+        this.sizeList++;
+      }
+    },
+    nextPage: function nextPage() {
+      if (this.pageNumber !== this.pageCount - 1) {
+        this.pageNumber++;
+      }
+    },
+    prevPage: function prevPage() {
+      if (this.pageNumber !== 0) {
+        this.pageNumber--;
+      }
+    },
     close: function close() {
       this.$emit('close');
     },
@@ -4568,10 +4650,47 @@ __webpack_require__.r(__webpack_exports__);
         text: '',
         id: ''
       });
+      this.pageNumber = 0;
     },
     save: function save() {
-      axios.post('/api/signature/save', this.signatures);
-      this.$emit('close');
+      var signature = this.$refs.signatures.find(function (signature) {
+        return signature.checked === true;
+      });
+
+      if (signature) {
+        var signature_slug = signature.getAttribute('data-signature');
+
+        if (signature_slug) {
+          this.signatures.unshift({
+            id: 'default',
+            idDefault: signature_slug
+          });
+        } else {
+          var signature__object = signature.parentNode.parentNode.parentNode;
+          var name_signature = signature__object.querySelector("input[name=name]").value;
+          var text_signature = signature__object.querySelector("input[name=text]").value;
+          this.signatures.unshift({
+            id: 'default',
+            idDefault: name_signature.trim() + text_signature.trim()
+          });
+        }
+
+        axios.post('/api/signature/save', this.signatures);
+        this.$emit('close');
+        Vue.$toast.open({
+          message: "\u041D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0438 \u0441\u043E\u0445\u0440\u0430\u043D\u0435\u043D\u044B",
+          type: 'success',
+          position: 'top',
+          duration: 2000
+        });
+      } else {
+        Vue.$toast.open({
+          message: "\u0412\u044B\u0431\u0435\u0440\u0438\u0442\u0435 \u043F\u043E\u0434\u043F\u0438\u0441\u044C \u043F\u043E \u0443\u043C\u043E\u043B\u0447\u0430\u043D\u0438\u044E",
+          type: 'error',
+          position: 'top',
+          duration: 1000
+        });
+      }
     }
   }
 });
@@ -59550,7 +59669,7 @@ var render = function() {
               [
                 _c("div", { staticClass: "sup-title" }, [_vm._v("Подпись")]),
                 _vm._v(" "),
-                _vm._l(_vm.signatures, function(signature, index) {
+                _vm._l(_vm.paginatedData, function(signature, index) {
                   return _c("div", { staticClass: "row signature" }, [
                     _c("div", { staticClass: "col s5 name__signature" }, [
                       _c("label", [_vm._v("Наименование подписи")]),
@@ -59565,7 +59684,7 @@ var render = function() {
                           }
                         ],
                         staticClass: "browser-default",
-                        attrs: { type: "text" },
+                        attrs: { name: "name", type: "text" },
                         domProps: { value: signature.name },
                         on: {
                           input: function($event) {
@@ -59591,7 +59710,7 @@ var render = function() {
                           }
                         ],
                         staticClass: "browser-default",
-                        attrs: { type: "text" },
+                        attrs: { name: "text", type: "text" },
                         domProps: { value: signature.text },
                         on: {
                           input: function($event) {
@@ -59615,7 +59734,14 @@ var render = function() {
                               expression: "signature.default"
                             }
                           ],
-                          attrs: { value: "1", name: "default", type: "radio" },
+                          ref: "signatures",
+                          refInFor: true,
+                          attrs: {
+                            "data-signature": signature.id,
+                            value: "1",
+                            name: "default",
+                            type: "radio"
+                          },
                           domProps: { checked: _vm._q(signature.default, "1") },
                           on: {
                             change: function($event) {
@@ -59623,9 +59749,8 @@ var render = function() {
                             }
                           }
                         }),
-                        _vm._v(
-                          "\n                                    Подпись по умолчанию\n                                "
-                        )
+                        _vm._v(" "),
+                        _c("span", [_vm._v("Подпись по умолчанию")])
                       ])
                     ]),
                     _vm._v(" "),
@@ -59655,16 +59780,85 @@ var render = function() {
               2
             ),
             _vm._v(" "),
-            _c("div", { staticClass: "nav__buttons" }, [
+            _c("div", { staticClass: "row nav__buttons" }, [
               _c(
                 "button",
                 {
-                  staticClass: "btn_modal",
+                  staticClass: " col s5 btn_modal",
                   attrs: { type: "button" },
                   on: { click: _vm.add }
                 },
                 [_vm._v("НОВАЯ ПОДПИСЬ")]
-              )
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "col sing_paginate" }, [
+                _c("div", { staticClass: "paginate-numbers" }, [
+                  _c("div", [
+                    _c("div", { staticClass: "col" }, [
+                      _vm._v(
+                        "\n                                Строк: " +
+                          _vm._s(_vm.sizeList) +
+                          "\n                                "
+                      ),
+                      _c(
+                        "i",
+                        {
+                          staticClass: "material-icons",
+                          attrs: { title: "Добавить строку" },
+                          on: { click: _vm.upSizeList }
+                        },
+                        [
+                          _vm._v(
+                            "\n                                expand_less\n                            "
+                          )
+                        ]
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col" }, [
+                    _vm._v(
+                      "\n                            " +
+                        _vm._s(_vm.pageFrom) +
+                        "\n                            -\n                            " +
+                        _vm._s(_vm.pageTo) +
+                        "\n                            of\n                            " +
+                        _vm._s(_vm.signatures.length) +
+                        "\n                            "
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "paginate-arrows" }, [
+                  _c(
+                    "i",
+                    {
+                      staticClass: "material-icons",
+                      attrs: { title: "Назад" },
+                      on: { click: _vm.prevPage }
+                    },
+                    [
+                      _vm._v(
+                        "\n                                arrow_back\n                            "
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "i",
+                    {
+                      staticClass: "material-icons",
+                      attrs: { title: "Вперед" },
+                      on: { click: _vm.nextPage }
+                    },
+                    [
+                      _vm._v(
+                        "\n                                arrow_forward\n                            "
+                      )
+                    ]
+                  )
+                ])
+              ])
             ]),
             _vm._v(" "),
             _c("div", { staticClass: "col signature__line" }),
@@ -59678,8 +59872,7 @@ var render = function() {
                   on: { click: _vm.save }
                 },
                 [_vm._v("Ok")]
-              ),
-              _vm._v("\n" + _vm._s(_vm.signatures) + "\n                    ")
+              )
             ])
           ])
         ])
