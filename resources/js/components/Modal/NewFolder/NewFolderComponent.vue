@@ -35,10 +35,9 @@ export default {
 
   },
   methods: {
-      close(){
-          this.$emit('close')
-      }
-
+    close(){
+      this.$emit('close') 
+    }
   }
 };
 </script>
@@ -55,14 +54,4 @@ export default {
     padding: 30px 30px 25px 21px;
     border-radius: 5px;
 }
-/* .m_modal .password_button {
-    width: 200px;
-    height: 50px;
-    color: #ffffff;
-    font-family: Roboto;
-    font-size: 12px;
-    font-weight: 900;
-    line-height: 50px;
-    text-transform: uppercase;
-} */
 </style>

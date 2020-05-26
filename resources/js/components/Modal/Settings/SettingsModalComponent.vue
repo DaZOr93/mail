@@ -50,7 +50,7 @@ export default {
   background-color: #fff;
   transition: transform 0.3s ease-out;
   transform: translate(0, -50px);
-  margin: 100px auto auto;
+  margin: 60px auto auto;
   padding: 30px 30px 25px 21px;
   border-radius: 5px;
 }

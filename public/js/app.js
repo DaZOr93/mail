@@ -4931,13 +4931,151 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "MailFetch",
   data: function data() {
-    return {};
+    return {
+      chekbtnColor: [{
+        name: "default",
+        colorName: 'Синий',
+        hex: '#1875f0'
+      }, {
+        name: "failed",
+        colorName: 'Красный',
+        hex: '#f93f3f'
+      }, {
+        name: "success",
+        colorName: 'Зеленый',
+        hex: '#34cb49'
+      }],
+      email: "",
+      //...................времянка
+      password: "",
+      //...................времянка
+      protocol: "",
+      //..............времянка
+      port: "",
+      //...............времянка
+      mailboxes: [],
+      deleteModal: false,
+      mailboxesItem: [],
+      deleteStatus: false,
+      pickerOpen: false,
+      deleteItems: [],
+      errors: [],
+      modal: false,
+      perItem: 3
+    };
   },
-  mounted: function mounted() {},
-  methods: {}
+  created: function created() {},
+  mounted: function mounted() {
+    this.getMailboxes();
+  },
+  methods: {
+    paginate: function paginate(_paginate) {
+      var _this = this;
+
+      if (_paginate) {
+        axios.get(_paginate).then(function (r) {
+          return _this.mailboxes = r.data;
+        });
+      }
+    },
+    chek: function chek() {},
+    save: function save() {},
+    close: function close() {
+      var _this2 = this;
+
+      axios.get("/api/user/settings/mailbox/" + this.perItem + "?page=" + 1).then(function (r) {
+        _this2.mailboxes = r.data;
+      });
+      this.deleteStatus = false;
+      this.deleteItems = {};
+      this.$emit("close");
+    },
+    getMailboxes: function getMailboxes() {
+      var _this3 = this;
+
+      var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+      axios.get("/api/user/settings/mailbox/" + this.perItem + "?page=" + page).then(function (r) {
+        _this3.mailboxes = r.data;
+      });
+    }
+  },
+  watch: {
+    deleteItems: function deleteItems() {
+      if (this.deleteItems.length < 1) this.deleteStatus = false;
+    },
+    perItem: function perItem() {
+      var _this4 = this;
+
+      axios.get("/api/user/settings/mailbox/" + this.perItem + "?page=" + 1).then(function (r) {
+        _this4.mailboxes = r.data;
+      });
+    }
+  }
 });
 
 /***/ }),
@@ -9886,7 +10024,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../../node_module
 
 
 // module
-exports.push([module.i, ".header[data-v-caae200a] {\n  width: 100%;\n  height: 68px;\n  margin-bottom: 48px;\n  color: #999999;\n  font-size: 18px;\n  font-weight: 700;\n  line-height: 90px;\n  border-bottom: 3px solid #f5f5f5;\n}\n.header-text[data-v-caae200a] {\n  margin: 0 auto;\n}", ""]);
+exports.push([module.i, "@charset \"UTF-8\";\n.row[data-v-caae200a] {\n  margin-bottom: 0px;\n}\n.card-wrapper[data-v-caae200a] {\n  max-width: 500px;\n  margin-left: 9px;\n  border-radius: 6px;\n  background-color: #ffffff;\n}\n.underline[data-v-caae200a] {\n  width: 350px;\n  margin-bottom: 10px;\n  border-bottom: 2px solid #f5f5f5;\n}\n.header[data-v-caae200a] {\n  height: 40px;\n  margin-bottom: 11px;\n}\n.card-title[data-v-caae200a] {\n  color: #666666;\n  font-family: Roboto;\n  font-size: 18px;\n  font-weight: 500;\n  line-height: 40px;\n}\n.email_input-groupe[data-v-caae200a],\n.protocol_input-groupe[data-v-caae200a] {\n  margin-right: 10px;\n}\n.input-field[data-v-caae200a] {\n  width: 100%;\n  height: 50px;\n  margin-top: 0rem;\n  margin-bottom: 6px;\n  border-radius: 4px;\n  border: 2px solid #f5f5f5;\n  background-color: #ffffff;\n}\n.email_input-groupe input[data-v-caae200a]::-webkit-input-placeholder, .password_input-groupe input[data-v-caae200a]::-webkit-input-placeholder, .port_input-groupe input[data-v-caae200a]::-webkit-input-placeholder {\n  color: #808080;\n  font-family: Roboto;\n  font-size: 10px;\n  font-weight: 700;\n  line-height: 40px;\n}\n.email_input-groupe input[data-v-caae200a]::-moz-placeholder, .password_input-groupe input[data-v-caae200a]::-moz-placeholder, .port_input-groupe input[data-v-caae200a]::-moz-placeholder {\n  color: #808080;\n  font-family: Roboto;\n  font-size: 10px;\n  font-weight: 700;\n  line-height: 40px;\n}\n.email_input-groupe input[data-v-caae200a]:-ms-input-placeholder, .password_input-groupe input[data-v-caae200a]:-ms-input-placeholder, .port_input-groupe input[data-v-caae200a]:-ms-input-placeholder {\n  color: #808080;\n  font-family: Roboto;\n  font-size: 10px;\n  font-weight: 700;\n  line-height: 40px;\n}\n.email_input-groupe input[data-v-caae200a]::-ms-input-placeholder, .password_input-groupe input[data-v-caae200a]::-ms-input-placeholder, .port_input-groupe input[data-v-caae200a]::-ms-input-placeholder {\n  color: #808080;\n  font-family: Roboto;\n  font-size: 10px;\n  font-weight: 700;\n  line-height: 40px;\n}\n.email_input-groupe input[data-v-caae200a]::placeholder,\n.password_input-groupe input[data-v-caae200a]::placeholder,\n.port_input-groupe input[data-v-caae200a]::placeholder {\n  color: #808080;\n  font-family: Roboto;\n  font-size: 10px;\n  font-weight: 700;\n  line-height: 40px;\n}\nselect[data-v-caae200a] {\n  display: inline-block;\n  border: none;\n  padding: 0;\n  width: 30px;\n  -webkit-appearance: none;\n     -moz-appearance: none;\n          appearance: none;\n  height: 15px;\n  position: relative;\n  background: none;\n  z-index: 22;\n  cursor: pointer;\n}\nselect[data-v-caae200a]:focus {\n  outline: none;\n}\nselect.browser-default[data-v-caae200a] {\n  display: block;\n  background-color: rgba(255, 255, 255, 0.9);\n  width: 100%;\n  padding: 0px;\n  border: none;\n  height: 46px;\n  color: #808080;\n  font-family: Roboto;\n  font-size: 10px;\n  font-weight: 700;\n  line-height: 40px;\n}\nselect.browser-default[data-v-caae200a]:focus {\n  display: block;\n  background-color: rgba(255, 255, 255, 0.9);\n  width: 100%;\n  padding: 0px;\n  border: none;\n  height: 46px;\n  outline: none;\n}\n.btn_chek[data-v-caae200a] {\n  width: 70px;\n  height: 30px;\n  padding: 0px;\n  margin-top: -4px;\n  background-color: #1875f0;\n  border: 2px solid #f5f5f5;\n  border-radius: 4px;\n  color: #ffffff;\n  font-family: Roboto;\n  font-size: 9px;\n  font-weight: 900;\n  line-height: 30px;\n  text-transform: uppercase;\n}\n.btn_delete[data-v-caae200a] {\n  width: 125px;\n  margin-left: 25px;\n}\n.btn_delete i[data-v-caae200a] {\n  font-size: 26px;\n  color: #f93f3f;\n}\n.btn_delete span[data-v-caae200a] {\n  padding: 0px;\n  color: #b2b2b2;\n  font-family: Roboto;\n  font-size: 12px;\n  font-weight: 500;\n  line-height: 30px;\n}\n.hor__line__mailbox_groupe[data-v-caae200a] {\n  position: absolute;\n  border-top: 2px solid #F5F5F5;\n  width: 350px;\n  left: 0;\n}\n.settings__pagination[data-v-caae200a] {\n  margin-left: 65px;\n  font-style: normal;\n  font-weight: 500;\n  font-size: 13px;\n  text-align: right;\n  color: #666666;\n  display: flex;\n  align-items: center;\n}\n.settings__pagination span[data-v-caae200a] {\n  display: inline-block;\n  margin-left: 55px;\n  padding-top: 5px;\n  color: #d8d8d8;\n}\n.settings__pagination span i[data-v-caae200a] {\n  cursor: pointer;\n}\n.settings__pagination span i[data-v-caae200a]:first-child {\n  margin-right: 15px;\n}\n.settings__row-numbers[data-v-caae200a] {\n  font-weight: 500;\n  font-size: 13px;\n  color: #666666;\n  position: relative;\n}\n.settings__row-numbers span[data-v-caae200a] {\n  margin-left: 70px;\n}\n.settings__mailbox-bottom[data-v-caae200a] {\n  display: flex;\n  align-items: center;\n  margin-bottom: 17px;\n  margin-top: 20px;\n}\n.setting__create-mailbox[data-v-caae200a] {\n  font-style: normal;\n  font-weight: 900;\n  font-size: 12px;\n  line-height: 50px;\n  text-align: center;\n  text-transform: uppercase;\n  color: #ffffff;\n  background: #1875f0;\n  max-width: 185px;\n  width: 100%;\n  border-radius: 4px;\n  cursor: pointer;\n  margin-right: 70px;\n}\n.settings__row-numbers select[data-v-caae200a] {\n  display: inline-block;\n  border: none;\n  padding: 0;\n  width: 30px;\n  -webkit-appearance: none;\n     -moz-appearance: none;\n          appearance: none;\n  height: 15px;\n  position: relative;\n  background: none;\n  z-index: 22;\n  cursor: pointer;\n}\n.settings__row-numbers[data-v-caae200a]::after {\n  content: \"\";\n  display: block;\n  position: absolute;\n  width: 0;\n  height: 0;\n  top: 68%;\n  transform: translate(50%, -50%) rotate(-135deg);\n  right: 12px;\n  border-right: 2px solid #d8d8d8;\n  border-bottom: 2px solid #d8d8d8;\n  padding: 3px;\n}\n.settings__row-numbers select[data-v-caae200a]:focus {\n  outline: none;\n}\n.settings__folder-items .errors[data-v-caae200a] {\n  border: 1px solid red !important;\n}\n\n/* переопределение переменных Materialize */\n/* Text inputs */\ninput[data-v-caae200a]:not([type]),\ninput[type=text][data-v-caae200a]:not(.browser-default),\ninput[type=password][data-v-caae200a]:not(.browser-default),\ntextarea.materialize-textarea[data-v-caae200a] {\n  border-bottom: none !important;\n  color: #999999;\n  font-family: Roboto;\n  font-size: 12px;\n  font-weight: 700;\n  line-height: 50px;\n}\ninput[data-v-caae200a]:not([type]):focus:not([readonly]),\ninput[type=text][data-v-caae200a]:not(.browser-default):focus:not([readonly]),\ninput[type=password][data-v-caae200a]:not(.browser-default):focus:not([readonly]),\ntextarea.materialize-textarea[data-v-caae200a]:focus:not([readonly]) {\n  border-bottom: none;\n  box-shadow: none;\n  color: #999999;\n  font-family: Roboto;\n  font-size: 12px;\n  font-weight: 700;\n  line-height: 50px;\n}", ""]);
 
 // exports
 
@@ -9962,7 +10100,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, ".m_modal[data-v-bb12b3fc] {\n  position: relative;\n  width: -webkit-max-content;\n  width: -moz-max-content;\n  width: max-content;\n  background-color: #fff;\n  transition: transform 0.3s ease-out;\n  transform: translate(0, -50px);\n  margin: 100px auto auto;\n  padding: 30px 30px 25px 21px;\n  border-radius: 5px;\n}", ""]);
+exports.push([module.i, ".m_modal[data-v-bb12b3fc] {\n  position: relative;\n  width: -webkit-max-content;\n  width: -moz-max-content;\n  width: max-content;\n  background-color: #fff;\n  transition: transform 0.3s ease-out;\n  transform: translate(0, -50px);\n  margin: 60px auto auto;\n  padding: 30px 30px 25px 21px;\n  border-radius: 5px;\n}", ""]);
 
 // exports
 
@@ -10267,7 +10405,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n.m_modal[data-v-5c37fa06] {\r\n    position: relative;\r\n    width: 350px;\r\n    background-color: #fff;\r\n    transition: transform .3s ease-out;\r\n    transform: translate(0,-50px);\r\n    margin: 100px auto auto;\r\n    padding: 30px 30px 25px 21px;\r\n    border-radius: 5px;\n}\r\n/* .m_modal .password_button {\r\n    width: 200px;\r\n    height: 50px;\r\n    color: #ffffff;\r\n    font-family: Roboto;\r\n    font-size: 12px;\r\n    font-weight: 900;\r\n    line-height: 50px;\r\n    text-transform: uppercase;\r\n} */\r\n", ""]);
+exports.push([module.i, "\n.m_modal[data-v-5c37fa06] {\n    position: relative;\n    width: 350px;\n    background-color: #fff;\n    transition: transform .3s ease-out;\n    transform: translate(0,-50px);\n    margin: 100px auto auto;\n    padding: 30px 30px 25px 21px;\n    border-radius: 5px;\n}\n", ""]);
 
 // exports
 
@@ -10286,7 +10424,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../../node_module
 
 
 // module
-exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\r\n/* переопределение переменных Materialize */\r\n\r\n/* Text inputs */\ninput[data-v-6623c213]:not([type]),\r\ninput[type=\"text\"][data-v-6623c213]:not(.browser-default),\r\ninput[type=\"password\"][data-v-6623c213]:not(.browser-default),\r\ntextarea.materialize-textarea[data-v-6623c213] {\r\n  border-bottom: none;\n}\ninput[data-v-6623c213]:not([type]):focus:not([readonly]),\r\ninput[type=\"text\"][data-v-6623c213]:not(.browser-default):focus:not([readonly]),\r\ninput[type=\"password\"][data-v-6623c213]:not(.browser-default):focus:not([readonly]),\r\ntextarea.materialize-textarea[data-v-6623c213]:focus:not([readonly]) {\r\n  border-bottom: none;\r\n  box-shadow: none;\n}\ninput:not([type]):focus:not([readonly]) + label[data-v-6623c213],\r\ninput[type=\"text\"]:not(.browser-default):focus:not([readonly]) + label[data-v-6623c213],\r\ninput[type=\"password\"]:not(.browser-default):focus:not([readonly]) + label[data-v-6623c213],\r\ntextarea.materialize-textarea:focus:not([readonly]) + label[data-v-6623c213] {\r\n  color: #666666;\r\n  border-bottom: none;\n}\n.input-field > label:not(.label-icon).active[data-v-6623c213] {\r\n  transform: translateY(-30px) scale(0.8);\r\n  transform-origin: 0 0;\n}\n.input-field .prefix[data-v-6623c213] {\r\n  margin-left: 5px;\r\n  font-size: 26px;\r\n  color: #b2b2b2;\n}\n.input-field .prefix.active[data-v-6623c213] {\r\n  font-size: 30px;\r\n  color: #666666;\n}\r\n  \r\n/* custom styles */\n.folder_password-block[data-v-6623c213] {\r\n  width: 282px;\r\n  margin-top: 70px;\n}\n.input-field[data-v-6623c213] {\r\n  width: 100%;\r\n  height: 50px;\r\n  border-radius: 4px;\r\n  border: 2px solid #f5f5f5;\r\n  background-color: #ffffff;\n}\n.folder_password-input[data-v-6623c213] {\r\n  margin-bottom: 55px;\n}\n.folder_password-block label[data-v-6623c213] {\r\n  margin-left: 20px;\n}\n.folder_password-block .validate[data-v-6623c213] {\r\n  padding-left: 20px;\n}\r\n", ""]);
+exports.push([module.i, "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n/* переопределение переменных Materialize */\n\n/* Text inputs */\ninput[data-v-6623c213]:not([type]),\ninput[type=\"text\"][data-v-6623c213]:not(.browser-default),\ninput[type=\"password\"][data-v-6623c213]:not(.browser-default),\ntextarea.materialize-textarea[data-v-6623c213] {\n  border-bottom: none;\n}\ninput[data-v-6623c213]:not([type]):focus:not([readonly]),\ninput[type=\"text\"][data-v-6623c213]:not(.browser-default):focus:not([readonly]),\ninput[type=\"password\"][data-v-6623c213]:not(.browser-default):focus:not([readonly]),\ntextarea.materialize-textarea[data-v-6623c213]:focus:not([readonly]) {\n  border-bottom: none;\n  box-shadow: none;\n}\ninput:not([type]):focus:not([readonly]) + label[data-v-6623c213],\ninput[type=\"text\"]:not(.browser-default):focus:not([readonly]) + label[data-v-6623c213],\ninput[type=\"password\"]:not(.browser-default):focus:not([readonly]) + label[data-v-6623c213],\ntextarea.materialize-textarea:focus:not([readonly]) + label[data-v-6623c213] {\n  color: #666666;\n  border-bottom: none;\n}\n.input-field > label:not(.label-icon).active[data-v-6623c213] {\n  transform: translateY(-30px) scale(0.8);\n  transform-origin: 0 0;\n}\n.input-field .prefix[data-v-6623c213] {\n  margin-left: 5px;\n  font-size: 26px;\n  color: #b2b2b2;\n}\n.input-field .prefix.active[data-v-6623c213] {\n  font-size: 30px;\n  color: #666666;\n}\n  \n/* custom styles */\n.folder_password-block[data-v-6623c213] {\n  width: 282px;\n  margin-top: 70px;\n}\n.input-field[data-v-6623c213] {\n  width: 100%;\n  height: 50px;\n  border-radius: 4px;\n  border: 2px solid #f5f5f5;\n  background-color: #ffffff;\n}\n.folder_password-input[data-v-6623c213] {\n  margin-bottom: 55px;\n}\n.folder_password-block label[data-v-6623c213] {\n  margin-left: 20px;\n}\n.folder_password-block .validate[data-v-6623c213] {\n  padding-left: 20px;\n}\n", ""]);
 
 // exports
 
@@ -42334,9 +42472,9 @@ $jscomp.polyfill = function (e, r, p, m) {
           this.options.onOpenStart.call(this, this.el, this._openingTrigger);
         }
 
-        // if (this.options.preventScrolling) {
-        //   document.body.style.overflow = 'hidden';
-        // }
+        if (this.options.preventScrolling) {
+          document.body.style.overflow = 'hidden';
+        }
 
         this.el.classList.add('open');
         this.el.insertAdjacentElement('afterend', this.$overlay[0]);
@@ -61105,17 +61243,318 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm._m(0)
+  return _c("div", { staticClass: "row card-wrapper" }, [
+    _c(
+      "div",
+      { staticClass: "col s12" },
+      [
+        _vm._m(0),
+        _vm._v(" "),
+        _vm._l(3, function(item) {
+          return _c(
+            "div",
+            { key: item.id, staticClass: "row mailbox_groupe" },
+            [
+              _c(
+                "div",
+                { staticClass: "col s12 m5 input-field email_input-groupe" },
+                [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.email,
+                        expression: "email"
+                      }
+                    ],
+                    staticClass: "validate valign-wrapper",
+                    attrs: { placeholder: "Email", id: "email", type: "text" },
+                    domProps: { value: _vm.email },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.email = $event.target.value
+                      }
+                    }
+                  })
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "col s12 m6 input-field password_input-groupe" },
+                [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.password,
+                        expression: "password"
+                      }
+                    ],
+                    staticClass: "validate valign-wrapper",
+                    attrs: {
+                      placeholder: "Пароль",
+                      id: "password",
+                      type: "password"
+                    },
+                    domProps: { value: _vm.password },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.password = $event.target.value
+                      }
+                    }
+                  })
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "col s12 m5 input-field protocol_input-groupe" },
+                [
+                  _c(
+                    "select",
+                    {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.protocol,
+                          expression: "protocol"
+                        }
+                      ],
+                      staticClass: "browser-default",
+                      on: {
+                        change: function($event) {
+                          var $$selectedVal = Array.prototype.filter
+                            .call($event.target.options, function(o) {
+                              return o.selected
+                            })
+                            .map(function(o) {
+                              var val = "_value" in o ? o._value : o.value
+                              return val
+                            })
+                          _vm.protocol = $event.target.multiple
+                            ? $$selectedVal
+                            : $$selectedVal[0]
+                        }
+                      }
+                    },
+                    [
+                      _c("option", { attrs: { value: "", selected: "" } }, [
+                        _vm._v("Протокол")
+                      ]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "2" } }, [_vm._v("IMAP")]),
+                      _vm._v(" "),
+                      _c("option", { attrs: { value: "3" } }, [_vm._v("POP3")])
+                    ]
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "col s6 m2 input-field email_input-groupe" },
+                [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.port,
+                        expression: "port"
+                      }
+                    ],
+                    staticClass: "validate valign-wrapper",
+                    attrs: { placeholder: "Порт", id: "port", type: "text" },
+                    domProps: { value: _vm.port },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.port = $event.target.value
+                      }
+                    }
+                  })
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticClass: "col s12 m4 right-align" }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "btn_chek",
+                    attrs: { type: "button" },
+                    on: { click: _vm.chek }
+                  },
+                  [_vm._v("Проверка")]
+                ),
+                _vm._v(" "),
+                _vm._m(1, true)
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "col underline" })
+            ]
+          )
+        }),
+        _vm._v(" "),
+        _c("div", { staticClass: "row settings__mailbox-bottom" }, [
+          _c(
+            "div",
+            {
+              staticClass: "col s4 setting__create-mailbox",
+              on: {
+                click: function($event) {
+                  _vm.modal = !_vm.modal
+                }
+              }
+            },
+            [_vm._v("новый ящик")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "col s3 csettings__row-numbers" }, [
+            _vm._v("\n        Строк:\n        "),
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.perItem,
+                    expression: "perItem"
+                  }
+                ],
+                attrs: { name: "", id: "" },
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.perItem = $event.target.multiple
+                      ? $$selectedVal
+                      : $$selectedVal[0]
+                  }
+                }
+              },
+              [
+                _c("option", { attrs: { value: "1" } }, [_vm._v("1")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "2" } }, [_vm._v("2")]),
+                _vm._v(" "),
+                _c("option", { attrs: { value: "3" } }, [_vm._v("3")])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col s5 settings__pagination" }, [
+            _vm._v(
+              "\n        " +
+                _vm._s(_vm.mailboxes.from) +
+                " - " +
+                _vm._s(_vm.mailboxes.to) +
+                " of " +
+                _vm._s(_vm.mailboxes.total) +
+                "\n        "
+            ),
+            _c("span", [
+              _c(
+                "i",
+                {
+                  staticClass: "material-icons",
+                  attrs: { title: "Назад" },
+                  on: {
+                    click: function($event) {
+                      return _vm.paginate(_vm.mailboxes.prev_page_url)
+                    }
+                  }
+                },
+                [_vm._v("arrow_back")]
+              ),
+              _vm._v(" "),
+              _c(
+                "i",
+                {
+                  staticClass: "material-icons",
+                  on: {
+                    click: function($event) {
+                      return _vm.paginate(_vm.mailboxes.next_page_url)
+                    }
+                  }
+                },
+                [_vm._v("arrow_forward")]
+              )
+            ])
+          ])
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "hor__line" }),
+        _vm._v(" "),
+        _c("div", { staticClass: "row modal__buttons" }, [
+          _c("div", { staticClass: "col s12" }, [
+            _c(
+              "button",
+              {
+                staticClass: "btn_modal",
+                attrs: { type: "button" },
+                on: { click: _vm.save }
+              },
+              [_vm._v("Сохранить")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                staticClass: "btn_modal",
+                attrs: { type: "button" },
+                on: {
+                  click: function($event) {
+                    return _vm.close()
+                  }
+                }
+              },
+              [_vm._v("Отменить")]
+            )
+          ])
+        ])
+      ],
+      2
+    )
+  ])
 }
 var staticRenderFns = [
   function() {
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row card-wrapper" }, [
-      _c("div", { staticClass: "col s10 card-title header" }, [
+    return _c("div", { staticClass: "row header" }, [
+      _c("div", { staticClass: "col s8 m10 card-title" }, [
         _c("span", [_vm._v("Сбор почты")])
       ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "btn_delete valign-wrapper" }, [
+      _c("i", { staticClass: "material-icons" }, [_vm._v("close")]),
+      _vm._v(" "),
+      _c("span", [_vm._v("Удалить запись")])
     ])
   }
 ]
@@ -82767,8 +83206,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! F:\openServ\OpenServer\domains\mail\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! F:\openServ\OpenServer\domains\mail\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! S:\OSPanel\domains\mail\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! S:\OSPanel\domains\mail\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })
