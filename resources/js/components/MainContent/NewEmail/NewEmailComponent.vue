@@ -292,11 +292,11 @@
             if (this.$route.params.draftMessage) {
                 this.message = {
                     'editorData': this.$route.params.draftMessage.html,
-                    'to': this.$route.params.draftMessage.to,
+                    'to': (!this.$route.params.draftMessage.to.split(' ')) ? this.$route.params.draftMessage.to : '',
                     'subject': this.$route.params.draftMessage.subject,
                     'deliveryRequest': true,
                     'attach': [],
-                    'emails': this.$route.params.draftMessage.to.split(' '),
+                    'emails': (this.$route.params.draftMessage.to.split(' ')) ? this.$route.params.draftMessage.to.split(' ') : [],
                     'attachBol': this.$route.params.draftMessage.attach
                 };
                 this.message.attach = this.$route.params.draftMessage.attachments;
