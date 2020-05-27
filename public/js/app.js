@@ -4582,6 +4582,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['modal'],
   name: "SignatureComponent",
@@ -4590,7 +4591,9 @@ __webpack_require__.r(__webpack_exports__);
       signatures: [],
       pageNumber: 0,
       sizeList: 3,
-      signaturesLength: ''
+      signaturesLength: '',
+      signatureDef: '',
+      signature_slug: ''
     };
   },
   computed: {
@@ -4630,11 +4633,27 @@ __webpack_require__.r(__webpack_exports__);
     },
     nextPage: function nextPage() {
       if (this.pageNumber !== this.pageCount - 1) {
+        this.signatureDef = this.$refs.signatures.find(function (signature) {
+          return signature.checked === true;
+        });
+
+        if (this.signatureDef) {
+          this.signature_slug = this.signatureDef.getAttribute('data-signature');
+        }
+
         this.pageNumber++;
       }
     },
     prevPage: function prevPage() {
       if (this.pageNumber !== 0) {
+        this.signatureDef = this.$refs.signatures.find(function (signature) {
+          return signature.checked === true;
+        });
+
+        if (this.signatureDef) {
+          this.signature_slug = this.signatureDef.getAttribute('data-signature');
+        }
+
         this.pageNumber--;
       }
     },
@@ -4653,20 +4672,24 @@ __webpack_require__.r(__webpack_exports__);
       this.pageNumber = 0;
     },
     save: function save() {
-      var signature = this.$refs.signatures.find(function (signature) {
-        return signature.checked === true;
-      });
+      if (!this.signatureDef) {
+        this.signatureDef = this.$refs.signatures.find(function (signature) {
+          return signature.checked === true;
+        });
+      }
 
-      if (signature) {
-        var signature_slug = signature.getAttribute('data-signature');
+      if (this.signatureDef) {
+        if (!this.signature_slug) {
+          this.signature_slug = this.signatureDef.getAttribute('data-signature');
+        }
 
-        if (signature_slug) {
+        if (this.signature_slug) {
           this.signatures.unshift({
             id: 'default',
-            idDefault: signature_slug
+            idDefault: this.signature_slug
           });
         } else {
-          var signature__object = signature.parentNode.parentNode.parentNode;
+          var signature__object = this.signatureDef.parentNode.parentNode.parentNode;
           var name_signature = signature__object.querySelector("input[name=name]").value;
           var text_signature = signature__object.querySelector("input[name=text]").value;
           this.signatures.unshift({
@@ -59669,7 +59692,7 @@ var render = function() {
               [
                 _c("div", { staticClass: "sup-title" }, [_vm._v("Подпись")]),
                 _vm._v(" "),
-                _vm._l(_vm.paginatedData, function(signature, index) {
+                _vm._l(_vm.signatures, function(signature, index) {
                   return _c("div", { staticClass: "row signature" }, [
                     _c("div", { staticClass: "col s5 name__signature" }, [
                       _c("label", [_vm._v("Наименование подписи")]),

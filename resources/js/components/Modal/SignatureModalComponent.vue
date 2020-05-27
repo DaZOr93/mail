@@ -8,7 +8,7 @@
                 <div class="integration-modal">
                     <div class="form-group mb-0">
                         <div class="sup-title">Подпись</div>
-                        <div v-for="(signature, index) in paginatedData" class="row signature">
+                        <div v-for="(signature, index) in signatures" class="row signature">
                             <div class="col s5 name__signature">
                                 <label>Наименование подписи</label>
                                 <input
@@ -45,6 +45,7 @@
                     </div>
                     <div class="row nav__buttons">
                         <button type="button" @click="add" class=" col s5 btn_modal">НОВАЯ ПОДПИСЬ</button>
+
                         <div class="col sing_paginate">
                             <div class="paginate-numbers">
                                 <div>
@@ -111,6 +112,8 @@
                 pageNumber: 0,
                 sizeList: 3,
                 signaturesLength: '',
+                signatureDef: '',
+                signature_slug: '',
             }
         },
         computed:{
@@ -157,13 +160,24 @@
             nextPage(){
 
                 if(this.pageNumber !== this.pageCount -1) {
+                    this.signatureDef = this.$refs.signatures.find(signature => signature.checked === true);
+                    if (this.signatureDef) {
+                        this.signature_slug = this.signatureDef.getAttribute('data-signature');
+
+                        }
+
+
                     this.pageNumber++;
                 }
-
             },
             prevPage(){
                 if(this.pageNumber !== 0) {
-                this.pageNumber--;
+                    this.signatureDef = this.$refs.signatures.find(signature => signature.checked === true);
+                    if (this.signatureDef) {
+                        this.signature_slug = this.signatureDef.getAttribute('data-signature');
+
+                        }
+                    this.pageNumber--;
                 }
             },
 
@@ -182,17 +196,20 @@
                 this.pageNumber = 0;
             },
             save() {
-                let signature = this.$refs.signatures.find(signature => signature.checked === true);
-                if (signature) {
-                    let signature_slug = signature.getAttribute('data-signature');
-                    if (signature_slug){
+                if(!this.signatureDef){
+                    this.signatureDef = this.$refs.signatures.find(signature => signature.checked === true);
+                }
+                if (this.signatureDef) {
+                    if(!this.signature_slug){
+                    this.signature_slug = this.signatureDef.getAttribute('data-signature');}
+                    if (this.signature_slug){
                         this.signatures.unshift({
                             id: 'default',
-                            idDefault: signature_slug,
+                            idDefault: this.signature_slug,
                         });
                     }
                     else{
-                        let signature__object = signature.parentNode.parentNode.parentNode;
+                        let signature__object = this.signatureDef.parentNode.parentNode.parentNode;
                         let name_signature = signature__object.querySelector("input[name=name]").value;
                         let text_signature = signature__object.querySelector("input[name=text]").value;
                         this.signatures.unshift({
