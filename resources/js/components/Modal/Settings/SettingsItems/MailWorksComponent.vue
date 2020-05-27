@@ -14,14 +14,14 @@ export default {
   name: "MailWorks",
   data: function() {
     return {
-  
+
     };
   },
   mounted() {
 
     },
   methods: {
-    
+
   }
 }
 </script>

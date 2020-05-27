@@ -6,7 +6,7 @@ import _ from 'lodash'
 
 export default {
     components: {folderModal, spamModal , deleteModal},
-    props: ['getMessages'],
+    props: ['getMessages' , 'slug'],
     data() {
         return {
             selectMes: '',
@@ -62,10 +62,10 @@ export default {
             let nav = document.getElementById('nav_wrap');
             nav.classList.toggle("nav-wrap__open");
         },
-        reloadMess() {
+        reloadMess(slug = 'main') {
             if (!this.preloader) {
                 this.$store.state.messages = [];
-                this.$store.dispatch('getMessagesRefresh');
+                this.$store.dispatch('getMessagesRefresh' , slug);
             }
         },
         getDate(time) {

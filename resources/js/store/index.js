@@ -51,10 +51,10 @@ export default new Vuex.Store({
             cnt.commit('preloaderOff');
         },
 
-        async getMessagesRefresh(cnt) {
+        async getMessagesRefresh(cnt , payload) {
             cnt.commit('resetMess');
             cnt.commit('preloaderOn');
-            await axios.get('/api/store/messages')
+            await axios.get('/api/store/messages/' + payload)
                 .then(r => {
                     cnt.commit('getMessages', r.data);
                 });

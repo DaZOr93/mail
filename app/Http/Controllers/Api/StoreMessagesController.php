@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Services\ConnectServices;
 use Illuminate\Http\JsonResponse;
+use Webklex\IMAP\Exceptions\ConnectionFailedException;
+use Webklex\IMAP\Exceptions\MaskNotFoundException;
 
 
 class StoreMessagesController extends Controller
@@ -22,10 +24,13 @@ class StoreMessagesController extends Controller
 
     /**
      * Подгрузка новых сообщений
+     * @param $folder
      * @return JsonResponse
+     * @throws ConnectionFailedException
+     * @throws MaskNotFoundException
      */
-    public function __invoke()
+    public function __invoke($folder)
     {
-        return $this->services->store();
+        return $this->services->store($folder);
     }
 }

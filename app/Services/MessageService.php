@@ -19,6 +19,7 @@ class MessageService extends ConnectServices
             return Letter::where($servicesFolder, 1)
                 ->with('attachments')
                 ->where('user_id' , $user_id)
+                ->whereNull('folder_id')
                 ->orderByDesc('date_send')
                 ->paginate(10);
         }
@@ -26,6 +27,7 @@ class MessageService extends ConnectServices
         return Letter::where($servicesFolder, 1)
             ->orderByDesc('date_send')
             ->where('user_id' , $user_id)
+            ->whereNull('folder_id')
             ->paginate(10);
 
     }

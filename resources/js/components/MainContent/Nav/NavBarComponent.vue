@@ -40,7 +40,7 @@
             <ul>
                 <li v-for="(folder, index) in getFolders" :key="index" :style="{'color':folder.color}">
                     <router-link active-class="folder_active" :to="{name: 'folder', params: {slug: folder.slug}}"
-                                 tag="a">{{folder.name }}
+                                 tag="a">{{folder.name | shortName}}
                     </router-link>
                     <span v-if="countFolderMessages[index] !== 0">{{ countFolderMessages[index]}}</span>
                 </li>
@@ -133,6 +133,15 @@
             create_folder() {
                 this.modal = true;
             }
+        },
+        filters:{
+          shortName(val){
+              if( val.length > 13){
+                  return val.slice(0, 15) + '...';
+              }
+
+              return val
+          }
         },
         created() {
             this.$store.dispatch("userFolders");

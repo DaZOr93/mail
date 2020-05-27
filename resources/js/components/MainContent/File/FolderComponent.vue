@@ -1,11 +1,11 @@
 <template>
     <div class="massage__list w100">
-        <messages :getMessages="getMessages"></messages>
+        <messages :slug="this.slug" :getMessages="getMessages"></messages>
     </div>
 </template>
 
 <script>
-    import messages from '../Messages/IncomingMessagesComponent'
+    import messages from '../Messages/FolderMessagesComponent'
     export default {
         name: "FolderComponent",
         components: {messages},

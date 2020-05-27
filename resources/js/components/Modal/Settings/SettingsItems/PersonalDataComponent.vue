@@ -9,7 +9,7 @@
                         <i class="material-icons">person</i>
                     </div>
                     <div class="item__text-wrap">
-                        <div class="item-text">Иванов И Р</div>
+                        <div class="item-text">{{user.surname}} {{ user.name }}</div>
                         <div class="item-dop"> Ф И О</div>
                     </div>
                 </div>
@@ -103,7 +103,7 @@
     .personal_item {
         display: flex;
         margin-bottom: 15px;
-        width: 120px;
+        width: 125px;
         cursor: default;
     }
 
