@@ -8,6 +8,7 @@ use App\Models\Attachments;
 use App\Models\Letter;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Auth;
 use Webklex\IMAP\Facades\Client;
 
 class ConnectServices
@@ -40,13 +41,14 @@ class ConnectServices
     public function store()
     {
         $aMessage = $this->mainFolder()->query()->whereAll()->setFetchFlags(true)->setFetchBody(true)->setFetchAttachment(true)->get();
-
+        $user_id = Auth::user()->id;
         foreach ($aMessage as $message) {
             if (Letter::where('message_id', $message->message_id)->first()) {
                 continue;
             } else {
                 $letter = new Letter();
                 $letter->message_id = $message->message_id;
+                $letter->user_id = $user_id;
                 $letter->uid = $message->uid;
                 $letter->date_send = Carbon::make($message->date)->timezone('Europe/Kiev')->format('Y-m-d H:i:s');
                 $letter->to = $message->to[0]->mail;

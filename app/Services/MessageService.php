@@ -14,15 +14,18 @@ class MessageService extends ConnectServices
 
     public function index($servicesFolder)
     {
+        $user_id = Auth::user()->id;
         if($servicesFolder === 'draft') {
             return Letter::where($servicesFolder, 1)
                 ->with('attachments')
+                ->where('user_id' , $user_id)
                 ->orderByDesc('date_send')
                 ->paginate(10);
         }
 
         return Letter::where($servicesFolder, 1)
             ->orderByDesc('date_send')
+            ->where('user_id' , $user_id)
             ->paginate(10);
 
     }
@@ -109,9 +112,11 @@ class MessageService extends ConnectServices
 
     public function storeDraft($request)
     {
+        $user_id = Auth::user()->id;
         $data = $request->only(['editorData', 'subject', 'to', 'attach', 'attachBol']);
         $letter = new Letter();
         $letter->message_id = uniqid();
+        $letter->user_id = $user_id;
         $letter->uid = rand(1, 200);
         $letter->date_send = Carbon::now('Europe/Kiev')->format('Y-m-d H:i:s');
         $letter->to = $data['to'] ?? '';
@@ -154,7 +159,11 @@ class MessageService extends ConnectServices
 
     public function search($value)
     {
-        return Letter::where("subject", "like", "%{$value}%")->orWhere("text", "like", "%{$value}%")->get();
+        $user_id = Auth::user()->id;
+        return Letter::where('user_id' , $user_id)
+            ->where("subject", "like", "%{$value}%")
+            ->orWhere("text", "like", "%{$value}%")
+            ->get();
     }
 
 

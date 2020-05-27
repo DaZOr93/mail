@@ -246,7 +246,6 @@ ul, li {
 
 .user_drop {
     background: #fff;
-    z-index: 22222;
     bottom: -169%;
     right: 43px;
     position: absolute;
@@ -260,6 +259,7 @@ ul, li {
 
 .user_show {
     opacity: 1;
+    z-index: 22222;
 }
 
 .user_drop:before  {
@@ -425,6 +425,7 @@ ul, li {
 .content-wrap {
     padding: 45px 40px 0 36px;
     display: flex;
+    z-index: 222222;
 }
 
 .nav-wrap {
