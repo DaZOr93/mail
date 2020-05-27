@@ -9,16 +9,8 @@
                     </label>
                 </div>
                 <div class="action__group">
-                    <i @click="reloadMess" title="обновить" class="reloadMess material-icons ">refresh</i>
+                    <i @click="reloadMess" title="Обновить" class="reloadMess material-icons ">refresh</i>
                 </div>
-                <div class="action__group">
-                    <i @click="actions('spam')" title="В спам!" class="material-icons">report</i>
-                </div>
-
-                <div class="action__group">
-                    <i @click="actions('seen')" title="Прочитано/Не прочитано" class="material-icons">fiber_manual_record</i>
-                </div>
-
                 <div class="action__group">
                     <i @click="actions('folder')" title="В папку" class="material-icons">folder</i>
                 </div>
@@ -93,8 +85,8 @@
                 </div>
             </div>
             <div class="email-dop">
-                <router-link to="/settings">
-                    <i title="настройки" class="material-icons">settings</i>
+                <router-link to="/settings" tag="div">
+                    <i title="Настройки" class="material-icons">settings</i>
                 </router-link>
             </div>
         </div>

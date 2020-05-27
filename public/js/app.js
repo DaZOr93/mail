@@ -2709,14 +2709,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "draftMessagesComponent",
@@ -2738,6 +2730,9 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Mixins_Messages__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../Mixins/Messages */ "./resources/js/Mixins/Messages.js");
+//
+//
+//
 //
 //
 //
@@ -3049,6 +3044,31 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3066,7 +3086,9 @@ __webpack_require__.r(__webpack_exports__);
       uid: this.$route.params.uid,
       deleteModal: false,
       search: "",
-      spamModal: false
+      spamModal: false,
+      imageVariable: ['png', 'jpg', 'PNG', 'JPG', 'bmp'],
+      fileVariable: ['txt', 'docx', 'xls', 'xlsx', 'zip', 'rar', 'doc', 'ppt', 'pdf']
     };
   },
   computed: {
@@ -3848,6 +3870,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -3859,6 +3885,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   data: function data() {
     return {
       editor: _ckeditor_ckeditor5_build_classic__WEBPACK_IMPORTED_MODULE_1___default.a,
+      search: "",
+      imageVariable: ['png', 'jpg', 'PNG', 'JPG', 'bmp'],
+      fileVariable: ['txt', 'docx', 'xls', 'xlsx', 'zip', 'rar', 'doc', 'ppt', 'pdf'],
       message: {
         'editorData': 'Введите сообщение',
         'attach': [],
@@ -3984,7 +4013,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     saveMessage: function saveMessage() {
       if (this.draftId < 1) {
-        return this.toast('Нечего сохронять', 'warning');
+        return this.toast('Нечего сохранять', 'warning');
       }
 
       axios.post('/api/updateDraft', {
@@ -4001,6 +4030,28 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     update: function update(index, event) {
       this.message.emails[index] = event.target.innerText.trim();
+    },
+    mySearch: function mySearch(html) {
+      var _this3 = this;
+
+      var pattern = '(<[^>]*>)|' + this.search.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+      document.querySelectorAll('.open__body').forEach(function (n) {
+        if (!n.dataset.textOriginal) {
+          n.dataset.textOriginal = n.innerHTML;
+        }
+
+        n.innerHTML = n.dataset.textOriginal.replace(new RegExp(pattern, 'gi'), function (m0, m1) {
+          if (m1) return m0;
+          return '<span class="highlight">' + m0 + '</span>';
+        });
+      });
+
+      if (this.search.length === 0) {
+        this.message.editorData = '';
+        setTimeout(function () {
+          _this3.message.editorData = html;
+        }, 1);
+      }
     },
     toast: function toast(msg, type) {
       Vue.$toast.open({
@@ -4028,11 +4079,11 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.$store.state.newMessage = this.message;
     },
     draft: function draft() {
-      var _this3 = this;
+      var _this4 = this;
 
       if (this.message && this.draftId === 0) {
         axios.post('/api/storeDraft', this.message).then(function (r) {
-          return _this3.draftId = r.data;
+          return _this4.draftId = r.data;
         });
       }
     },
@@ -4059,29 +4110,29 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     next();
   },
   created: function created() {
-    var _this4 = this;
+    var _this5 = this;
 
     _app__WEBPACK_IMPORTED_MODULE_3__["eventBus"].$on('reset', function () {
-      _this4.message = {
+      _this5.message = {
         'editorData': 'Введите сообщение',
         'attach': [],
         'attachBol': 0,
         'emails': []
       };
-      _this4.filesFinish = [];
-      _this4.filesFinishData = [];
-      _this4.draft = false;
-      _this4.draftId = 0;
+      _this5.filesFinish = [];
+      _this5.filesFinishData = [];
+      _this5.draft = false;
+      _this5.draftId = 0;
     });
 
     if (this.$route.params.replayMessage) {
       this.message = {
         'editorData': '<blockquote>' + this.$route.params.replayMessage.html + '/<blockquote>',
-        'to': !this.$route.params.replayMessage.to.split(' ') ? this.$route.params.replayMessage.to : '',
+        'to': this.$route.params.replayMessage.to,
         'subject': 'Re:' + ' ' + this.$route.params.replayMessage.subject,
         'deliveryRequest': true,
         'attach': [],
-        'emails': this.$route.params.replayMessage.to.split(' ') ? this.$route.params.replayMessage.to.split(' ') : [],
+        'emails': [],
         'attachBol': this.$route.params.replayMessage.attach
       };
       this.draft = true;
@@ -4101,7 +4152,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       this.draft = true;
       this.draftId = this.$route.params.draftMessage.id;
       axios.get('/api/index/attachments/' + this.$route.params.draftMessage.id).then(function (r) {
-        return _this4.filesFinishData = r.data;
+        return _this5.filesFinishData = r.data;
       });
     }
   }
@@ -10172,7 +10223,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n.messages__attachments {\n    position: absolute;\n    max-width: 240px;\n    right: 13px;\n    top: 115px;\n    z-index: 2;\n    display: flex;\n    background: #fff\n}\n.highlight {\n    background-color: yellow;\n}\n.messages__attachments i {\n    margin-right: 37px;\n    color: #D8D8D8\n}\nspan {\n    font-weight: 500;\n}\n.attachments-tile {\n    font-style: normal;\n    font-weight: bold;\n    font-size: 14px;\n    line-height: 30px;\n    color: #808080;\n}\n.messages__attachments li {\n    margin-right: 10px;\n    width: 79px;\n}\n.attach-name {\n    font-style: normal;\n    font-weight: bold;\n    font-size: 14px;\n    line-height: 30px;\n    color: #999999;\n}\n.messages__attachments img {\n    width: 70px !important;\n    height: 60px;\n    cursor: pointer\n}\n.lightbox__image {\n    text-align: center;\n}\n.lightbox img {\n    width: 40% !important;\n    height: auto;\n}\n.messages__attachments ul {\n    display: flex;\n    max-width: 180px;\n    flex-wrap: wrap;\n}\n.open__email-bar {\n    display: flex;\n    height: 88px;\n    background: #fff;\n    align-items: center;\n}\n.open__email-bar .input-field {\n    display: flex;\n    margin: 0 !important;\n}\n.open__email-bar i {\n    color: #D8D8D8;\n    width: 26px;\n    height: 26px;\n    cursor: pointer;\n    position: relative;\n    border-radius: 25px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n}\n.open__email-bar i:hover {\n    color: #837d7d;\n    background: #eee;\n}\n.open__email-bar input[type=text]:not(.browser-default):focus:not([readonly]) + label {\n    color: #9e9e9e !important\n}\n.open__email-bar .email__arrows {\n    padding: 0 30px;\n    border-right: 2px solid #F5F5F5;\n    height: 88px;\n    display: flex;\n    align-items: center;\n    margin-right: 5px;\n}\n.open__email-bar .next {\n    margin-left: 15px;\n}\n.open__email-bar .email__actions {\n    display: flex;\n    border-right: 2px solid #F5F5F5;\n    height: 88px;\n    align-items: center;\n    padding-right: 23px;\n    margin-right: 30px;\n}\n.open__email-bar .email__actions i:not(:last-child) {\n    margin-right: 25px;\n}\n.open__email-bar .input-field {\n    align-items: center;\n    padding-right: 25px;\n}\n.open__email-bar .email__search input {\n    border: none !important;\n    margin: 0 !important;\n    max-width: 837px !important;\n}\n.open__email-bar .email__search input:focus {\n    border: none !important;\n    box-shadow: none !important;\n}\n.open__email-bar .email-dop {\n    padding: 31px 32px 31px 23px;\n    border-left: 2px solid #F5F5F5;\n}\n.open__email-bar .email-dop i:first-child {\n    margin-right: 30px;\n}\n.mess__open-content {\n    padding-left: 30px;\n    padding-top: 10px;\n    background: #fff;\n    font-weight: bold;\n    font-size: 18px;\n    color: #999999;\n    border-top: 2px solid #F5F5F5;\n    position: relative;\n    height: 612px;\n    overflow: auto;\n}\n.open__header {\n    display: flex;\n    align-items: center;\n    padding-left: 10px;\n    padding-bottom: 15px;\n    border-bottom: 2px solid #F5F5F5;\n    width: -webkit-max-content;\n    width: -moz-max-content;\n    width: max-content;\n}\n.open__user-wrap {\n    display: flex;\n    align-items: center;\n    margin-left: 36px;\n    margin-right: 85px;\n    font-weight: 500;\n    font-size: 12px;\n}\n.open__user-photo {\n    width: 40px;\n    height: 40px;\n    border-radius: 100px;\n    background: orange;\n    margin-right: 30px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    text-transform: uppercase;\n}\n.open__subject {\n    font-weight: 500;\n    font-size: 12px;\n    padding-right: 45px;\n}\n.open__date {\n    font-weight: 500;\n    font-size: 12px;\n}\n.open__body {\n    padding-top: 30px;\n    padding-bottom: 36px;\n    font-style: normal;\n    font-weight: 500;\n    font-size: 13px;\n    line-height: 30px;\n    color: #808080;\n    max-width: 900px\n}\n.footer-border {\n    position: absolute;\n    height: 2px;\n    width: 100%;\n    background: #F5F5F5;\n    left: 0;\n}\n.open__body li {\n    padding-left: 35px;\n    position: relative;\n}\n.open__body ul li:before {\n    content: \".\";\n    width: 9px;\n    height: 9px;\n    position: absolute;\n    font-size: 46px;\n    color: #D8D8D8;\n    left: 0;\n    top: -13px;\n}\n.open__body ol {\n    padding-left: 15px;\n}\n.open__body ol li {\n    padding-left: 20px;\n    list-style: inherit;\n}\n", ""]);
+exports.push([module.i, "\n.messages__attachments {\n    position: absolute;\n    max-width: 240px;\n    right: 15px;\n    top: 115px;\n    z-index: 2;\n    display: flex;\n    background: #fff\n}\n.highlight {\n    background-color: yellow;\n}\n.messages__attachments i {\n    margin-right: 37px;\n    color: #D8D8D8\n}\nspan {\n    font-weight: 500;\n}\n.attachments-tile {\n    font-style: normal;\n    font-weight: bold;\n    font-size: 14px;\n    line-height: 30px;\n    color: #808080;\n}\n.messages__attachments li {\n    margin-right: 10px;\n    width: 79px;\n}\n.attach-name {\n    font-style: normal;\n    font-weight: bold;\n    font-size: 14px;\n    line-height: 30px;\n    color: #999999;\n}\n.messages__attachments img {\n    width: 70px !important;\n    height: 60px;\n    cursor: pointer\n}\n.lightbox__image {\n    text-align: center;\n}\n.lightbox img {\n    width: 40% !important;\n    height: auto;\n}\n.messages__attachments ul {\n    display: flex;\n    max-width: 180px;\n    flex-wrap: wrap;\n}\n.open__email-bar {\n    display: flex;\n    height: 88px;\n    background: #fff;\n    align-items: center;\n}\n.open__email-bar .input-field {\n    display: flex;\n    margin: 0 !important;\n}\n.open__email-bar i {\n    color: #D8D8D8;\n    width: 26px;\n    height: 26px;\n    cursor: pointer;\n    position: relative;\n    border-radius: 25px;\n    display: flex;\n    justify-content: center;\n    align-items: center;\n}\n.open__email-bar i:hover {\n    color: #837d7d;\n    background: #eee;\n}\n.open__email-bar input[type=text]:not(.browser-default):focus:not([readonly]) + label {\n    color: #9e9e9e !important\n}\n.open__email-bar .email__arrows {\n    padding: 0 30px;\n    border-right: 2px solid #F5F5F5;\n    height: 88px;\n    display: flex;\n    align-items: center;\n    margin-right: 5px;\n}\n.open__email-bar .next {\n    margin-left: 15px;\n}\n.open__email-bar .email__actions {\n    display: flex;\n    border-right: 2px solid #F5F5F5;\n    height: 88px;\n    align-items: center;\n    padding-right: 23px;\n    margin-right: 30px;\n}\n.open__email-bar .email__actions i:not(:last-child) {\n    margin-right: 25px;\n}\n.open__email-bar .input-field {\n    align-items: center;\n    padding-right: 25px;\n}\n.open__email-bar .email__search input {\n    border: none !important;\n    margin: 0 !important;\n    max-width: 837px !important;\n}\n.open__email-bar .email__search input:focus {\n    border: none !important;\n    box-shadow: none !important;\n}\n.open__email-bar .email-dop {\n    padding: 31px 32px 31px 23px;\n    border-left: 2px solid #F5F5F5;\n}\n.open__email-bar .email-dop i:first-child {\n    margin-right: 30px;\n}\n.mess__open-content {\n    padding-left: 30px;\n    padding-top: 10px;\n    background: #fff;\n    font-weight: bold;\n    font-size: 18px;\n    color: #999999;\n    border-top: 2px solid #F5F5F5;\n    position: relative;\n    height: 612px;\n    overflow: auto;\n}\n.open__header {\n    display: flex;\n    align-items: center;\n    padding-left: 10px;\n    padding-bottom: 15px;\n    border-bottom: 2px solid #F5F5F5;\n    width: -webkit-max-content;\n    width: -moz-max-content;\n    width: max-content;\n}\n.open__user-wrap {\n    display: flex;\n    align-items: center;\n    margin-left: 36px;\n    margin-right: 85px;\n    font-weight: 500;\n    font-size: 12px;\n}\n.open__user-photo {\n    width: 40px;\n    height: 40px;\n    border-radius: 100px;\n    background: orange;\n    margin-right: 30px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    text-transform: uppercase;\n}\n.open__subject {\n    font-weight: 500;\n    font-size: 12px;\n    padding-right: 45px;\n}\n.open__date {\n    font-weight: 500;\n    font-size: 12px;\n}\n.open__body {\n    padding-top: 30px;\n    padding-bottom: 36px;\n    font-style: normal;\n    font-weight: 500;\n    font-size: 13px;\n    line-height: 30px;\n    color: #808080;\n    max-width: 900px\n}\n.footer-border {\n    position: absolute;\n    height: 2px;\n    width: 100%;\n    background: #F5F5F5;\n    left: 0;\n}\n.open__body li {\n    padding-left: 35px;\n    position: relative;\n}\n.open__body ul li:before {\n    content: \".\";\n    width: 9px;\n    height: 9px;\n    position: absolute;\n    font-size: 46px;\n    color: #D8D8D8;\n    left: 0;\n    top: -13px;\n}\n.open__body ol {\n    padding-left: 15px;\n}\n.open__body ol li {\n    padding-left: 20px;\n    list-style: inherit;\n}\n", ""]);
 
 // exports
 
@@ -10210,7 +10261,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n.email_to_list[data-v-4e583fa8] {\n    display: flex;\n    align-items: center;\n    border-top: 2px solid #F5F5F5;\n    border-bottom: 2px solid #F5F5F5;\n    font-style: normal;\n    font-size: 11px;\n    color: #999999;\n    padding-left: 35px;\n}\n.email_to_list b[data-v-4e583fa8] {\n    display: flex;\n    font-weight: 500;\n    margin-right: 5px;\n}\n.email_to_list i[data-v-4e583fa8] {\n    font-style: normal;\n}\n.email__to .input-field[data-v-4e583fa8] {\n    display: flex;\n}\n.new__email-wrap .messages__attachments li[data-v-4e583fa8] {\n    position: relative;\n}\n.new__email-inner[data-v-4e583fa8] {\n    position: relative;\n}\n.new__email-wrap .messages__attachments li[data-v-4e583fa8]:hover::after,\n.new__email-wrap .messages__attachments li[data-v-4e583fa8]:hover::before {\n    content: '';\n    position: absolute;\n    width: 44px;\n    height: 4px;\n    background: #ff5d5d;\n    left: 50%;\n    top: 50%;\n    margin-top: 12px;\n    margin-left: -27px;\n    cursor: pointer;\n}\n.new__email-wrap .messages__attachments li[data-v-4e583fa8]:hover::before {\n    transform: rotate(-45deg);\n}\n.new__email-wrap .messages__attachments li[data-v-4e583fa8]:hover::after {\n    transform: rotate(45deg);\n}\n#fileUpload[data-v-4e583fa8] {\n    display: none;\n}\n#fileUpload + label[data-v-4e583fa8] {\n    display: block;\n}\n.progress[data-v-4e583fa8] {\n    top: -12px;\n    left: 3px;\n    position: absolute;\n}\n.messages__attachments[data-v-4e583fa8] {\n    top: 35%;\n    width: 100%;\n}\n.new__email-body[data-v-4e583fa8] {\n    margin-bottom: 10px;\n}\n.new__email-wrap[data-v-4e583fa8] {\n    background: #fff;\n    padding-top: 10px;\n    height: 609px;\n    position: relative\n}\n.input-field[data-v-4e583fa8] {\n    margin: 0;\n}\n.email__header-box .input-field[data-v-4e583fa8] {\n    max-width: 585px;\n    width: 100%;\n}\n.email__header-box[data-v-4e583fa8] {\n    display: flex;\n    padding-right: 17px;\n    padding-left: 31px;\n}\n.email__to[data-v-4e583fa8], .email__subject[data-v-4e583fa8] {\n    display: flex;\n    max-width: 690px;\n    width: 100%;\n}\n.email__to input[data-v-4e583fa8], .email__subject input[data-v-4e583fa8] {\n    margin: 0 !important;\n    border: 2px solid #F5F5F5 !important;\n    border-radius: 0px 4px 4px 0px !important;\n    border-left: none !important;\n    font-weight: bold;\n    font-size: 12px !important;\n    line-height: 40px;\n    color: #999999;\n    padding-left: 35px !important;\n    max-width: 690px;\n}\n.new__email-switch[data-v-4e583fa8] {\n    display: flex;\n    align-items: center;\n}\n.switch label .lever[data-v-4e583fa8] {\n    width: 40px;\n    height: 25px;\n    border: 2px solid #F0F0F0;\n    background-color: transparent;\n}\n.switch label .lever[data-v-4e583fa8]:before, .switch label .lever[data-v-4e583fa8]:after {\n    width: 15px;\n    height: 15px;\n    left: 5px;\n    top: 2px;\n}\n.switch label input[type=checkbox]:checked + .lever[data-v-4e583fa8] {\n    background-color: #1875F0;\n}\n.switch label input[type=checkbox]:checked + .lever[data-v-4e583fa8]:after {\n    background-color: #FFFFFF\n}\n.switch label .lever[data-v-4e583fa8]:after {\n    background-color: #E6E6E6;\n}\n.email__to input[data-v-4e583fa8]:focus, .email__subject input[data-v-4e583fa8]:focus {\n    box-shadow: none !important;\n}\n.validate[data-v-4e583fa8], .valid[data-v-4e583fa8] {\n    box-shadow: none !important;\n}\n.email__to span[data-v-4e583fa8], .email__subject span[data-v-4e583fa8] {\n    font-style: normal;\n    font-weight: 900;\n    font-size: 10px;\n    line-height: 45px;\n    letter-spacing: 1.25px;\n    padding: 0 17px;\n    border: 2px solid #F5F5F5;\n    border-radius: 4px 0px 0px 4px;\n    color: #B3B3B3;\n}\n.new__email-bar[data-v-4e583fa8] {\n    display: flex;\n    align-items: center;\n    background: #fff;\n    border-bottom: 2px solid #F5F5F5;\n    color: #D8D8D8;\n    font-style: normal;\n    font-weight: 500;\n    font-size: 12px;\n}\n.new__email-bar i[data-v-4e583fa8] {\n    width: 26px;\n    height: 26px;\n}\n.email__actions[data-v-4e583fa8] {\n    display: flex;\n    border-right: 2px solid #F5F5F5;\n}\n.email__actions .action_group[data-v-4e583fa8] {\n    padding: 20px 22px;\n    text-align: center;\n}\n.email__search-wrap[data-v-4e583fa8] {\n    padding: 21px 25px 21px 30px;\n    border-right: 2px solid #F5F5F5;\n}\n.email__search div[data-v-4e583fa8] {\n    display: flex;\n    align-items: center;\n}\n.email__search i[data-v-4e583fa8] {\n    position: relative;\n    z-index: 222;\n    cursor: pointer;\n}\n.email__arrows[data-v-4e583fa8] {\n    padding: 32px 30px 30px 32px;\n    display: flex;\n    border-right: 2px solid #F5F5F5;\n}\n.email__actions .action_text[data-v-4e583fa8] {\n    color: #CCCCCC;\n}\n.new__email-bar input[data-v-4e583fa8] {\n    border-bottom: none !important;\n    margin-bottom: 0 !important;\n}\n.new__email-bar label.active[data-v-4e583fa8] {\n    color: #D8D8D8 !important;\n}\n.new__email-bar input[data-v-4e583fa8]:focus {\n    box-shadow: none !important\n}\n.email-dop[data-v-4e583fa8] {\n    display: flex\n}\n.email-dop div[data-v-4e583fa8] {\n    padding: 29px 15px;\n}\n.email__arrows[data-v-4e583fa8], .action_group[data-v-4e583fa8], .email-dop div[data-v-4e583fa8] {\n    cursor: pointer;\n}\n.email__arrows[data-v-4e583fa8]:hover, .action_group[data-v-4e583fa8]:hover, .email-dop div[data-v-4e583fa8]:hover {\n    background: rgba(24, 117, 240, 0.16);\n}\n", ""]);
+exports.push([module.i, "\n.email_to_list[data-v-4e583fa8] {\n    display: flex;\n    align-items: center;\n    border-top: 2px solid #F5F5F5;\n    border-bottom: 2px solid #F5F5F5;\n    font-style: normal;\n    font-size: 11px;\n    color: #999999;\n    padding-left: 35px;\n}\n.email_to_list b[data-v-4e583fa8] {\n    display: flex;\n    font-weight: 500;\n    margin-right: 5px;\n}\n.email_to_list i[data-v-4e583fa8] {\n    font-style: normal;\n}\n.email__to .input-field[data-v-4e583fa8] {\n    display: flex;\n}\n.new__email-wrap .messages__attachments li[data-v-4e583fa8] {\n    position: relative;\n}\n.new__email-inner[data-v-4e583fa8] {\n    position: relative;\n}\n.new__email-wrap .messages__attachments li[data-v-4e583fa8]:hover::after,\n.new__email-wrap .messages__attachments li[data-v-4e583fa8]:hover::before {\n    content: '';\n    position: absolute;\n    width: 44px;\n    height: 4px;\n    background: #ff5d5d;\n    left: 50%;\n    top: 50%;\n    margin-top: 12px;\n    margin-left: -27px;\n    cursor: pointer;\n}\n.new__email-wrap .messages__attachments li[data-v-4e583fa8]:hover::before {\n    transform: rotate(-45deg);\n}\n.new__email-wrap .messages__attachments li[data-v-4e583fa8]:hover::after {\n    transform: rotate(45deg);\n}\n#fileUpload[data-v-4e583fa8] {\n    display: none;\n}\n#fileUpload + label[data-v-4e583fa8] {\n    display: block;\n}\n.progress[data-v-4e583fa8] {\n    top: -12px;\n    left: 3px;\n    position: absolute;\n}\n.messages__attachments[data-v-4e583fa8] {\n    top: 35%;\n    width: 100%;\n}\n.new__email-body[data-v-4e583fa8] {\n    margin-bottom: 10px;\n}\n.new__email-wrap[data-v-4e583fa8] {\n    background: #fff;\n    padding-top: 10px;\n    height: 609px;\n    position: relative\n}\n.input-field[data-v-4e583fa8] {\n    margin: 0;\n}\n.email__header-box .input-field[data-v-4e583fa8] {\n    max-width: 585px;\n    width: 100%;\n}\n.email__header-box[data-v-4e583fa8] {\n    display: flex;\n    padding-right: 17px;\n    padding-left: 31px;\n}\n.email__to[data-v-4e583fa8], .email__subject[data-v-4e583fa8] {\n    display: flex;\n    max-width: 690px;\n    width: 100%;\n}\n.email__to input[data-v-4e583fa8], .email__subject input[data-v-4e583fa8] {\n    margin: 0 !important;\n    border: 2px solid #F5F5F5 !important;\n    border-radius: 0px 4px 4px 0px !important;\n    border-left: none !important;\n    font-weight: bold;\n    font-size: 12px !important;\n    line-height: 40px;\n    color: #999999;\n    padding-left: 35px !important;\n    max-width: 690px;\n}\n.new__email-switch[data-v-4e583fa8] {\n    display: flex;\n    align-items: center;\n}\n.switch label .lever[data-v-4e583fa8] {\n    width: 40px;\n    height: 25px;\n    border: 2px solid #F0F0F0;\n    background-color: transparent;\n}\n.switch label .lever[data-v-4e583fa8]:before, .switch label .lever[data-v-4e583fa8]:after {\n    width: 15px;\n    height: 15px;\n    left: 5px;\n    top: 2px;\n}\n.switch label input[type=checkbox]:checked + .lever[data-v-4e583fa8] {\n    background-color: #1875F0;\n}\n.switch label input[type=checkbox]:checked + .lever[data-v-4e583fa8]:after {\n    background-color: #FFFFFF\n}\n.switch label .lever[data-v-4e583fa8]:after {\n    background-color: #E6E6E6;\n}\n.email__to input[data-v-4e583fa8]:focus, .email__subject input[data-v-4e583fa8]:focus {\n    box-shadow: none !important;\n}\n.validate[data-v-4e583fa8], .valid[data-v-4e583fa8] {\n    box-shadow: none !important;\n}\n.email__to span[data-v-4e583fa8], .email__subject span[data-v-4e583fa8] {\n    font-style: normal;\n    font-weight: 900;\n    font-size: 10px;\n    line-height: 45px;\n    letter-spacing: 1.25px;\n    padding: 0 17px;\n    border: 2px solid #F5F5F5;\n    border-radius: 4px 0px 0px 4px;\n    color: #B3B3B3;\n}\n.new__email-bar[data-v-4e583fa8] {\n    display: flex;\n    align-items: center;\n    background: #fff;\n    border-bottom: 2px solid #F5F5F5;\n    color: #D8D8D8;\n    font-style: normal;\n    font-weight: 500;\n    font-size: 12px;\n}\n.new__email-bar i[data-v-4e583fa8] {\n    width: 26px;\n    height: 26px;\n}\n.email__actions[data-v-4e583fa8] {\n    display: flex;\n    border-right: 2px solid #F5F5F5;\n}\n.email__actions .action_group[data-v-4e583fa8] {\n    padding: 30px 22px;\n    text-align: center;\n    display: flex;\n}\n.email__search-wrap[data-v-4e583fa8] {\n    padding: 21px 25px 21px 30px;\n    border-right: 2px solid #F5F5F5;\n}\n.email__search div[data-v-4e583fa8] {\n    display: flex;\n    align-items: center;\n}\n.email__search i[data-v-4e583fa8] {\n    position: relative;\n    z-index: 222;\n    cursor: pointer;\n}\n.email__arrows[data-v-4e583fa8] {\n    padding: 32px 30px 30px 32px;\n    display: flex;\n    border-right: 2px solid #F5F5F5;\n}\n.email__actions .action_text[data-v-4e583fa8] {\n    color: #CCCCCC;\n}\n.new__email-bar input[data-v-4e583fa8] {\n    border-bottom: none !important;\n    margin-bottom: 0 !important;\n}\n.new__email-bar label.active[data-v-4e583fa8] {\n    color: #D8D8D8 !important;\n}\n.new__email-bar input[data-v-4e583fa8]:focus {\n    box-shadow: none !important\n}\n.email-dop[data-v-4e583fa8] {\n    display: flex\n}\n.email-dop div[data-v-4e583fa8] {\n    padding: 29px 15px;\n}\n.email__arrows i[data-v-4e583fa8], .action_group i[data-v-4e583fa8], .email-dop i[data-v-4e583fa8] {\n    cursor: pointer\n}\n.email__arrows i[data-v-4e583fa8]:hover, .action_group i[data-v-4e583fa8]:hover, .action_group label:hover i[data-v-4e583fa8], .email-dop i[data-v-4e583fa8]:hover {\n    color: #837d7d;\n}\n.action_group label[data-v-4e583fa8] {\n    width: 26px;\n    height: 26px;\n    position: absolute;\n    cursor: pointer;\n}\n\n\n", ""]);
 
 // exports
 
@@ -57235,42 +57286,10 @@ var render = function() {
                 "i",
                 {
                   staticClass: "reloadMess material-icons ",
-                  attrs: { title: "обновить" },
+                  attrs: { title: "Обновить" },
                   on: { click: _vm.reloadMess }
                 },
                 [_vm._v("refresh")]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "action__group" }, [
-              _c(
-                "i",
-                {
-                  staticClass: "material-icons",
-                  attrs: { title: "В спам!" },
-                  on: {
-                    click: function($event) {
-                      return _vm.actions("spam")
-                    }
-                  }
-                },
-                [_vm._v("report")]
-              )
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "action__group" }, [
-              _c(
-                "i",
-                {
-                  staticClass: "material-icons",
-                  attrs: { title: "Прочитано/Не прочитано" },
-                  on: {
-                    click: function($event) {
-                      return _vm.actions("seen")
-                    }
-                  }
-                },
-                [_vm._v("fiber_manual_record")]
               )
             ]),
             _vm._v(" "),
@@ -57459,12 +57478,12 @@ var render = function() {
           "div",
           { staticClass: "email-dop" },
           [
-            _c("router-link", { attrs: { to: "/settings" } }, [
+            _c("router-link", { attrs: { to: "/settings", tag: "div" } }, [
               _c(
                 "i",
                 {
                   staticClass: "material-icons",
-                  attrs: { title: "настройки" }
+                  attrs: { title: "Настройки" }
                 },
                 [_vm._v("settings")]
               )
@@ -57955,17 +57974,21 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "email_simple-paginate" }, [
-          _c("div", { staticClass: "paginate-numbers" }, [
-            _vm._v(
-              "\n                " +
-                _vm._s(_vm.getMessages.from) +
-                "\n                -\n                " +
-                _vm._s(_vm.getMessages.to) +
-                "\n                of\n                " +
-                _vm._s(_vm.getMessages.total) +
-                "\n            "
-            )
-          ]),
+          _vm.getMessages.total !== 0
+            ? _c("div", { staticClass: "paginate-numbers" }, [
+                _vm._v(
+                  "\n                " +
+                    _vm._s(_vm.getMessages.from) +
+                    "\n                -\n                " +
+                    _vm._s(_vm.getMessages.to) +
+                    "\n                of\n                " +
+                    _vm._s(_vm.getMessages.total) +
+                    "\n            "
+                )
+              ])
+            : _c("div", { staticClass: "paginate-numbers" }, [
+                _vm._v("\n                Нет записей\n            ")
+              ]),
           _vm._v(" "),
           _c("div", { staticClass: "paginate-arrows" }, [
             _c(
@@ -58004,12 +58027,12 @@ var render = function() {
           "div",
           { staticClass: "email-dop" },
           [
-            _c("router-link", { attrs: { to: "/settings" } }, [
+            _c("router-link", { attrs: { to: "/settings", tag: "div" } }, [
               _c(
                 "i",
                 {
                   staticClass: "material-icons",
-                  attrs: { title: "настройки" }
+                  attrs: { title: "Настройки" }
                 },
                 [_vm._v("settings")]
               )
@@ -58373,13 +58396,27 @@ var render = function() {
           ])
         ]),
         _vm._v(" "),
-        _c("div", { staticClass: "email-dop" }, [
-          _c("i", { staticClass: "material-icons", on: { click: _vm.print } }, [
-            _vm._v("local_printshop")
-          ]),
-          _vm._v(" "),
-          _c("i", { staticClass: "material-icons" }, [_vm._v("settings")])
-        ])
+        _c(
+          "div",
+          { staticClass: "email-dop" },
+          [
+            _c(
+              "i",
+              { staticClass: "material-icons", on: { click: _vm.print } },
+              [_vm._v("local_printshop")]
+            ),
+            _vm._v(" "),
+            _c(
+              "router-link",
+              {
+                staticClass: "material-icons",
+                attrs: { to: "/settings", tag: "i" }
+              },
+              [_vm._v("\n               settings\n            ")]
+            )
+          ],
+          1
+        )
       ]),
       _vm._v(" "),
       _vm.preloader
@@ -58387,50 +58424,87 @@ var render = function() {
             _vm._m(0)
           ])
         : _c("div", { staticClass: "mess__open-content" }, [
-            _c("div", { staticClass: "open__header" }, [
-              _vm._v("\n            От\n            "),
-              _c("div", { staticClass: "open__user-wrap" }, [
-                _c("div", { staticClass: "open__user-photo" }, [
-                  _vm._v(
-                    "\n                    " +
-                      _vm._s(
-                        !_vm.message.from_name[0]
-                          ? _vm.message.from_name[0]
-                          : _vm.message.from[0]
-                      ) +
-                      "\n                "
-                  )
-                ]),
-                _vm._v(" "),
-                _c("div", { staticClass: "open__user-name" }, [
-                  _vm._v(
-                    "\n                    " +
-                      _vm._s(
-                        !_vm.message.from_name[0]
-                          ? _vm.message.from_name
-                          : _vm.message.from
-                      ) +
-                      "\n                "
-                  )
+            !_vm.$route.params.sent
+              ? _c("div", { staticClass: "open__header" }, [
+                  _vm._v("\n            От\n            "),
+                  _c("div", { staticClass: "open__user-wrap" }, [
+                    _c("div", { staticClass: "open__user-photo" }, [
+                      _vm._v(
+                        "\n                    " +
+                          _vm._s(
+                            !_vm.message.from_name[0]
+                              ? _vm.message.from_name[0]
+                              : _vm.message.from[0]
+                          ) +
+                          "\n                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "open__user-name" }, [
+                      _vm._v(
+                        "\n                    " +
+                          _vm._s(
+                            !_vm.message.from_name[0]
+                              ? _vm.message.from_name
+                              : _vm.message.from
+                          ) +
+                          "\n                "
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "open__subject" }, [
+                    _vm._v(
+                      "\n                Re: " +
+                        _vm._s(_vm.message.subject) +
+                        "\n            "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "open__date" }, [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(_vm.getDate(_vm.message.date_send)) +
+                        " AM\n            "
+                    )
+                  ])
                 ])
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "open__subject" }, [
-                _vm._v(
-                  "\n                Re: " +
-                    _vm._s(_vm.message.subject) +
-                    "\n            "
-                )
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "open__date" }, [
-                _vm._v(
-                  "\n                " +
-                    _vm._s(_vm.getDate(_vm.message.date_send)) +
-                    " AM\n            "
-                )
-              ])
-            ]),
+              : _c("div", { staticClass: "open__header" }, [
+                  _vm._v("\n            От\n            "),
+                  _c("div", { staticClass: "open__user-wrap" }, [
+                    _c("div", { staticClass: "open__user-photo" }, [
+                      _vm._v(
+                        "\n                    " +
+                          _vm._s(_vm.message.to[0]) +
+                          "\n                "
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "open__user-name" }, [
+                      _vm._v(
+                        "\n                    " +
+                          _vm._s(_vm.message.to) +
+                          "\n                "
+                      )
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "open__subject" }, [
+                    _vm._v(
+                      "\n                Re: " +
+                        _vm._s(_vm.message.subject) +
+                        "\n            "
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "open__date" }, [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(_vm.getDate(_vm.message.date_send)) +
+                        " AM\n            "
+                    )
+                  ])
+                ]),
             _vm._v(" "),
             _c("div", {
               staticClass: "open__body",
@@ -58459,14 +58533,16 @@ var render = function() {
                               _vm._v(_vm._s(_vm._f("shortName")(attach.name)))
                             ]),
                             _vm._v(" "),
-                            attach.imageSrc !== null
+                            _vm.imageVariable.indexOf(attach.mime_type) !== -1
                               ? _c("VuePureLightbox", {
                                   attrs: {
-                                    thumbnail: "/storage/" + attach.name,
-                                    images: ["/storage/" + attach.name]
+                                    thumbnail: "/storage/" + attach.path,
+                                    images: ["/storage/" + attach.path]
                                   }
                                 })
-                              : _c("img", {
+                              : _vm.fileVariable.indexOf(attach.mime_type) !==
+                                -1
+                              ? _c("img", {
                                   staticClass: "attach_icon",
                                   attrs: {
                                     src:
@@ -58474,6 +58550,21 @@ var render = function() {
                                       "-" +
                                       attach.mime_type +
                                       ".png",
+                                    alt: "attach"
+                                  },
+                                  on: {
+                                    click: function($event) {
+                                      return _vm.downloads(
+                                        attach.path,
+                                        attach.name
+                                      )
+                                    }
+                                  }
+                                })
+                              : _c("img", {
+                                  staticClass: "attach_icon",
+                                  attrs: {
+                                    src: "/img/no-file.png",
                                     alt: "attach"
                                   },
                                   on: {
@@ -58853,12 +58944,12 @@ var render = function() {
           "div",
           { staticClass: "email-dop" },
           [
-            _c("router-link", { attrs: { to: "/settings" } }, [
+            _c("router-link", { attrs: { to: "/settings", tag: "div" } }, [
               _c(
                 "i",
                 {
                   staticClass: "material-icons",
-                  attrs: { title: "настройки" }
+                  attrs: { title: "Настройки" }
                 },
                 [_vm._v("settings")]
               )
@@ -58887,7 +58978,7 @@ var render = function() {
                   tag: "tr",
                   to: {
                     name: "MessagesOpen",
-                    params: { uid: message.message_id }
+                    params: { uid: message.message_id, sent: true }
                   }
                 }
               },
@@ -59407,12 +59498,12 @@ var render = function() {
           "div",
           { staticClass: "email-dop" },
           [
-            _c("router-link", { attrs: { to: "/settings" } }, [
+            _c("router-link", { attrs: { to: "/settings", tag: "div" } }, [
               _c(
                 "i",
                 {
                   staticClass: "material-icons",
-                  attrs: { title: "настройки" }
+                  attrs: { title: "Настройки" }
                 },
                 [_vm._v("settings")]
               )
@@ -59893,18 +59984,20 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "w100 new__email-inner" }, [
     _c("div", { staticClass: "new__email-bar" }, [
-      _c(
-        "div",
-        {
-          staticClass: "email__arrows",
-          on: {
-            click: function($event) {
-              return _vm.$router.go(-1)
+      _c("div", { staticClass: "email__arrows" }, [
+        _c(
+          "i",
+          {
+            staticClass: "material-icons",
+            on: {
+              click: function($event) {
+                return _vm.$router.go(-1)
+              }
             }
-          }
-        },
-        [_c("i", { staticClass: "material-icons" }, [_vm._v("arrow_back")])]
-      ),
+          },
+          [_vm._v("arrow_back")]
+        )
+      ]),
       _vm._v(" "),
       _c("div", { staticClass: "email__actions" }, [
         _c("div", { staticClass: "action_group" }, [
@@ -59920,22 +60013,23 @@ var render = function() {
             on: { click: _vm.draftTrigger, change: _vm.fileInputChange }
           }),
           _vm._v(" "),
-          _c(
-            "label",
-            { staticClass: "action_text", attrs: { for: "fileUpload" } },
-            [_vm._v("Прикрепить")]
-          )
+          _c("label", {
+            staticClass: "action_text",
+            attrs: { title: "Прикрепить", for: "fileUpload" }
+          })
         ]),
         _vm._v(" "),
-        _c(
-          "div",
-          { staticClass: "action_group", on: { click: _vm.saveMessage } },
-          [
-            _c("i", { staticClass: "material-icons" }, [_vm._v("archive")]),
-            _vm._v(" "),
-            _c("div", { staticClass: "action_text" }, [_vm._v("Сохранить")])
-          ]
-        ),
+        _c("div", { staticClass: "action_group" }, [
+          _c(
+            "i",
+            {
+              staticClass: "material-icons",
+              attrs: { title: "Сохранить" },
+              on: { click: _vm.saveMessage }
+            },
+            [_vm._v("archive")]
+          )
+        ]),
         _vm._v(" "),
         _vm._m(0)
       ]),
@@ -59947,7 +60041,40 @@ var render = function() {
           [_c("i", { staticClass: "material-icons" }, [_vm._v("dehaze")])]
         ),
         _vm._v(" "),
-        _vm._m(1)
+        _c("div", { staticClass: "email__search" }, [
+          _c("div", { staticClass: "input-field" }, [
+            _c("label", { attrs: { for: "last_name" } }, [_vm._v("Поиск")]),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.search,
+                  expression: "search"
+                }
+              ],
+              staticClass: "validate",
+              attrs: { id: "last_name", type: "text" },
+              domProps: { value: _vm.search },
+              on: {
+                input: [
+                  function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.search = $event.target.value
+                  },
+                  function($event) {
+                    return _vm.mySearch(_vm.message.editorData)
+                  }
+                ]
+              }
+            }),
+            _vm._v(" "),
+            _c("i", { staticClass: "material-icons" }, [_vm._v("search")])
+          ])
+        ])
       ]),
       _vm._v(" "),
       _c("div", { staticClass: "email-dop" }, [
@@ -59963,7 +60090,7 @@ var render = function() {
           )
         ]),
         _vm._v(" "),
-        _vm._m(2)
+        _vm._m(1)
       ])
     ]),
     _vm._v(" "),
@@ -60116,80 +60243,89 @@ var render = function() {
         ])
       ]),
       _vm._v(" "),
-      _c(
-        "div",
-        { attrs: { id: "editor" } },
-        [
-          _c("ckeditor", {
-            attrs: { editor: _vm.editor, config: _vm.editorConfig },
-            model: {
-              value: _vm.message.editorData,
-              callback: function($$v) {
-                _vm.$set(_vm.message, "editorData", $$v)
-              },
-              expression: "message.editorData"
-            }
-          })
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _vm.filesFinishData.length > 0
-        ? _c("div", { staticClass: "messages__attachments" }, [
-            _c("div", {
-              staticClass: "progress",
-              style: { width: _vm.fileProgress + "%" }
-            }),
-            _vm._v(" "),
-            _c("i", { staticClass: "material-icons" }, [_vm._v("attachment")]),
-            _vm._v(" "),
-            _c("div", [
-              _c("div", { staticClass: "attachments-tile" }, [
-                _vm._v("Вложения")
+      _c("div", [
+        _c(
+          "div",
+          { staticClass: "open__body", attrs: { id: "editor" } },
+          [
+            _c("ckeditor", {
+              attrs: { editor: _vm.editor, config: _vm.editorConfig },
+              model: {
+                value: _vm.message.editorData,
+                callback: function($$v) {
+                  _vm.$set(_vm.message, "editorData", $$v)
+                },
+                expression: "message.editorData"
+              }
+            })
+          ],
+          1
+        ),
+        _vm._v(" "),
+        _vm.filesFinishData.length > 0
+          ? _c("div", { staticClass: "messages__attachments" }, [
+              _c("div", {
+                staticClass: "progress",
+                style: { width: _vm.fileProgress + "%" }
+              }),
+              _vm._v(" "),
+              _c("i", { staticClass: "material-icons" }, [
+                _vm._v("attachment")
               ]),
               _vm._v(" "),
-              _c(
-                "ul",
-                _vm._l(_vm.filesFinishData, function(file, index) {
-                  return _c(
-                    "li",
-                    {
-                      key: index,
-                      on: {
-                        click: function($event) {
-                          return _vm.delAttach(index)
+              _c("div", [
+                _c("div", { staticClass: "attachments-tile" }, [
+                  _vm._v("Вложения")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "ul",
+                  _vm._l(_vm.filesFinishData, function(file, index) {
+                    return _c(
+                      "li",
+                      {
+                        key: index,
+                        on: {
+                          click: function($event) {
+                            return _vm.delAttach(index)
+                          }
                         }
-                      }
-                    },
-                    [
-                      _c("span", { staticClass: "attach-name" }, [
-                        _vm._v(_vm._s(_vm._f("shortName")(file.name)))
-                      ]),
-                      _vm._v(" "),
-                      file.mime_type === "jpg" || file.mime_type === "png"
-                        ? _c("VuePureLightbox", {
-                            attrs: {
-                              thumbnail: "/storage/app/" + file.path,
-                              images: ["/storage/app/" + file.path]
-                            }
-                          })
-                        : _c("img", {
-                            staticClass: "attach_icon",
-                            attrs: {
-                              src:
-                                "/img/attach" + "-" + file.mime_type + ".png",
-                              alt: "attach"
-                            }
-                          })
-                    ],
-                    1
-                  )
-                }),
-                0
-              )
+                      },
+                      [
+                        _c("span", { staticClass: "attach-name" }, [
+                          _vm._v(_vm._s(_vm._f("shortName")(file.name)))
+                        ]),
+                        _vm._v(" "),
+                        _vm.imageVariable.indexOf(file.mime_type) !== -1
+                          ? _c("VuePureLightbox", {
+                              attrs: {
+                                thumbnail: "/storage/app/" + file.path,
+                                images: ["/storage/app/" + file.path]
+                              }
+                            })
+                          : _vm.fileVariable.indexOf(file.mime_type) !== -1
+                          ? _c("img", {
+                              staticClass: "attach_icon",
+                              attrs: {
+                                src:
+                                  "/img/attach" + "-" + file.mime_type + ".png",
+                                alt: "attach"
+                              }
+                            })
+                          : _c("img", {
+                              staticClass: "attach_icon",
+                              attrs: { src: "/img/no-file.png", alt: "attach" }
+                            })
+                      ],
+                      1
+                    )
+                  }),
+                  0
+                )
+              ])
             ])
-          ])
-        : _vm._e()
+          : _vm._e()
+      ])
     ])
   ])
 }
@@ -60199,25 +60335,8 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "action_group" }, [
-      _c("i", { staticClass: "material-icons" }, [_vm._v("person_add")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "action_text" }, [_vm._v("Подпись")])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "email__search" }, [
-      _c("div", { staticClass: "input-field" }, [
-        _c("label", { attrs: { for: "last_name" } }, [_vm._v("Поиск")]),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "validate",
-          attrs: { id: "last_name", type: "text" }
-        }),
-        _vm._v(" "),
-        _c("i", { staticClass: "material-icons" }, [_vm._v("search")])
+      _c("i", { staticClass: "material-icons", attrs: { title: "Подпись" } }, [
+        _vm._v("person_add")
       ])
     ])
   },
@@ -61218,7 +61337,7 @@ var render = function() {
     _vm._m(0),
     _vm._v(" "),
     _c("div", { staticClass: "logout", on: { click: _vm.logout } }, [
-      _vm._v("\n        ВЫЙТИ\n    ")
+      _vm._v("\n        ВЫЙТИ ИЗ АККАУНТА\n    ")
     ])
   ])
 }

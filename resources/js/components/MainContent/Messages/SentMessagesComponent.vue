@@ -91,8 +91,8 @@
                 </div>
             </div>
             <div class="email-dop">
-                <router-link to="/settings">
-                    <i title="настройки" class="material-icons">settings</i>
+                <router-link to="/settings" tag="div">
+                    <i title="Настройки" class="material-icons">settings</i>
                 </router-link>
             </div>
         </div>
@@ -115,7 +115,7 @@
             <router-link
                 tag="tr"
                 v-for="(message , index) in getMessages.data"
-                :to="{name: 'MessagesOpen', params: {uid: message.message_id}}"
+                :to="{name: 'MessagesOpen', params: {uid: message.message_id , sent: true}}"
                 :key="index"
                 :class="{new__massage__list: message.seen != 0}"
             >

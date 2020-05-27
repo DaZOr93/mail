@@ -27,7 +27,9 @@
             </div>
             <div class="email-dop">
                 <i @click="print" class="material-icons">local_printshop</i>
-                <i class="material-icons">settings</i>
+                <router-link to="/settings" tag="i" class="material-icons">
+                   settings
+                </router-link>
             </div>
         </div>
         <div class="preloader-wrapper big active " v-if="preloader">
@@ -44,7 +46,7 @@
             </div>
         </div>
         <div class="mess__open-content" v-else>
-            <div class="open__header">
+            <div class="open__header" v-if="!$route.params.sent">
                 От
                 <div class="open__user-wrap">
                     <div class="open__user-photo">
@@ -52,6 +54,23 @@
                     </div>
                     <div class="open__user-name">
                         {{ (!message.from_name[0]) ? message.from_name : message.from}}
+                    </div>
+                </div>
+                <div class="open__subject">
+                    Re: {{ message.subject}}
+                </div>
+                <div class="open__date">
+                    {{ getDate(message.date_send) }} AM
+                </div>
+            </div>
+            <div class="open__header" v-else>
+                От
+                <div class="open__user-wrap">
+                    <div class="open__user-photo">
+                        {{ message.to[0] }}
+                    </div>
+                    <div class="open__user-name">
+                        {{ message.to }}
                     </div>
                 </div>
                 <div class="open__subject">
@@ -70,17 +89,22 @@
                         <li v-for="attach in message.attachments">
                             <span class="attach-name">{{ attach.name | shortName}}</span>
                             <VuePureLightbox
-                                v-if="attach.imageSrc !== null"
-                                :thumbnail="`/storage/${attach.name}`"
-                                :images="[`/storage/${attach.name}`]"
+                                v-if="imageVariable.indexOf( attach.mime_type ) !== -1"
+                                :thumbnail="`/storage/${attach.path}`"
+                                :images="[`/storage/${attach.path}`]"
                             >
                             </VuePureLightbox>
                             <img
-                                v-else
+                                v-else-if="fileVariable.indexOf( attach.mime_type ) !== -1"
                                 class="attach_icon"
                                 @click="downloads(attach.path , attach.name)"
                                 :src="'/img/attach' + '-' + attach.mime_type + '.png'"
                                 alt="attach">
+                            <img  v-else
+                                  class="attach_icon"
+                                  @click="downloads(attach.path , attach.name)"
+                                  :src="'/img/no-file.png'"
+                                  alt="attach">
                         </li>
                     </ul>
                 </div>
@@ -89,7 +113,8 @@
         </div>
         <deleteModal @close="deleteModal = !deleteModal" :deleteModal="deleteModal" :message_id="message.message_id"
                      :uid="message.uid"></deleteModal>
-        <spamModal @close="spamModal = !spamModal" :msgOpen="true" :modal_spam="spamModal" :messages="[message]"></spamModal>
+        <spamModal @close="spamModal = !spamModal" :msgOpen="true" :modal_spam="spamModal"
+                   :messages="[message]"></spamModal>
     </div>
 </template>
 
@@ -101,14 +126,16 @@
 
     export default {
         name: "MessagesOpenComponent",
-        components: {deleteModal, VuePureLightbox ,spamModal},
+        components: {deleteModal, VuePureLightbox, spamModal},
         mixins: [searchMixin],
         data() {
             return {
                 uid: this.$route.params.uid,
                 deleteModal: false,
                 search: "",
-                spamModal: false
+                spamModal: false,
+                imageVariable: ['png' , 'jpg' , 'PNG', 'JPG' , 'bmp'],
+                fileVariable: ['txt' , 'docx' , 'xls', 'xlsx', 'zip' , 'rar' , 'doc' , 'ppt' , 'pdf'],
             }
         },
         computed: {
@@ -176,7 +203,7 @@
     .messages__attachments {
         position: absolute;
         max-width: 240px;
-        right: 13px;
+        right: 15px;
         top: 115px;
         z-index: 2;
         display: flex;

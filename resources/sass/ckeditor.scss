@@ -70,3 +70,11 @@
 .ck.ck-toolbar>.ck-toolbar__items button:nth-child(3)  svg {
     transform: rotate(54deg);
 }
+
+// Extra large devices (large desktops, 1700 and up)
+@media (max-width: 1700px) {
+    .ck-editor {
+        max-width: 600px;
+    }
+}
+

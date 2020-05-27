@@ -43,7 +43,7 @@
             </div>
         </div>
         <div class="logout" @click="logout">
-            ВЫЙТИ
+            ВЫЙТИ ИЗ АККАУНТА
         </div>
     </div>
 </template>

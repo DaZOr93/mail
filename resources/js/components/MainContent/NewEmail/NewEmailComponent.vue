@@ -1,23 +1,21 @@
 <template>
     <div class="w100 new__email-inner">
         <div class="new__email-bar">
-            <div @click="$router.go(-1)" class="email__arrows">
-                <i class="material-icons">arrow_back</i>
+            <div class="email__arrows">
+                <i @click="$router.go(-1)" class="material-icons">arrow_back</i>
             </div>
             <div class="email__actions">
                 <div class="action_group">
                     <i class="material-icons">attach_file</i>
                     <input id="fileUpload" type="file" @click="draftTrigger" name="file" multiple=""
                            @change="fileInputChange">
-                    <label for="fileUpload" class="action_text">Прикрепить</label>
-                </div>
-                <div class="action_group" @click="saveMessage">
-                    <i class="material-icons">archive</i>
-                    <div class="action_text">Сохранить</div>
+                    <label title="Прикрепить" for="fileUpload" class="action_text"></label>
                 </div>
                 <div class="action_group">
-                    <i class="material-icons">person_add</i>
-                    <div class="action_text">Подпись</div>
+                    <i title="Сохранить" @click="saveMessage" class="material-icons">archive</i>
+                </div>
+                <div class="action_group">
+                    <i title="Подпись" class="material-icons">person_add</i>
                 </div>
             </div>
             <div class="email__search-wrap w100">
@@ -25,7 +23,7 @@
                 <div class="email__search">
                     <div class="input-field">
                         <label for="last_name">Поиск</label>
-                        <input id="last_name" type="text" class="validate">
+                        <input @input="mySearch(message.editorData)" id="last_name" type="text" v-model="search" class="validate">
                         <i class="material-icons">search</i>
                     </div>
                 </div>
@@ -84,30 +82,36 @@
                     </div>
                 </div>
             </div>
-            <div id="editor">
-                <ckeditor :editor="editor" v-model="message.editorData" :config="editorConfig"></ckeditor>
-            </div>
-            <div class="messages__attachments" v-if="filesFinishData.length > 0">
-                <div class="progress" :style="{width: fileProgress + '%'}"></div>
-                <i class="material-icons">attachment</i>
-                <div>
-                    <div class="attachments-tile">Вложения</div>
-                    <ul>
-                        <li v-for="(file , index) in filesFinishData" :key="index" @click="delAttach(index)">
-                            <span class="attach-name">{{ file.name | shortName}}</span>
-                            <VuePureLightbox
-                                v-if="file.mime_type === 'jpg' || file.mime_type ==='png'"
-                                :thumbnail="`/storage/app/${file.path}`"
-                                :images="[`/storage/app/${file.path}`]"
-                            >
-                            </VuePureLightbox>
-                            <img
-                                v-else
-                                class="attach_icon"
-                                :src="'/img/attach' + '-' + file.mime_type + '.png'"
-                                alt="attach">
-                        </li>
-                    </ul>
+            <div>
+                <div id="editor" class="open__body">
+                    <ckeditor :editor="editor" v-model="message.editorData" :config="editorConfig"></ckeditor>
+                </div>
+                <div class="messages__attachments" v-if="filesFinishData.length > 0">
+                    <div class="progress" :style="{width: fileProgress + '%'}"></div>
+                    <i class="material-icons">attachment</i>
+                    <div>
+                        <div class="attachments-tile">Вложения</div>
+                        <ul>
+                            <li v-for="(file , index) in filesFinishData" :key="index" @click="delAttach(index)">
+                                <span class="attach-name">{{ file.name | shortName}}</span>
+                                <VuePureLightbox
+                                    v-if="imageVariable.indexOf( file.mime_type ) !== -1"
+                                    :thumbnail="`/storage/app/${file.path}`"
+                                    :images="[`/storage/app/${file.path}`]"
+                                >
+                                </VuePureLightbox>
+                                <img
+                                    v-else-if="fileVariable.indexOf( file.mime_type ) !== -1"
+                                    class="attach_icon"
+                                    :src="'/img/attach' + '-' + file.mime_type + '.png'"
+                                    alt="attach">
+                                <img v-else
+                                     class="attach_icon"
+                                     :src="'/img/no-file.png'"
+                                     alt="attach">
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
@@ -125,6 +129,9 @@
         data() {
             return {
                 editor: ClassicEditor,
+                search: "",
+                imageVariable: ['png', 'jpg', 'PNG', 'JPG', 'bmp'],
+                fileVariable: ['txt', 'docx', 'xls', 'xlsx', 'zip', 'rar', 'doc', 'ppt', 'pdf'],
                 message: {
                     'editorData': 'Введите сообщение',
                     'attach': [],
@@ -202,7 +209,7 @@
             },
             saveMessage() {
                 if (this.draftId < 1) {
-                    return this.toast('Нечего сохронять', 'warning')
+                    return this.toast('Нечего сохранять', 'warning')
                 }
                 axios.post('/api/updateDraft', {message: this.message, id: this.draftId});
                 return this.toast('Cохранил', 'success')
@@ -215,6 +222,24 @@
             },
             update: function (index, event) {
                 this.message.emails[index] = event.target.innerText.trim();
+            },
+            mySearch(html) {
+                let pattern = '(<[^>]*>)|' + this.search.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
+                document.querySelectorAll('.open__body').forEach(function (n) {
+                    if (!n.dataset.textOriginal) {
+                        n.dataset.textOriginal = n.innerHTML;
+                    }
+                    n.innerHTML = n.dataset.textOriginal.replace(new RegExp(pattern, 'gi'), function (m0, m1) {
+                        if (m1) return m0;
+                        return '<span class="highlight">' + m0 + '</span>';
+                    });
+                });
+                if (this.search.length === 0) {
+                    this.message.editorData = '';
+                    setTimeout(() => {
+                        this.message.editorData = html;
+                    }, 1)
+                }
             },
             toast(msg, type) {
                 Vue.$toast.open({
@@ -280,11 +305,11 @@
             if (this.$route.params.replayMessage) {
                 this.message = {
                     'editorData': '<blockquote>' + this.$route.params.replayMessage.html + '/<blockquote>',
-                    'to': (!this.$route.params.replayMessage.to.split(' ')) ? this.$route.params.replayMessage.to : '',
+                    'to': this.$route.params.replayMessage.to,
                     'subject': 'Re:' + ' ' + this.$route.params.replayMessage.subject,
                     'deliveryRequest': true,
                     'attach': [],
-                    'emails': (this.$route.params.replayMessage.to.split(' ')) ? this.$route.params.replayMessage.to.split(' ') : [],
+                    'emails': [],
                     'attachBol': this.$route.params.replayMessage.attach
                 };
                 this.draft = true;
@@ -502,8 +527,9 @@
     }
 
     .email__actions .action_group {
-        padding: 20px 22px;
+        padding: 30px 22px;
         text-align: center;
+        display: flex;
     }
 
     .email__search-wrap {
@@ -553,11 +579,20 @@
         padding: 29px 15px;
     }
 
-    .email__arrows, .action_group, .email-dop div {
+    .email__arrows i, .action_group i, .email-dop i {
+        cursor: pointer
+    }
+
+    .email__arrows i:hover, .action_group i:hover, .action_group label:hover i, .email-dop i:hover {
+        color: #837d7d;
+    }
+
+    .action_group label {
+        width: 26px;
+        height: 26px;
+        position: absolute;
         cursor: pointer;
     }
 
-    .email__arrows:hover, .action_group:hover, .email-dop div:hover {
-        background: rgba(24, 117, 240, 0.16);
-    }
+
 </style>

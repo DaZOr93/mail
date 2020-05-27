@@ -68,12 +68,15 @@
                 </div>
             </div>
             <div class="email_simple-paginate">
-                <div class="paginate-numbers">
+                <div class="paginate-numbers" v-if="getMessages.total !== 0">
                     {{ getMessages.from}}
                     -
                     {{ getMessages.to}}
                     of
                     {{ getMessages.total}}
+                </div>
+                <div  class="paginate-numbers" v-else>
+                    Нет записей
                 </div>
                 <div class="paginate-arrows">
                     <i
@@ -94,8 +97,8 @@
                 </div>
             </div>
             <div class="email-dop">
-                <router-link to="/settings">
-                    <i title="настройки" class="material-icons">settings</i>
+                <router-link to="/settings" tag="div">
+                    <i title="Настройки" class="material-icons">settings</i>
                 </router-link>
             </div>
         </div>

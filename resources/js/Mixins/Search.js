@@ -2,7 +2,6 @@
 
 
 export default {
-
     methods: {
         mySearch(html) {
             let pattern = '(<[^>]*>)|' + this.search.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');

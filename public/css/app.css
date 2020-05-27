@@ -1336,3 +1336,9 @@ li {
   transform: rotate(54deg);
 }
 
+@media (max-width: 1700px) {
+  .ck-editor {
+    max-width: 600px;
+  }
+}
+
