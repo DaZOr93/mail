@@ -1125,6 +1125,10 @@ li {
   .logo-wrap .logo {
     padding-right: 0;
   }
+
+  .open__user-wrap {
+    margin-right: 10px !important;
+  }
 }
 
 @media (max-width: 977px) {
@@ -1228,18 +1232,6 @@ li {
     right: 10px;
   }
 
-  .user_drop {
-    z-index: 2;
-    background: #fff;
-    bottom: -40px;
-    right: 20px;
-    position: absolute;
-    opacity: 0;
-    transition: all 0.36s;
-    width: 132px;
-    padding: 0;
-  }
-
   .user_show {
     opacity: 1;
   }
@@ -1251,6 +1243,17 @@ li {
 
   .folder__messages-list .email_simple-paginate {
     max-width: 550px;
+  }
+
+  .mess__open-content .messages__attachments {
+    left: 0;
+    bottom: 0;
+    top: auto;
+  }
+
+  .mess__open-content .messages__attachments ul {
+    flex-direction: row;
+    flex-wrap: nowrap;
   }
 }
 
