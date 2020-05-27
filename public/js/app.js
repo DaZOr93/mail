@@ -5787,6 +5787,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -5808,11 +5815,6 @@ __webpack_require__.r(__webpack_exports__);
         navHelperText: "Подписи к письмам",
         navTitleText: "Подпись",
         modalName: "MailVisa"
-      }, {
-        iconName: "drafts",
-        navHelperText: "Список писем, их отправка",
-        navTitleText: "Работа с письмами",
-        modalName: "MailWorks"
       }, {
         iconName: "email",
         navHelperText: "Сбор почты",
@@ -10513,7 +10515,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".wrapper[data-v-734ccb58] {\n  width: 100%;\n  height: 100%;\n  border-radius: 12px;\n  background-color: #ffffff;\n  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05);\n  font-family: Roboto;\n  padding: 0rem;\n}\n.card-wrapper[data-v-734ccb58] {\n  width: 700px;\n  height: 700px;\n}\n.header[data-v-734ccb58] {\n  width: 100%;\n  height: 68px;\n  margin-bottom: 48px;\n  color: #999999;\n  font-size: 18px;\n  font-weight: 700;\n  line-height: 90px;\n  border-bottom: 3px solid #f5f5f5;\n}\n.header-text[data-v-734ccb58] {\n  margin: 0 auto;\n}\n.col .row.body[data-v-734ccb58] {\n  margin-left: 0rem;\n  margin-right: 0rem;\n  margin-left: 30px;\n}\n.nav-item[data-v-734ccb58] {\n  margin-bottom: 50px;\n}\n.nav-item[data-v-734ccb58] {\n  cursor: pointer;\n}\n.nav-icon-circle[data-v-734ccb58] {\n  width: 60px;\n  height: 60px;\n  border: 2px solid #f5f5f5;\n  border-radius: 50%;\n  background-color: #ffffff;\n}\n.nav-item li span[data-v-734ccb58] {\n  height: 100%;\n  width: 100%;\n}\n.nav-item i[data-v-734ccb58] {\n  font-size: 26px;\n  color: #d8d8d8;\n  margin: 0 auto;\n}\n.nav-helper[data-v-734ccb58] {\n  height: 34px;\n  color: #cccccc;\n  font-family: Roboto;\n  font-size: 10px;\n  font-weight: 900;\n  letter-spacing: 0.83px;\n  line-height: 30px;\n}\n.nav-title[data-v-734ccb58] {\n  height: 34px;\n  color: #666666;\n  font-family: Roboto;\n  font-size: 14px;\n  font-weight: 500;\n  line-height: 30px;\n}\n.nav-item-link:hover i[data-v-734ccb58],\n.nav-item-link:focus i[data-v-734ccb58],\n.nav-item-link:active i[data-v-734ccb58] {\n  color: #999999;\n  font-size: 30px;\n  transition: hover 0.5s;\n}\n.nav-item-link:focus .nav-icon-circle[data-v-734ccb58],\n.nav-item-link:hover .nav-icon-circle[data-v-734ccb58],\n.nav-item-link:active .nav-icon-circle[data-v-734ccb58],\n.nav-item-link:focus .nav-helper[data-v-734ccb58],\n.nav-item-link:hover .nav-helper[data-v-734ccb58],\n.nav-item-link:active .nav-helper[data-v-734ccb58],\n.nav-item-link:focus .nav-title[data-v-734ccb58],\n.nav-item-link:hover .nav-title[data-v-734ccb58],\n.nav-item-link:active .nav-title[data-v-734ccb58] {\n  background: rgba(24, 117, 240, 0.16);\n  transition: hover 0.5s;\n}", ""]);
+exports.push([module.i, ".home_link[data-v-734ccb58] {\n  padding-left: 35px;\n  position: absolute;\n}\n.home_link[data-v-734ccb58]:hover {\n  cursor: pointer;\n  color: #837d7d;\n}\n.wrapper[data-v-734ccb58] {\n  width: 100%;\n  height: 100%;\n  border-radius: 12px;\n  background-color: #ffffff;\n  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.05);\n  font-family: Roboto;\n  padding: 0rem;\n}\n.card-wrapper[data-v-734ccb58] {\n  max-width: 700px;\n}\n.header[data-v-734ccb58] {\n  width: 100%;\n  height: 68px;\n  margin-bottom: 48px;\n  color: #999999;\n  font-size: 18px;\n  font-weight: 700;\n  line-height: 90px;\n  border-bottom: 3px solid #f5f5f5;\n}\n.header-text[data-v-734ccb58] {\n  margin: 0 auto;\n}\n.col .row.body[data-v-734ccb58] {\n  margin-left: 0rem;\n  margin-right: 0rem;\n  margin-left: 30px;\n}\n.nav-item[data-v-734ccb58] {\n  margin-bottom: 50px;\n}\n.nav-item[data-v-734ccb58] {\n  cursor: pointer;\n}\n.nav-icon-circle[data-v-734ccb58] {\n  width: 60px;\n  height: 60px;\n  border: 2px solid #f5f5f5;\n  border-radius: 50%;\n  background-color: #ffffff;\n}\n.nav-item li span[data-v-734ccb58] {\n  height: 100%;\n  width: 100%;\n}\n.nav-item i[data-v-734ccb58] {\n  font-size: 26px;\n  color: #d8d8d8;\n  margin: 0 auto;\n}\n.nav-helper[data-v-734ccb58] {\n  height: 34px;\n  color: #cccccc;\n  font-family: Roboto;\n  font-size: 10px;\n  font-weight: 900;\n  letter-spacing: 0.83px;\n  line-height: 30px;\n}\n.nav-title[data-v-734ccb58] {\n  height: 34px;\n  color: #666666;\n  font-family: Roboto;\n  font-size: 14px;\n  font-weight: 500;\n  line-height: 30px;\n}\n.nav-item-link:hover i[data-v-734ccb58],\n.nav-item-link:focus i[data-v-734ccb58],\n.nav-item-link:active i[data-v-734ccb58] {\n  color: #999999;\n  font-size: 30px;\n  transition: hover 0.5s;\n}\n.nav-item-link:focus .nav-icon-circle[data-v-734ccb58],\n.nav-item-link:hover .nav-icon-circle[data-v-734ccb58],\n.nav-item-link:active .nav-icon-circle[data-v-734ccb58],\n.nav-item-link:focus .nav-helper[data-v-734ccb58],\n.nav-item-link:hover .nav-helper[data-v-734ccb58],\n.nav-item-link:active .nav-helper[data-v-734ccb58],\n.nav-item-link:focus .nav-title[data-v-734ccb58],\n.nav-item-link:hover .nav-title[data-v-734ccb58],\n.nav-item-link:active .nav-title[data-v-734ccb58] {\n  background: rgba(24, 117, 240, 0.16);\n  transition: hover 0.5s;\n}", ""]);
 
 // exports
 
@@ -10609,7 +10611,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "\n.togglermenu {\n    width: 57px;\n    cursor: pointer;\n    display: none;\n}\n.hidden {\n    overflow: hidden;\n}\n.togglermenu div {\n    height: 1px;\n    background: #3a0085;\n    margin-bottom: 11px;\n}\n.mobile-nav {\n    overflow-y: auto;\n    z-index: 2222;\n    text-align: center;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    position: fixed;\n    width: 100%;\n    height: 100%;\n    top: 0;\n    background: #fff;\n    -webkit-overflow-scrolling: touch;\n    transform: translateY(-120%);\n    transition-property: transform;\n    transition-duration: .9s ease-in;\n    transition: all .9s cubic-bezier(.11, .37, 0, .98);\n}\n.mobile-nav ul li a {\n    font-style: normal;\n    font-weight: 500;\n    font-size: 20px;\n    line-height: 45px;\n    color: #999999;\n}\n.mobile-nav ul li {\n    display: flex;\n    align-items: center;\n    transition: all .5s\n}\n.mobile-nav ul li:hover a, .mobile-nav ul li:hover i {\n    color: #1875F0\n}\n.mobile-nav .active a, .mobile-nav .active i {\n    color: #1875F0\n}\n.mobile-nav i {\n    color: #D8D8D8;\n    margin-right: 20px;\n}\n.toggleClose-wrap {\n    width: 35px;\n    height: 35px;\n    background: #1875F0;\n    transform: rotate(45deg);\n    margin: auto auto 42px;\n    position: relative;\n    cursor: pointer;\n}\n.toggleClose-wrap::after, .toggleClose-wrap::before {\n    content: '';\n    width: 35px;\n    height: 1px;\n    background: #000;\n    position: absolute;\n}\n.toggleClose-wrap::after {\n    right: 0;\n}\n.toggleClose-wrap::before {\n    left: 0;\n    transform: rotate(90deg);\n}\n.mon_nav_open {\n    transform: translateY(-0%);\n}\n\n", ""]);
+exports.push([module.i, "\n.togglermenu {\n    width: 57px;\n    cursor: pointer;\n    display: none;\n}\n.hidden {\n    overflow: hidden;\n}\n.togglermenu div {\n    height: 1px;\n    background: #3a0085;\n    margin-bottom: 11px;\n}\n.mobile-nav {\n    overflow-y: auto;\n    z-index: 22222222;\n    text-align: center;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    position: fixed;\n    width: 100%;\n    height: 100%;\n    top: 0;\n    background: #fff;\n    -webkit-overflow-scrolling: touch;\n    transform: translateY(-120%);\n    transition-property: transform;\n    transition-duration: .9s ease-in;\n    transition: all .9s cubic-bezier(.11, .37, 0, .98);\n}\n.mobile-nav ul li a {\n    font-style: normal;\n    font-weight: 500;\n    font-size: 20px;\n    line-height: 45px;\n    color: #999999;\n}\n.mobile-nav ul li {\n    display: flex;\n    align-items: center;\n    transition: all .5s\n}\n.mobile-nav ul li:hover a, .mobile-nav ul li:hover i {\n    color: #1875F0\n}\n.mobile-nav .active a, .mobile-nav .active i {\n    color: #1875F0\n}\n.mobile-nav i {\n    color: #D8D8D8;\n    margin-right: 20px;\n}\n.toggleClose-wrap {\n    width: 35px;\n    height: 35px;\n    background: #1875F0;\n    transform: rotate(45deg);\n    margin: auto auto 42px;\n    position: relative;\n    cursor: pointer;\n}\n.toggleClose-wrap::after, .toggleClose-wrap::before {\n    content: '';\n    width: 35px;\n    height: 1px;\n    background: #000;\n    position: absolute;\n}\n.toggleClose-wrap::after {\n    right: 0;\n}\n.toggleClose-wrap::before {\n    left: 0;\n    transform: rotate(90deg);\n}\n.mon_nav_open {\n    transform: translateY(-0%);\n}\n\n", ""]);
 
 // exports
 
@@ -57224,8 +57226,7 @@ var staticRenderFns = [
                             "a",
                             {
                               attrs: {
-                                href:
-                                  "https://it20tools-disk.azurewebsites.net/"
+                                href: "http://it20tools-disk.dtdgma.org.ua/disk"
                               }
                             },
                             [_vm._v("Диск")]
@@ -57233,18 +57234,22 @@ var staticRenderFns = [
                         ]),
                         _vm._v(" "),
                         _c("li", [
-                          _c("a", { attrs: { href: "#" } }, [
-                            _vm._v("Календарь")
-                          ])
+                          _c(
+                            "a",
+                            {
+                              attrs: {
+                                href: "http://laravelproject.s-host.net"
+                              }
+                            },
+                            [_vm._v("Календарь")]
+                          )
                         ]),
                         _vm._v(" "),
                         _c("li", [
                           _c(
                             "a",
                             {
-                              attrs: {
-                                href: "https://contactmodule.azurewebsites.net"
-                              }
+                              attrs: { href: "https://contacts-it.s-host.net/" }
                             },
                             [_vm._v("Контакты")]
                           )
@@ -57532,7 +57537,11 @@ var staticRenderFns = [
     return _c("li", [
       _c("i", { staticClass: "material-icons" }, [_vm._v("home")]),
       _vm._v(" "),
-      _c("a", { attrs: { href: "#" } }, [_vm._v("Главная")])
+      _c(
+        "a",
+        { attrs: { href: "https://team1-group-project.azurewebsites.net/" } },
+        [_vm._v("Главная")]
+      )
     ])
   },
   function() {
@@ -57542,11 +57551,9 @@ var staticRenderFns = [
     return _c("li", [
       _c("i", { staticClass: "material-icons" }, [_vm._v("cloud_download")]),
       _vm._v(" "),
-      _c(
-        "a",
-        { attrs: { href: "https://it20tools-disk.azurewebsites.net/" } },
-        [_vm._v("Диск")]
-      )
+      _c("a", { attrs: { href: "http://it20tools-disk.dtdgma.org.ua/disk" } }, [
+        _vm._v("Диск")
+      ])
     ])
   },
   function() {
@@ -57558,9 +57565,7 @@ var staticRenderFns = [
       _vm._v(" "),
       _c(
         "a",
-        {
-          attrs: { href: "https://it20tools-disk.azurewebsites.net/available" }
-        },
+        { attrs: { href: "http://it20tools-disk.dtdgma.org.ua/available" } },
         [_vm._v("Доступные")]
       )
     ])
@@ -57574,7 +57579,7 @@ var staticRenderFns = [
       _vm._v(" "),
       _c(
         "a",
-        { attrs: { href: "https://it20tools-disk.azurewebsites.net/recent" } },
+        { attrs: { href: "http://it20tools-disk.dtdgma.org.ua/recent" } },
         [_vm._v("Недавние")]
       )
     ])
@@ -57588,7 +57593,7 @@ var staticRenderFns = [
       _vm._v(" "),
       _c(
         "a",
-        { attrs: { href: "https://it20tools-disk.azurewebsites.net/recent" } },
+        { attrs: { href: "http://it20tools-disk.dtdgma.org.ua/recent" } },
         [_vm._v("Избранное")]
       )
     ])
@@ -57602,7 +57607,7 @@ var staticRenderFns = [
       _vm._v(" "),
       _c(
         "a",
-        { attrs: { href: "https://it20tools-disk.azurewebsites.net/basket" } },
+        { attrs: { href: "http://it20tools-disk.dtdgma.org.ua/basket" } },
         [_vm._v("Корзина")]
       )
     ])
@@ -57624,7 +57629,9 @@ var staticRenderFns = [
     return _c("li", [
       _c("i", { staticClass: "material-icons" }, [_vm._v("today")]),
       _vm._v(" "),
-      _c("a", { attrs: { href: "#" } }, [_vm._v("Календарь")])
+      _c("a", { attrs: { href: "http://laravelproject.s-host.net" } }, [
+        _vm._v("Календарь")
+      ])
     ])
   },
   function() {
@@ -57650,7 +57657,7 @@ var staticRenderFns = [
     return _c("li", [
       _c("i", { staticClass: "material-icons" }, [_vm._v("people")]),
       _vm._v(" "),
-      _c("a", { attrs: { href: "https://contactmodule.azurewebsites.net" } }, [
+      _c("a", { attrs: { href: "https://contacts-it.s-host.net/" } }, [
         _vm._v("Контакты")
       ])
     ])
@@ -57662,7 +57669,16 @@ var staticRenderFns = [
     return _c("li", [
       _c("i", { staticClass: "material-icons" }, [_vm._v("business_center")]),
       _vm._v(" "),
-      _c("a", { attrs: { href: "#" } }, [_vm._v("Управление ")])
+      _c(
+        "a",
+        {
+          attrs: {
+            href:
+              "https://team1-group-project.azurewebsites.net/dashboard/departments"
+          }
+        },
+        [_vm._v("Управление ")]
+      )
     ])
   }
 ]
@@ -57771,7 +57787,7 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "massage__list w100" },
+    { staticClass: "folder__messages-list massage__list w100" },
     [
       _c("messages", {
         attrs: { slug: this.slug, getMessages: _vm.getMessages }
@@ -63161,7 +63177,25 @@ var render = function() {
     [
       _c("div", { staticClass: "row" }, [
         _c("div", { staticClass: "col card-wrapper" }, [
-          _vm._m(0),
+          _c("div", { staticClass: "row" }, [
+            _c("div", { staticClass: "col s12 valign-wrapper header" }, [
+              _c(
+                "i",
+                {
+                  staticClass: "material-icons home_link",
+                  attrs: { title: "Назад" },
+                  on: {
+                    click: function($event) {
+                      return _vm.$router.go(-1)
+                    }
+                  }
+                },
+                [_vm._v("\n                arrow_back\n            ")]
+              ),
+              _vm._v(" "),
+              _c("span", { staticClass: "header-text" }, [_vm._v("Настройки")])
+            ])
+          ]),
           _vm._v(" "),
           _c(
             "ul",
@@ -63227,18 +63261,7 @@ var render = function() {
     1
   )
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col s12 valign-wrapper header" }, [
-        _c("span", { staticClass: "header-text" }, [_vm._v("Настройки")])
-      ])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -63283,9 +63306,11 @@ var staticRenderFns = [
       ]),
       _vm._v(" "),
       _c("li", [
-        _c("a", { attrs: { href: "http://it20tools-disk.dtdgma.org.ua" } }, [
-          _vm._v("Диск")
-        ])
+        _c(
+          "a",
+          { attrs: { href: "http://it20tools-disk.dtdgma.org.ua/disk" } },
+          [_vm._v("Диск")]
+        )
       ]),
       _vm._v(" "),
       _c("li", [
@@ -63337,7 +63362,7 @@ var staticRenderFns = [
       ]),
       _vm._v(" "),
       _c("li", [
-        _c("a", { attrs: { href: "https://contacts.s-host.net" } }, [
+        _c("a", { attrs: { href: "https://contacts-it.s-host.net/" } }, [
           _vm._v("Контакты")
         ])
       ]),

@@ -25,9 +25,9 @@
                                 <div class="footer-nav">
                                     <div class="l-nav">
                                         <ul>
-                                            <li><a href="https://it20tools-disk.azurewebsites.net/">Диск</a></li>
-                                            <li><a href="#">Календарь</a></li>
-                                            <li><a href="https://contactmodule.azurewebsites.net">Контакты</a></li>
+                                            <li><a href="http://it20tools-disk.dtdgma.org.ua/disk">Диск</a></li>
+                                            <li><a href="http://laravelproject.s-host.net">Календарь</a></li>
+                                            <li><a href="https://contacts-it.s-host.net/">Контакты</a></li>
                                         </ul>
                                     </div>
                                     <div class="r-nav">

@@ -1,5 +1,5 @@
 <template>
-    <div class="massage__list w100">
+    <div class="folder__messages-list massage__list w100">
         <messages :slug="this.slug" :getMessages="getMessages"></messages>
     </div>
 </template>

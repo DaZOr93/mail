@@ -4,6 +4,13 @@
       <div class="col card-wrapper">
         <div class="row">
           <div class="col s12 valign-wrapper header">
+              <i
+                  title="Назад"
+                  class="material-icons home_link"
+                  @click="$router.go(-1)"
+              >
+                  arrow_back
+              </i>
             <span class="header-text">Настройки</span>
           </div>
         </div>
@@ -54,12 +61,6 @@ export default {
           modalName: "MailVisa"
         },
         {
-          iconName: "drafts",
-          navHelperText: "Список писем, их отправка",
-          navTitleText: "Работа с письмами",
-          modalName: "MailWorks"
-        },
-        {
           iconName: "email",
           navHelperText: "Сбор почты",
           navTitleText: "Почта с других ящиков",
@@ -84,6 +85,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    .home_link {
+        padding-left: 35px;
+        position: absolute;
+    }
+    .home_link:hover {
+        cursor: pointer;
+        color: #837d7d;
+    }
 .wrapper {
   width: 100%;
   height: 100%;
@@ -95,8 +104,7 @@ export default {
 }
 
 .card-wrapper {
-  width: 700px;
-  height: 700px;
+  max-width: 700px;
 }
 .header {
   width: 100%;

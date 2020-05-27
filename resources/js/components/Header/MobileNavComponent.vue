@@ -6,27 +6,27 @@
             </li>
             <li>
                 <i class="material-icons">home</i>
-                <a href="#">Главная</a>
+                <a href="https://team1-group-project.azurewebsites.net/">Главная</a>
             </li>
             <li>
                 <i class="material-icons">cloud_download</i>
-                <a href="https://it20tools-disk.azurewebsites.net/">Диск</a>
+                <a href="http://it20tools-disk.dtdgma.org.ua/disk">Диск</a>
             </li>
             <li>
                 <i class="material-icons">people</i>
-                <a href="https://it20tools-disk.azurewebsites.net/available">Доступные</a>
+                <a href="http://it20tools-disk.dtdgma.org.ua/available">Доступные</a>
             </li>
             <li>
                 <i class="material-icons">watch_later</i>
-                <a href="https://it20tools-disk.azurewebsites.net/recent">Недавние</a>
+                <a href="http://it20tools-disk.dtdgma.org.ua/recent">Недавние</a>
             </li>
             <li>
                 <i class="material-icons">star_border</i>
-                <a href="https://it20tools-disk.azurewebsites.net/recent">Избранное</a>
+                <a href="http://it20tools-disk.dtdgma.org.ua/recent">Избранное</a>
             </li>
             <li>
                 <i class="material-icons">delete</i>
-                <a href="https://it20tools-disk.azurewebsites.net/basket">Корзина</a>
+                <a href="http://it20tools-disk.dtdgma.org.ua/basket">Корзина</a>
             </li>
             <li class="active">
                 <i class="material-icons">email</i>
@@ -34,7 +34,7 @@
             </li>
             <li>
                 <i class="material-icons">today</i>
-                <a href="#">Календарь</a>
+                <a href="http://laravelproject.s-host.net">Календарь</a>
             </li>
             <li>
                 <i class="material-icons">photo_camera</i>
@@ -42,11 +42,11 @@
             </li>
             <li>
                 <i class="material-icons">people</i>
-                <a href="https://contactmodule.azurewebsites.net">Контакты</a>
+                <a href="https://contacts-it.s-host.net/">Контакты</a>
             </li>
             <li>
                 <i class="material-icons">business_center</i>
-                <a href="#">Управление </a>
+                <a href="https://team1-group-project.azurewebsites.net/dashboard/departments">Управление </a>
             </li>
         </ul>
     </div>
@@ -84,7 +84,7 @@
 
     .mobile-nav {
         overflow-y: auto;
-        z-index: 2222;
+        z-index: 22222222;
         text-align: center;
         display: flex;
         align-items: center;

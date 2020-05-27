@@ -1243,6 +1243,15 @@ li {
   .user_show {
     opacity: 1;
   }
+
+  .folder__messages-list {
+    margin-top: 5px;
+    height: auto;
+  }
+
+  .folder__messages-list .email_simple-paginate {
+    max-width: 550px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -1272,6 +1281,106 @@ li {
 
   .header .wrap {
     padding-left: 10px;
+  }
+}
+
+@media (max-width: 576px) {
+  .massage__list table {
+    display: flex;
+  }
+
+  .massage__list tbody {
+    flex-basis: 100%;
+  }
+
+  .email__from-td,
+  .email__to-td {
+    display: inline-block;
+    width: 50%;
+    margin-top: 10px;
+  }
+
+  .td__subject {
+    width: 100% !important;
+    display: block;
+    margin-left: 5px;
+  }
+
+  .massage__list td {
+    padding: 0 5px;
+  }
+
+  .email__driver {
+    padding-top: 4px;
+  }
+
+  .date__td {
+    width: 14%;
+  }
+
+  .massage__list {
+    height: auto;
+    min-height: 500px;
+    padding-bottom: 50px;
+  }
+
+  .email_simple-paginate {
+    padding: 32px 5px 30px 5px;
+  }
+
+  .paginate-arrows i:first-child,
+  .paginate-numbers {
+    margin-right: 0;
+  }
+
+  .messages_action .action__group:not(:last-child) {
+    margin-right: 5px;
+  }
+
+  .draft-wrap.massage__list td {
+    padding: 10px 5px;
+  }
+
+  .draft-wrap .email_simple-paginate {
+    justify-content: center;
+  }
+
+  .draft-wrap .email_date,
+  .email__attachments {
+    text-align: right;
+  }
+
+  .new__email-inner .email__actions {
+    justify-content: center;
+  }
+
+  .new__email-inner .email__arrows {
+    padding: 32px 20px 30px 20px !important;
+  }
+
+  .email__header-box {
+    padding-right: 0 !important;
+  }
+
+  #editor {
+    max-height: 220px !important;
+  }
+
+  .new__email-inner .messages__attachments {
+    bottom: 22% !important;
+    left: 0;
+    top: auto !important;
+  }
+}
+
+@media (max-width: 400px) {
+  .email_simple-paginate {
+    flex-direction: column-reverse;
+    padding: 22px 5px 21px 5px;
+  }
+
+  .new__email-inner .email__actions .action_group[data-v-4e583fa8] {
+    padding: 30px 10px;
   }
 }
 
