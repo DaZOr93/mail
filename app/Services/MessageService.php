@@ -69,12 +69,17 @@ class MessageService extends ConnectServices
 
     public function messagesTollsCount()
     {
+        $user_id = Auth::user()->id;
         $data = [];
-        $data['inbox'] = Letter::where('inbox', 1)->where('seen', 1)->count();
-        $data['draft'] = Letter::where('draft', 1)->count();
-        $data['sending'] = Letter::where('sending', 1)->count();
-        $data['deleted'] = Letter::where('deleted', 1)->count();
-        $data['spam'] = Letter::where('spam', 1)->count();
+        $data['inbox'] = Letter::where('inbox', 1)
+            ->whereNull('folder_id')
+            ->where('user_id' , $user_id)
+            ->where('seen', 1)
+            ->count();
+        $data['draft'] = Letter::where('draft', 1)->where('user_id' , $user_id)->count();
+        $data['sending'] = Letter::where('sending', 1)->where('user_id' , $user_id)->count();
+        $data['deleted'] = Letter::where('deleted', 1)->where('user_id' , $user_id)->count();
+        $data['spam'] = Letter::where('spam', 1)->where('user_id' , $user_id)->count();
 
         return $data;
     }

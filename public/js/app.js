@@ -2713,6 +2713,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "draftMessagesComponent",
@@ -3564,6 +3567,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "SentMessagesComponent",
@@ -3585,6 +3590,9 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Mixins_Messages__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../Mixins/Messages */ "./resources/js/Mixins/Messages.js");
+//
+//
+//
 //
 //
 //
@@ -58028,17 +58036,21 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "email_simple-paginate" }, [
-          _c("div", { staticClass: "paginate-numbers" }, [
-            _vm._v(
-              "\n                " +
-                _vm._s(_vm.getMessages.from) +
-                "\n                -\n                " +
-                _vm._s(_vm.getMessages.to) +
-                "\n                of\n                " +
-                _vm._s(_vm.getMessages.total) +
-                "\n            "
-            )
-          ]),
+          _vm.getMessages.total !== 0
+            ? _c("div", { staticClass: "paginate-numbers" }, [
+                _vm._v(
+                  "\n                " +
+                    _vm._s(_vm.getMessages.from) +
+                    "\n                -\n                " +
+                    _vm._s(_vm.getMessages.to) +
+                    "\n                of\n                " +
+                    _vm._s(_vm.getMessages.total) +
+                    "\n            "
+                )
+              ])
+            : _c("div", { staticClass: "paginate-numbers" }, [
+                _vm._v("\n                Нет записей\n            ")
+              ]),
           _vm._v(" "),
           _c("div", { staticClass: "paginate-arrows" }, [
             _c(
@@ -60070,17 +60082,21 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "email_simple-paginate" }, [
-          _c("div", { staticClass: "paginate-numbers" }, [
-            _vm._v(
-              "\n\n                " +
-                _vm._s(_vm.getMessages.from) +
-                "\n                -\n                " +
-                _vm._s(_vm.getMessages.to) +
-                "\n                of\n                " +
-                _vm._s(_vm.getMessages.total) +
-                "\n            "
-            )
-          ]),
+          _vm.getMessages.total !== 0
+            ? _c("div", { staticClass: "paginate-numbers" }, [
+                _vm._v(
+                  "\n                " +
+                    _vm._s(_vm.getMessages.from) +
+                    "\n                -\n                " +
+                    _vm._s(_vm.getMessages.to) +
+                    "\n                of\n                " +
+                    _vm._s(_vm.getMessages.total) +
+                    "\n            "
+                )
+              ])
+            : _c("div", { staticClass: "paginate-numbers" }, [
+                _vm._v("\n                Нет записей\n            ")
+              ]),
           _vm._v(" "),
           _c("div", { staticClass: "paginate-arrows" }, [
             _c(
@@ -60624,17 +60640,21 @@ var render = function() {
         ]),
         _vm._v(" "),
         _c("div", { staticClass: "email_simple-paginate" }, [
-          _c("div", { staticClass: "paginate-numbers" }, [
-            _vm._v(
-              "\n                " +
-                _vm._s(_vm.getMessages.from) +
-                "\n                -\n                " +
-                _vm._s(_vm.getMessages.to) +
-                "\n                of\n                " +
-                _vm._s(_vm.getMessages.total) +
-                "\n            "
-            )
-          ]),
+          _vm.getMessages.total !== 0
+            ? _c("div", { staticClass: "paginate-numbers" }, [
+                _vm._v(
+                  "\n                " +
+                    _vm._s(_vm.getMessages.from) +
+                    "\n                -\n                " +
+                    _vm._s(_vm.getMessages.to) +
+                    "\n                of\n                " +
+                    _vm._s(_vm.getMessages.total) +
+                    "\n            "
+                )
+              ])
+            : _c("div", { staticClass: "paginate-numbers" }, [
+                _vm._v("\n                Нет записей\n            ")
+              ]),
           _vm._v(" "),
           _c("div", { staticClass: "paginate-arrows" }, [
             _c(
@@ -81217,9 +81237,11 @@ __webpack_require__.r(__webpack_exports__);
         }
       }
 
-      ArrayMess.map(function (mess) {
-        mess.checked = _this2.checked;
-      });
+      if (ArrayMess) {
+        ArrayMess.map(function (mess) {
+          mess.checked = _this2.checked;
+        });
+      }
     }
   }
 });

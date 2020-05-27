@@ -136,9 +136,11 @@ export default {
                     this.action = false;
                 }
             }
-            ArrayMess.map((mess) => {
-                mess.checked = this.checked;
-            });
+            if(ArrayMess) {
+                ArrayMess.map((mess) => {
+                    mess.checked = this.checked;
+                });
+            }
         },
     },
 

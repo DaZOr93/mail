@@ -68,12 +68,15 @@
                 </div>
             </div>
             <div class="email_simple-paginate">
-                <div class="paginate-numbers">
+                <div class="paginate-numbers" v-if="getMessages.total !== 0">
                     {{ getMessages.from}}
                     -
                     {{ getMessages.to}}
                     of
                     {{ getMessages.total}}
+                </div>
+                <div  class="paginate-numbers" v-else>
+                    Нет записей
                 </div>
                 <div class="paginate-arrows">
                     <i
