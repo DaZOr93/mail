@@ -65,6 +65,7 @@ class FolderServices
         $folder->name = $request['name'];
         $folder->description = $request['description'];
         $folder->color = $request['color'];
+        $folder->pickers = 0;
         $folder->color_name = $request['color_name'];
         $folder->slug = Str::slug($request['name']);
         $folder->save();
