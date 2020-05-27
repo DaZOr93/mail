@@ -30,7 +30,11 @@
                     <div class="arrow-bottom">
                         <img @click="userDrop = !userDrop" src="/img/arrow.png" alt="">
                         <div class="user_drop" :class="{user_show : userDrop}">
-                            <a href="#" @click.prevent="logout">Выйти из системы</a>
+                            <div>
+                                <a href="https://team1-group-project.azurewebsites.net/user/profile/">Мой профиль</a>
+                                <a href="https://team1-group-project.azurewebsites.net/user/profile/security/settings">Безапасность</a>
+                                <a href="#" @click.prevent="logout">Выйти из системы</a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -41,6 +45,7 @@
 
 <script>
     import mobileNav from '../Header/MobileNavComponent';
+
     export default {
         name: "main-header",
         components: {mobileNav},

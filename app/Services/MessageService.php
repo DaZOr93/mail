@@ -14,10 +14,17 @@ class MessageService extends ConnectServices
 
     public function index($servicesFolder)
     {
+        if($servicesFolder === 'draft') {
+            return Letter::where($servicesFolder, 1)
+                ->with('attachments')
+                ->orderByDesc('date_send')
+                ->paginate(10);
+        }
+
         return Letter::where($servicesFolder, 1)
-            ->with('attachments')
             ->orderByDesc('date_send')
             ->paginate(10);
+
     }
 
     public function show($message_id)
@@ -156,7 +163,7 @@ class MessageService extends ConnectServices
         Attachments::where('letter_id', $letter_id)->delete();
 
         foreach ($attachments as $attach) {
-            unlink('storage/app/' . $attach->path);
+            unlink('storage/' . $attach->path);
         }
     }
 }

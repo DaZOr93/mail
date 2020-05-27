@@ -2154,6 +2154,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: "main-header",
@@ -56844,19 +56848,43 @@ var render = function() {
                   class: { user_show: _vm.userDrop }
                 },
                 [
-                  _c(
-                    "a",
-                    {
-                      attrs: { href: "#" },
-                      on: {
-                        click: function($event) {
-                          $event.preventDefault()
-                          return _vm.logout($event)
+                  _c("div", [
+                    _c(
+                      "a",
+                      {
+                        attrs: {
+                          href:
+                            "https://team1-group-project.azurewebsites.net/user/profile/"
                         }
-                      }
-                    },
-                    [_vm._v("Выйти из системы")]
-                  )
+                      },
+                      [_vm._v("Мой профиль")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        attrs: {
+                          href:
+                            "https://team1-group-project.azurewebsites.net/user/profile/security/settings"
+                        }
+                      },
+                      [_vm._v("Безапасность")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        attrs: { href: "#" },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.logout($event)
+                          }
+                        }
+                      },
+                      [_vm._v("Выйти из системы")]
+                    )
+                  ])
                 ]
               )
             ])

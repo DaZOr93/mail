@@ -266,16 +266,34 @@ li {
 
 .user_drop {
   background: #fff;
-  padding: 15px 35px;
-  bottom: -60px;
-  right: 40px;
+  z-index: 22222;
+  bottom: -169%;
+  right: 43px;
   position: absolute;
   opacity: 0;
   transition: all 0.36s;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  width: 228px;
+  border-radius: 5px;
 }
 
 .user_show {
   opacity: 1;
+}
+
+.user_drop:before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 0;
+  height: 0;
+  margin-left: auto;
+  top: -9px;
+  right: 30px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 9px solid #fff;
 }
 
 .user_drop a {
@@ -284,6 +302,17 @@ li {
   line-height: 26px;
   text-align: center;
   color: #808080;
+  display: block;
+  padding: 10px 20px;
+  position: relative;
+}
+
+.user_drop a:not(:last-child) {
+  border-bottom: 2px solid #F5F5F5;
+}
+
+.user_drop a:hover {
+  color: #1875F0;
 }
 
 .arrow-bottom {
